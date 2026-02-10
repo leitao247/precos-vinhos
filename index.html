@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investigação de Preços - Vinhos</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Configuração de cores personalizadas do Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wine: '#722f37',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .wine-accent { color: #722f37; }
+        .table-compact td, .table-compact th { padding: 0.5rem 1rem; }
+        canvas { max-height: 200px !important; }
+    </style>
+</head>
+<body class="bg-gray-50 p-4 md:p-8">
+
+<div class="max-w-5xl mx-auto">
+    <header class="flex justify-between items-end border-b-2 border-gray-200 pb-4 mb-6">
+        <div>
+            <h1 class="text-2xl font-bold wine-accent">Investigação de Preços Baixos</h1>
+            <p class="text-sm text-gray-500">Filtrado: Apenas vinhos com Preço Mercado < Tabela</p>
+        </div>
+        <div class="text-right">
+            <span id="date-now" class="text-xs font-mono bg-gray-200 px-2 py-1 rounded">10/02/2026</span>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <div class="lg:col-span-1 space-y-4">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Top 5 Disparidades</h2>
+                <div class="chart-container">
+                    <canvas id="disparityChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="bg-wine p-4 rounded-lg shadow-md text-white">
+                <p class="text-xs opacity-80 uppercase">Total em Descompasso</p>
+                <p class="text-3xl font-bold" id="total-gap">R$ 0,00</p>
+                <p class="text-xs mt-2 italic">*Soma das diferenças negativas</p>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                <table class="w-full text-left table-compact text-sm">
+                    <thead class="bg-gray-50 text-gray-600">
+                        <tr>
+                            <th class="p-3">Produto</th>
+                            <th class="p-3">Link / Mercado</th>
+                            <th class="p-3">Sua Tabela</th>
+                            <th class="p-3 text-right">Diferença</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wine-table-rows">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const wineData = [
+        { nome: "Errazuriz Las Pizarras", link: "https://grandcru.com.br", loja: "Grand Cru", mercado: 984.67, minha: 1654.90 },
+        { nome: "Masi Modello Merlot", link: "https://grandcru.com.br", loja: "Grand Cru", mercado: 79.00, minha: 154.90 },
+        { nome: "Rutini Qualita", link: "https://paodeacucar.com", loja: "Pão de Açúcar", mercado: 89.90, minha: 149.90 },
+        { nome: "Dona Paula Malbec", link: "https://paodeacucar.com", loja: "Pão de Açúcar", mercado: 39.95, minha: 79.90 },
+        { nome: "Taboadella Reserva", link: "https://worldwine.com.br", loja: "World Wine", mercado: 339.49, minha: 398.00 },
+        { nome: "Luis Pato Maria Gomes", link: "https://mistral.com.br", loja: "Mistral", mercado: 119.94, minha: 149.92 },
+        { nome: "El Enemigo Chardonnay", link: "https://mistral.com.br", loja: "Mistral", mercado: 210.26, minha: 262.83 }
+    ];
+
+    const format = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    function initApp() {
+        const table = document.getElementById('wine-table-rows');
+        let totalGap = 0;
+
+        // Ordenar por maior diferença absoluta
+        wineData.sort((a, b) => (b.minha - b.mercado) - (a.minha - a.mercado));
+
+        wineData.forEach(wine => {
+            const diff = wine.minha - wine.mercado;
+            totalGap += diff;
+
+            const row = `
+                <tr class="hover:bg-amber-50 border-b border-gray-50 transition-colors">
+                    <td class="p-3">
+                        <span class="font-bold text-gray-800 block">${wine.nome}</span>
+                    </td>
+                    <td class="p-3">
+                        <div class="text-emerald-700 font-bold">${format(wine.mercado)}</div>
+                        <a href="${wine.link}" target="_blank" class="text-[10px] text-blue-500 underline uppercase tracking-tighter hover:text-blue-700">
+                            Ver na ${wine.loja} ↗
+                        </a>
+                    </td>
+                    <td class="p-3">
+                        <span class="text-gray-500">${format(wine.minha)}</span>
+                    </td>
+                    <td class="p-3 text-right">
+                        <span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-bold">
+                            -${format(diff)}
+                        </span>
+                    </td>
+                </tr>
+            `;
+            table.innerHTML += row;
+        });
+
+        document.getElementById('total-gap').textContent = format(totalGap);
+        renderChart();
+    }
+
+    function renderChart() {
+        const ctx = document.getElementById('disparityChart').getContext('2d');
+        const top5 = wineData.slice(0, 5);
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: top5.map(w => w.nome.split(' ')[0]),
+                datasets: [{
+                    label: 'Tabela',
+                    data: top5.map(w => w.minha),
+                    backgroundColor: '#d1d5db'
+                }, {
+                    label: 'Mercado',
+                    data: top5.map(w => w.mercado),
+                    backgroundColor: '#722f37'
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
+                },
+                scales: {
+                    x: { display: false },
+                    y: { ticks: { font: { size: 10 } } }
+                }
+            }
+        });
+    }
+
+    window.onload = initApp;
+</script>
+
+</body>
+</html>
