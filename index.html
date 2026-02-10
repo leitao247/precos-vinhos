@@ -21,14 +21,14 @@
     <header class="flex flex-col lg:flex-row justify-between items-center mb-8 gap-6 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
         <div class="text-center lg:text-left">
             <h1 class="text-2xl font-black text-wine uppercase tracking-tighter">Investigação & Margem Mercado Livre</h1>
-            <p class="text-[10px] text-gray-400 font-mono" id="stats-header">Carregando...</p>
+            <p class="text-[10px] text-gray-400 font-mono" id="stats-header">Carregando itens da planilha...</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto text-center">
-            <input type="text" id="search-bar" onkeyup="filterTable()" placeholder="🔍 Pesquisar em todos os vinhos..." 
+            <input type="text" id="search-bar" onkeyup="filterTable()" placeholder="🔍 Pesquisar em todos os 247 itens..." 
                    class="w-full lg:w-96 px-5 py-3 rounded-2xl border-2 border-gray-100 outline-none focus:border-wine shadow-inner">
             <div class="bg-ml px-6 py-2 rounded-2xl border border-yellow-400 shadow-sm">
-                <p class="text-[9px] font-bold text-black uppercase tracking-tighter text-center">Regra ML:</p>
-                <p class="text-[11px] font-black text-amber-900 uppercase text-center">(Tabela - 30%) + 45%</p>
+                <p class="text-[9px] font-bold text-black uppercase tracking-tighter">Regra ML:</p>
+                <p class="text-[11px] font-black text-amber-900 uppercase">(Tabela - 30%) + 45%</p>
             </div>
         </div>
     </header>
@@ -36,7 +36,7 @@
     <div class="grid grid-cols-1 xl:grid-cols-5 gap-8">
         <div class="xl:col-span-1 space-y-6">
             <div class="bg-wine p-6 rounded-[2rem] shadow-xl text-white text-center">
-                <p class="text-[10px] opacity-70 uppercase font-bold tracking-widest mb-1">Gap Total Tabela/Mercado</p>
+                <p class="text-[10px] opacity-70 uppercase font-bold tracking-widest mb-1">Gap Tabela/Mercado</p>
                 <p class="text-3xl font-black" id="total-gap">R$ 0,00</p>
             </div>
             <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
@@ -68,49 +68,41 @@
 </div>
 
 <script>
-    const wineData = [
-        {"f": "ITÁLIA - LOMBARDIA", "n": "GAGGIARONE VITGNI GIOVANI TTO - CROATINA 2021", "m": 123.78, "t": 145.63},
-        {"f": "ITÁLIA - LOMBARDIA", "n": "GAGGIARONE VITGNI GIOVANI TTO - CROATINA", "m": 221.79, "t": 260.93},
-        {"f": "ITÁLIA - LOMBARDIA", "n": "CA MONTEBELLO TTO DOC - PINOT NERO 2021", "m": 72.42, "t": 85.2},
-        {"f": "ITÁLIA - LOMBARDIA", "n": "CA MONTEBELLO BCO DOC - PINOT NERO BIANCO 2022", "m": 72.42, "t": 85.2},
-        {"f": "ITÁLIA - LOMBARDIA", "n": "CA MONTEBELLO BCO IGT - PINOT GRIGIO 2021", "m": 72.42, "t": 85.2},
-        {"f": "ITÁLIA - LOMBARDIA", "n": "CA MONTEBELLO TTO DOC - BARBERA, UVA RARA 2021", "m": 72.42, "t": 85.2},
-        {"f": "ITÁLIA - VENETO", "n": "NEROPERSO ROSSO VENETO IGT 2020", "m": 118.99, "t": 139.98},
-        {"f": "ITÁLIA - ABRUZZO", "n": "TORRE ROMANICA TTO - SANGIOVESE 2023", "m": 44.14, "t": 51.93},
-        {"f": "ITÁLIA - ABRUZZO", "n": "TORRE ROMANICA PREMIUM - MONTEPULCIANO 2021", "m": 71.97, "t": 84.67},
-        {"f": "ESPANHA - RIOJA", "n": "VINA ALBINA RESERVA 2017", "m": 178.50, "t": 210.00},
-        {"f": "ESPANHA - RIOJA", "n": "VINA ALBINA GRAN RESERVA 2015", "m": 238.00, "t": 280.00},
-        {"f": "ESPANHA - RIOJA", "n": "MARQUES DE TOMARES GRAN RESERVA 2015", "m": 386.24, "t": 454.40},
-        {"f": "ESPANHA - RIBERA DEL DUERO", "n": "VALDUBON CRIANZA 2019", "m": 161.42, "t": 189.90},
-        {"f": "ESPANHA - RIBERA DEL DUERO", "n": "ALTOS DE TAMARON ROBLE 2022", "m": 75.65, "t": 89.00},
-        {"f": "PORTUGAL - DÃO", "n": "CABRIZ COLHEITA SELECIONADA TTO 2021", "m": 58.65, "t": 69.00},
-        {"f": "PORTUGAL - LISBOA", "n": "PORTA 6 TTO 750ML 2024", "m": 49.9, "t": 58.7},
-        {"f": "PORTUGAL - LISBOA", "n": "JULIA FLORISTA TTO 2022", "m": 37.42, "t": 44.03},
-        {"f": "PORTUGAL - AZEITES", "n": "AZEITE EXTRA VIRGEM CABRIZ 500ML", "m": 84.85, "t": 99.83},
-        {"f": "PORTUGAL - AZEITES", "n": "AZEITE CABRIZ ACIDEZ >0,3% 2025", "m": 512.8, "t": 599.0},
-        {"f": "ARGENTINA", "n": "RUTINI QUALITA MALBEC 2022", "m": 110.5, "t": 130.0},
-        {"f": "ARGENTINA", "n": "EL ENEMIGO CHARDONNAY 2021", "m": 221.0, "t": 260.0},
-        {"f": "ÁFRICA DO SUL", "n": "STORMHOEK PINOTAGE 2025", "m": 28.81, "t": 33.90}
-    ];
+    // COLE AQUI TODO O CONTEÚDO DO BLOCO "wineData" QUE TE ENVIEI ACIMA
+    const wineData = [ /* COLOQUE OS DADOS AQUI */ ];
+
+    // Se você preferir carregar do arquivo vinhos.json:
+    async function loadData() {
+        try {
+            // Se o arquivo vinhos.json existir no seu GitHub, ele carrega daqui:
+            const response = await fetch('vinhos.json');
+            const data = await response.json();
+            renderTable(data);
+        } catch (e) {
+            // Se não, ele usa a lista colada acima
+            renderTable(wineData);
+        }
+    }
 
     const format = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    function init() {
+    function renderTable(data) {
         const body = document.getElementById('table-content');
         let html = '';
         let currentFam = '';
         let totalGap = 0;
 
-        wineData.forEach(item => {
+        data.forEach(item => {
             if (item.f !== currentFam) {
                 currentFam = item.f;
                 html += `<tr class="family-header"><td colspan="6" class="p-4 text-[9px] font-black text-gray-500 uppercase tracking-widest">${currentFam}</td></tr>`;
             }
 
             const custoAquisicao = item.t * 0.70;
-            const precoVendaML = custoAquisicao * 1.45; // (Tabela - 30%) + 45%
+            const precoVendaML = custoAquisicao * 1.45;
             const gap = item.t - item.m;
-            totalGap += gap;
+            if (!isNaN(gap)) totalGap += gap;
+            
             const shopUrl = `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(item.n)}&tbs=p_ord:p`;
 
             html += `
@@ -128,8 +120,8 @@
 
         body.innerHTML = html;
         document.getElementById('total-gap').innerText = format(totalGap);
-        document.getElementById('stats-header').innerText = `Base: ${wineData.length} Itens Monitorados`;
-        renderChart();
+        document.getElementById('stats-header').innerText = `Monitorando ${data.length} itens da planilha`;
+        renderChart(data);
     }
 
     function filterTable() {
@@ -148,9 +140,9 @@
         });
     }
 
-    function renderChart() {
+    function renderChart(data) {
         const ctx = document.getElementById('gapChart').getContext('2d');
-        const sorted = [...wineData].sort((a,b) => (b.t-b.m)-(a.t-a.m)).slice(0, 5);
+        const sorted = [...data].filter(i => !isNaN(i.t - i.m)).sort((a,b) => (b.t-b.m)-(a.t-a.m)).slice(0, 5);
         new Chart(ctx, {
             type: 'bar',
             data: { labels: sorted.map(i => i.n.split(' ')[0]), datasets: [{ data: sorted.map(i => i.t-i.m), backgroundColor: '#722f37', borderRadius: 8 }] },
@@ -158,7 +150,7 @@
         });
     }
 
-    window.onload = init;
+    window.onload = loadData;
 </script>
 </body>
 </html>
