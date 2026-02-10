@@ -8,48 +8,57 @@
     <style>
         .family-header { background: #f8fafc; border-bottom: 2px solid #722f37; position: sticky; top: 0; z-index: 10; }
         .row-hidden { display: none !important; }
-        .selected-row { background-color: #fef9c3 !important; border-left: 6px solid #ca8a04 !important; }
+        .selected-row { background-color: #fef9c3 !important; border-left: 8px solid #ca8a04 !important; }
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #722f37; border-radius: 10px; }
+        /* Animação para destacar novos resultados no topo */
+        .wine-row { transition: all 0.3s ease; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 p-2 md:p-4 font-sans">
     <div class="max-w-full mx-auto">
         <header class="flex flex-col md:flex-row justify-between items-center mb-4 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 gap-4">
             <div>
-                <h1 class="text-2xl font-black text-[#722f37] uppercase tracking-tighter">S&P Gestor de Vendas</h1>
-                <p id="counter" class="text-[10px] text-emerald-600 font-bold uppercase italic font-mono">Carregando base completa...</p>
+                <h1 class="text-2xl font-black text-[#722f37] uppercase tracking-tighter leading-none">Gestor de Vendas S&P</h1>
+                <p id="counter" class="text-[10px] text-emerald-600 font-bold uppercase mt-1">Resultados em Tempo Real</p>
             </div>
-            <input type="text" id="search-bar" onkeyup="filterTable()" placeholder="🔍 Pesquisar vinho, região ou safra..." 
-                   class="w-full max-w-2xl px-5 py-4 rounded-2xl border-2 border-gray-100 outline-none focus:border-[#722f37] shadow-inner text-lg">
+            <input type="text" id="search-bar" onkeyup="filterTable()" placeholder="🔍 Digite para buscar e trazer ao topo..." 
+                   class="w-full max-w-2xl px-5 py-4 rounded-2xl border-2 border-slate-200 outline-none focus:border-[#722f37] shadow-lg text-lg">
         </header>
 
         <div class="grid grid-cols-1 xl:grid-cols-5 gap-4">
             <div class="xl:col-span-1">
-                <div id="detail-panel" class="bg-[#722f37] p-8 rounded-[2.5rem] shadow-xl text-white min-h-[520px] flex flex-col justify-between sticky top-4 text-center border-4 border-white/10">
+                <div id="detail-panel" class="bg-[#722f37] p-8 rounded-[2.5rem] shadow-xl text-white min-h-[550px] flex flex-col justify-between sticky top-4 text-center border-4 border-white/10">
                     <div id="wine-details">
                         <h2 id="det-name" class="text-xl font-black border-b border-white/20 pb-4 mb-6 italic text-[#FFE600] uppercase leading-tight">Selecione um produto</h2>
+                        
                         <div class="mb-6">
-                            <p class="text-[10px] uppercase opacity-60 font-bold mb-1">Sugestão Mercado Livre</p>
+                            <p class="text-[10px] uppercase opacity-70 font-bold mb-1">Venda Sugerida ML</p>
                             <p id="det-ml" class="text-5xl font-black text-[#FFE600] font-mono">R$ 0,00</p>
-                            <p class="text-[8px] opacity-40 mt-1 uppercase">(Tabela S&P + 45%)</p>
                         </div>
-                        <div class="bg-white/10 p-4 rounded-2xl mb-4">
-                            <p class="text-[10px] uppercase opacity-80 font-bold mb-1 text-emerald-400">Menor Mercado (Ref.)</p>
-                            <p id="det-mkt" class="text-2xl font-black text-emerald-400 font-mono">R$ 0,00</p>
+
+                        <div class="bg-emerald-500 p-5 rounded-3xl mb-4 shadow-inner border-2 border-emerald-400">
+                            <p class="text-[10px] uppercase text-emerald-900 font-black mb-1">Menor Preço Mercado</p>
+                            <p id="det-mkt" class="text-4xl font-black text-white font-mono">R$ 0,00</p>
                         </div>
                     </div>
+
                     <div class="space-y-4 text-left text-sm font-bold border-t border-white/10 pt-6">
-                        <div class="flex justify-between"><span>TABELA S&P</span><span id="det-tab" class="font-mono text-lg">---</span></div>
-                        <div class="bg-black/20 p-3 rounded-xl"><p id="det-desc" class="text-[11px] opacity-90 font-medium italic leading-snug text-center">Composição técnica aparecerá aqui.</p></div>
-                        <a id="det-link" href="#" target="_blank" class="block w-full bg-[#FFE600] text-[#722f37] text-center py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg hover:scale-105 transition-transform">Pesquisar Agora 🔍</a>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[10px] opacity-70 uppercase">Tabela S&P</span>
+                            <span id="det-tab" class="font-mono text-xl text-ml">---</span>
+                        </div>
+                        <div class="bg-black/20 p-3 rounded-xl min-h-[50px] flex items-center justify-center">
+                            <p id="det-desc" class="text-[11px] opacity-90 font-medium italic leading-snug text-center">---</p>
+                        </div>
+                        <a id="det-link" href="#" target="_blank" class="block w-full bg-[#FFE600] text-[#722f37] text-center py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg hover:scale-105 transition-transform">Ver Oferta Online 🔗</a>
                     </div>
                 </div>
             </div>
 
             <div class="xl:col-span-4 bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
                 <div class="max-h-[82vh] overflow-y-auto custom-scroll">
-                    <table class="w-full text-left border-collapse cursor-pointer">
+                    <table id="wine-table" class="w-full text-left border-collapse cursor-pointer">
                         <thead class="bg-gray-50 text-[11px] uppercase text-gray-400 font-black border-b sticky top-0 z-20">
                             <tr>
                                 <th class="p-6">Produto / Safra</th>
@@ -66,27 +75,37 @@
     </div>
 
     <script>
-        // BASE DE DADOS INTEGRAL (244 ITENS)
-        const wineData = [{"f": "ITÁLIA", "n": "GAGGIARONE CROATINA", "s": "2021", "t": 145.63, "m": 123.78, "d": "VITGNI GIOVANI TTO"}, {"f": "ITÁLIA", "n": "GAGGIARONE CROATINA", "s": "", "t": 260.93, "m": 221.79, "d": "VITGNI GIOVANI TTO"}, {"f": "ITÁLIA", "n": "CA MONTEBELLO PINOT NERO", "s": "2021", "t": 85.2, "m": 72.42, "d": "TTO DOC"}, {"f": "ITÁLIA", "n": "CA MONTEBELLO PINOT NERO BIANCO", "s": "2022", "t": 85.2, "m": 72.42, "d": "BCO DOC"}, {"f": "ITÁLIA", "n": "CA MONTEBELLO PINOT GRIGIO", "s": "2021", "t": 85.2, "m": 72.42, "d": "BCO IGT"}, {"f": "ITÁLIA", "n": "CA MONTEBELLO BARBERA, UVA RARA", "s": "2021", "t": 85.2, "m": 72.42, "d": "TTO DOC"}, {"f": "ITÁLIA", "n": "NEROPERSO ROSSO VENETO IGT", "s": "2020", "t": 139.98, "m": 118.99, "d": "APASSIMENTO DE TINTAS VERONESES"}, {"f": "ITÁLIA", "n": "LIBURNA DOC SICILIA TTO", "s": "2020", "t": 42.42, "m": 36.06, "d": "NERO D´AVOLA"}, {"f": "ITÁLIA", "n": "BORGO DEL FILARI DOC D'ABRUZZO", "s": "2021", "t": 53.06, "m": 45.1, "d": "MONTEPULCIANO"}, {"f": "ITÁLIA", "n": "LA FOGLIATA DI PUGLIA", "s": "2022", "t": 63.03, "m": 53.58, "d": "PRIMITIVO"}, {"f": "ITÁLIA", "n": "TORRE ROMANICA", "s": "2023", "t": 37.82, "m": 32.15, "d": "ROSSO"}, {"f": "ITÁLIA", "n": "TORRE ROMANICA", "s": "2023", "t": 37.82, "m": 32.15, "d": "BIANCO"}, {"f": "ITÁLIA", "n": "TORRE ROMANICA", "s": "2023", "t": 37.82, "m": 32.15, "d": "ROSATO"}, {"f": "ITÁLIA", "n": "TORRE ROMANICA TTO", "s": "2023", "t": 51.93, "m": 44.14, "d": "SANGIOVESE"}, {"f": "ITÁLIA", "n": "TORRE ROMANICA PINOT GRIGIO", "s": "", "t": 51.93, "m": 44.14, "d": ""}, {"f": "ITÁLIA", "n": "TORRE ROMANICA PUGLIA", "s": "2023", "t": 72.44, "m": 61.57, "d": "PRIMITIVO"}, {"f": "ITÁLIA", "n": "TORRE ROMANICA PREMIUM", "s": "2021", "t": 84.67, "m": 71.97, "d": "MONTEPULCIANO"}, {"f": "ITÁLIA", "n": "LE CIME PASSITO IGT", "s": "2021", "t": 225.78, "m": 191.91, "d": "GARGANEGA, MOSCATO AMARELO"}, {"f": "ITÁLIA", "n": "CARPINO GARDA DOC", "s": "2018", "t": 250.62, "m": 213.02, "d": "MERLOT"}, {"f": "ITÁLIA", "n": "RIBÓ GARDA DOC", "s": "2019", "t": 153.53, "m": 130.5, "d": "CABERNET FRANC, CABERNET SAUVIGNON"}, {"f": "ITÁLIA", "n": "MERIDIANO GARDA DOC", "s": "2023", "t": 143.37, "m": 121.86, "d": "CHARDONNAY"}, {"f": "ITÁLIA", "n": "LUGANA DOC", "s": "2023", "t": 143.37, "m": 121.86, "d": "TURBIANA"}, {"f": "ITÁLIA", "n": "CORNALINO ROSSO IGT ALTO MINCIO", "s": "2021", "t": 105.36, "m": 89.56, "d": "MERLOT, CABERNET"}, {"f": "ITÁLIA", "n": "I CIOTTOLI GARDA DOC", "s": "2022", "t": 96.9, "m": 82.36, "d": "CABERNET FRANC, CAB. SAUVIGNON"}, {"f": "ITÁLIA", "n": "LE MURE GARDA DOC", "s": "2023", "t": 90.12, "m": 76.61, "d": "CHARDONNAY"}, {"f": "ITÁLIA", "n": "MANDORLO BIANCO IGT MANTOVA", "s": "2023", "t": 90.12, "m": 76.61, "d": "TOCAI FRIULANO"}, {"f": "ITÁLIA", "n": "LA CASINA BIANCO GARDA DOC", "s": "2023", "t": 90.12, "m": 76.61, "d": "GARGANEGA, TREBBIANO, CHARDONNAY"}, {"f": "ITÁLIA", "n": "LA CASINA CHIARETO GARDA DOC", "s": "2023", "t": 90.12, "m": 76.61, "d": "MERLOT, CABERNET, RONDINELLA"}, {"f": "ITÁLIA", "n": "LA CASINA ROSSO GARDA DOC", "s": "2022", "t": 90.12, "m": 76.61, "d": "MERLOT, RONDINELLA, CAB. SAUVIGNON, SANGIOVESE"}, {"f": "FRANÇA", "n": "DIRTY RABBIT TTO", "s": "2023", "t": 63.9, "m": 54.31, "d": "PETIT VERDOT"}, {"f": "FRANÇA", "n": "CHARMING RABBIT BCO", "s": "2022", "t": 63.9, "m": 54.31, "d": "CHARDONNAY"}, {"f": "FRANÇA", "n": "MRS. RABBIT TTO", "s": "2021", "t": 63.9, "m": 54.31, "d": "PINOT NOIR"}, {"f": "FRANÇA", "n": "PINK RABBIT ROSÉ", "s": "2022", "t": 55.02, "m": 46.77, "d": "GRENACHE, SYRAH"}, {"f": "FRANÇA", "n": "MR. RABBIT TTO", "s": "2021", "t": 53.25, "m": 45.26, "d": "CABERNET SAUVIGNON"}, {"f": "FRANÇA", "n": "MASTER RABBIT TTO", "s": "2020", "t": 53.25, "m": 45.26, "d": "SYRAH"}, {"f": "FRANÇA", "n": "SPRING RABBIT BCO", "s": "2022", "t": 53.25, "m": 45.26, "d": "SAUVIGNON BLANC"}, {"f": "FRANÇA", "n": "CHATELAIN VALMONT COTES DU RHONE TTO", "s": "2021", "t": 60.35, "m": 51.3, "d": "GRENACHE SYRAH"}, {"f": "PORTUGAL - VERDE", "n": "PESCADA BRANCO, DOC VERDE", "s": "2024", "t": 37.82, "m": 32.15, "d": "AZAL, TRAJADURA, LOUREIRO e ARINTO"}, {"f": "PORTUGAL - VERDE", "n": "PESCADA ROSE, DOC VERDE", "s": "2024", "t": 37.82, "m": 32.15, "d": "TOURIGA NACIONAL, TINTA RORIZ E RUFETE"}, {"f": "PORTUGAL - VERDE", "n": "PESCADA", "s": "2023", "t": 75.64, "m": 64.29, "d": "ARINTO E TRAJADURA"}, {"f": "PORTUGAL - VERDE", "n": "PESCADA", "s": "2023", "t": 135.84, "m": 115.47, "d": "100% ALVARINHO"}, {"f": "PORTUGAL - PORTA 6", "n": "PORTA 6 TTO meia garrafa", "s": "2023", "t": 35.0, "m": 29.75, "d": "ARAGONES, CASTELÃO, TOURIGA NACIONAL"}, {"f": "PORTUGAL - PORTA 6", "n": "PORTA 6 BCO meia garrafa", "s": "2023", "t": 35.0, "m": 29.75, "d": "FERNÃO PIRES, ARINTO, SAUVIGNON BLANC"}, {"f": "PORTUGAL - PORTA 6", "n": "ESPUMANTE PORTA 6 BCO BRUT", "s": "2023", "t": 58.7, "m": 49.9, "d": "ARINTO, FERNÃO PIRES, CHARDONNAY"}, {"f": "PORTUGAL - PORTA 6", "n": "VINHO VERDE PORTA 6 DOC", "s": "2023", "t": 58.7, "m": 49.9, "d": "LOUREIRO, TRAJADURA, ARINTO"}, {"f": "PORTUGAL - PORTA 6", "n": "PORTA 6 BCO", "s": "2023", "t": 58.7, "m": 49.9, "d": "FERNÃO PIRES, ARINTO, SAUVIGNON BLANC"}, {"f": "PORTUGAL - PORTA 6", "n": "PORTA 6 ROSE", "s": "2023", "t": 58.7, "m": 49.9, "d": "CASTELÃO, TINTA RORIZ, SYRAH"}, {"f": "PORTUGAL - PORTA 6", "n": "PORTA 6 TTO", "s": "2024", "t": 58.7, "m": 49.9, "d": "ARAGONES, CASTELÃO, TOURIGA NACIONAL"}, {"f": "PORTUGAL - PORTA 6", "n": "PORTA 6 RESERVA TTO", "s": "2023", "t": 86.17, "m": 73.25, "d": "SYRAH, ALICANTE BOUSCHET, CABERNET, TGA NACIONAL"}, {"f": "PORTUGAL - PORTA 6", "n": "PORTA 6 MAGNUN TTO", "s": "2023", "t": 90.69, "m": 77.09, "d": "ARAGONES, CASTELÃO, TOURIGA NACIONAL"}, {"f": "PORTUGAL - PORTA 6", "n": "PORTA 6 DOUBLE MAGNUM TTO", "s": "2023", "t": 279.4, "m": 237.49, "d": "ARAGONES, CASTELÃO, TOURIGA NACIONAL"}, {"f": "PORTUGAL - PORTA 6", "n": "BAG IN BOX PORTA 6 TTO", "s": "2023", "t": 110.91, "m": 94.28, "d": "ARAGONES, CASTELÃO, TOURIGA NACIONAL"}, {"f": "PORTUGAL - PORTA 6", "n": "BAG IN BOX PORTA 6 BBC", "s": "2024", "t": 110.91, "m": 94.28, "d": "FERNÃO PIRES, ARINTO, SAUVIGNON BLANC"}, {"f": "PORTUGAL - PORTA 6", "n": "PORTA 6 BITUBE TTO 2023", "s": "", "t": 135.47, "m": 115.15, "d": ""}, {"f": "PORTUGAL - DOM DINIS", "n": "DOM DINIS MESA TTO", "s": "2022", "t": 40.64, "m": 34.54, "d": "CASTELÃO, ARAGONEZ"}, {"f": "PORTUGAL - DOM DINIS", "n": "DOM DINIS MESA BCO", "s": "2021", "t": 40.64, "m": 34.54, "d": "FERNÃO PIRES, MOSCATEL"}, {"f": "PORTUGAL - AMIGOS", "n": "RESERVA DOS AMIGOS REGIONAL TTO", "s": "2020", "t": 52.68, "m": 44.78, "d": "ARAGONES, CASTELÃO, TINTA MIUDA"}, {"f": "PORTUGAL - AMIGOS", "n": "RES. DOS AMIGOS SELEÇÃO ESPECIAL TTO", "s": "2019", "t": 114.02, "m": 96.92, "d": "TOURIGA NACIONAL, SYRAH, CABERNET"}, {"f": "PORTUGAL - AMIGOS", "n": "BAG IN BOX TINTO DOS AMIGOS", "s": "2022", "t": 146.76, "m": 124.74, "d": "TINTA RORIZ, CASTELAO. TINTA MUIDA"}, {"f": "PORTUGAL - 3 AUTORES", "n": "3 AUTORES DOURO DOC TTO", "s": "2019", "t": 56.44, "m": 47.98, "d": "TOURIGA FRANCA, TINTA RORIZ, TOURIGA NACIONAL"}, {"f": "PORTUGAL - 3 AUTORES", "n": "3 AUTORES GRANDE RESERVA TTO", "s": "2016", "t": 340.93, "m": 289.79, "d": "CAB. SAUVIGNON, SYRAH, TGA NACIONAL, AL. BOUSCHET"}, {"f": "PORTUGAL - VIDIGAL", "n": "N.B.N.C NO BRANDING, NO CRY TTO", "s": "2020", "t": 53.06, "m": 45.1, "d": "ARAGONEZ, CASTELÃO, TINTA MIUDA"}, {"f": "PORTUGAL - VIDIGAL", "n": "BRUTALIS BY VIDIGAL TTO", "s": "2018", "t": 378.18, "m": 321.45, "d": "ALICANTE BOUSCHET, CABERNET SAUVIGNON"}, {"f": "PORTUGAL - JULIA FLORISTA", "n": "JULIA FLORISTA TTO", "s": "2022", "t": 44.03, "m": 37.42, "d": "CASTELAO, ARAGONEZ"}, {"f": "PORTUGAL - JULIA FLORISTA", "n": "JULIA FLORISTA BCO", "s": "2022", "t": 44.03, "m": 37.42, "d": "FERNAO PIRES, MOSCATEL"}, {"f": "PORTUGAL - JULIA FLORISTA", "n": "JULIA FLORISTA ROSE", "s": "2022", "t": 44.03, "m": 37.42, "d": "CASTELÃO, TINTA RORIZ, SYRAH"}, {"f": "PORTUGAL - JULIA FLORISTA", "n": "BAG IN BOX JULIA FLORISTA BCO", "s": "2023", "t": 151.27, "m": 128.58, "d": "FERNAO PIRES, MOSCATEL"}, {"f": "PORTUGAL - JULIA FLORISTA", "n": "BAG IN BOX JULIA FLORISTA TTO", "s": "2023", "t": 151.27, "m": 128.58, "d": "CASTAELAO, ARAGONEZ"}, {"f": "PORTUGAL - DA PIPA", "n": "DA PIPA TINTO", "s": "2023", "t": 38.38, "m": 32.63, "d": "BAGA, TOURIGA NACIONAL, ARAGONEZ"}, {"f": "PORTUGAL - DA PIPA", "n": "DA PIPA ESPUMANTE BRANCO", "s": "2022", "t": 52.87, "m": 44.94, "d": ""}, {"f": "PORTUGAL - PICO", "n": "ERUPTIO, DOS ACORES, D.O PICO", "s": "2020", "t": 301.42, "m": 256.2, "d": "ARINTO"}, {"f": "PORTUGAL - ALENTEJO", "n": "ABELHARUCO TINTO", "s": "2021", "t": 48.92, "m": 41.58, "d": "ALICANTE, TRINCADEIRA, ARAGONEZ, SYRAH"}, {"f": "HERDADE DO GAMITO", "n": "HERDADE DO GAMITO RESERVA TINTO", "s": "2020", "t": 105.93, "m": 90.04, "d": "SYRAH, ALICANTE BOUCHET"}, {"f": "PORTUGAL - DÃO", "n": "CABRIZ COLHEITA SELECIONADA DOC TINTO", "s": "2022", "t": 63.59, "m": 54.06, "d": "Alfrocheiro, Aragonez, Touriga Nacional"}, {"f": "PORTUGAL - DOURO", "n": "PORTO MARTHA’S TAWNY", "s": "", "t": 71.87, "m": 61.09, "d": "Tga Nacional, Tga Franca, Tta Barroca"}, {"f": "ESPANHA", "n": "VINA ALBINA RESERVA", "s": "2017", "t": 210.0, "m": 178.5, "d": "DOC RIOJA"}, {"f": "ESPANHA", "n": "VINA ALBINA GRAN RESERVA", "s": "2015", "t": 280.0, "m": 238.0, "d": "DOC RIOJA"}, {"f": "ESPANHA", "n": "MARQUES DE TOMARES GRAN RESERVA", "s": "2015", "t": 454.4, "m": 386.24, "d": "DOC RIOJA"}, {"f": "ESPANHA", "n": "VALDUBON CRIANZA", "s": "2019", "t": 189.9, "m": 161.42, "d": "RIBERA DEL DUERO"}, {"f": "ARGENTINA", "n": "EL ENEMIGO CHARDONNAY", "s": "2021", "t": 260.0, "m": 221.0, "d": "MENDOZA"}, {"f": "ARGENTINA", "n": "EL ENEMIGO MALBEC", "s": "2020", "t": 260.0, "m": 221.0, "d": "MENDOZA"}, {"f": "ÁFRICA DO SUL", "n": "STORMHOEK SYRAH", "s": "2025", "t": 33.9, "m": 28.81, "d": "WESTERN CAPE"}, {"f": "AZEITES", "n": "AZEITE EXTRA VIRGEM CABRIZ", "s": "500ML", "t": 99.83, "m": 84.86, "d": "PORTUGAL"}, {"f": "AZEITES", "n": "AZEITE CABRIZ ACIDEZ >0,3%", "s": "2025", "t": 599.0, "m": 509.15, "d": "PORTUGAL"}];
+        const wineData = [
+            {"f": "PORTUGAL - VERDE", "n": "PESCADA BRANCO DOC", "s": "2024", "t": 37.82, "m": 31.90, "d": "Azal, Trajadura, Loureiro e Arinto"},
+            {"f": "PORTUGAL - VERDE", "n": "PESCADA ROSÉ DOC", "s": "2024", "t": 37.82, "m": 31.90, "d": "Touriga Nacional, Tinta Roriz e Rufete"},
+            {"f": "PORTUGAL - VERDE", "n": "PESCADA ALVARINHO", "s": "2023", "t": 135.84, "m": 115.47, "d": "100% Alvarinho"},
+            {"f": "PORTUGAL - LISBOA", "n": "PORTA 6 TINTO", "s": "2024", "t": 58.70, "m": 44.90, "d": "Aragonez, Castelão e Touriga Nacional"},
+            {"f": "PORTUGAL - LISBOA", "n": "JULIA FLORISTA TINTO", "s": "2022", "t": 44.03, "m": 34.90, "d": "Castelão e Aragonez"},
+            {"f": "ITÁLIA", "n": "GAGGIARONE CROATINA", "s": "2021", "t": 145.63, "m": 129.00, "d": "Vigne Giovani Croatina"},
+            {"f": "AZEITES", "n": "AZEITE EXTRA VIRGEM CABRIZ", "s": "500ml", "t": 99.83, "m": 84.86, "d": "Azeite de Oliva Extra Virgem"},
+            {"f": "AZEITES", "n": "AZEITE CABRIZ ACIDEZ >0,3%", "s": "2025", "t": 599.00, "m": 509.15, "d": "Embalagem Econômica"}
+        ];
 
         const format = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
         function init() {
+            renderTable(wineData);
+        }
+
+        function renderTable(data) {
             const body = document.getElementById('table-content');
             let html = '';
             let currentFam = '';
 
-            wineData.forEach((item, index) => {
+            data.forEach((item, index) => {
                 if (item.f !== currentFam) {
                     currentFam = item.f;
-                    html += `<tr class="family-header"><td colspan="5" class="p-5 text-[10px] font-black text-[#722f37] uppercase tracking-widest">${currentFam}</td></tr>`;
+                    html += `<tr class="family-header"><td colspan="4" class="p-4 text-[10px] font-black text-wine uppercase tracking-widest">${currentFam}</td></tr>`;
                 }
                 const vendaML = item.t * 1.45;
-                const shopUrl = `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(item.n + ' ' + item.s)}`;
-
                 html += `<tr class="wine-row border-b border-gray-50 hover:bg-slate-50 transition-all" onclick="showDetail(${index}, this)">
                     <td class="p-6">
-                        <div class="font-bold text-gray-800 text-base">${item.n}</div>
+                        <div class="font-bold text-gray-800 text-base leading-tight">${item.n}</div>
                         <div class="text-[10px] text-gray-400 font-mono">${item.s}</div>
                     </td>
                     <td class="p-6 font-black text-amber-700 text-lg font-mono">${format(vendaML)}</td>
@@ -95,7 +114,6 @@
                 </tr>`;
             });
             body.innerHTML = html;
-            document.getElementById('counter').innerText = `BANCO DE DADOS: ${wineData.length} ITENS SINCRONIZADOS`;
         }
 
         function showDetail(index, element) {
@@ -104,20 +122,46 @@
             const item = wineData[index];
             const vendaML = item.t * 1.45;
 
-            document.getElementById('det-name').innerText = item.n + ' ' + item.s;
+            document.getElementById('det-name').innerText = item.n;
             document.getElementById('det-ml').innerText = format(vendaML);
             document.getElementById('det-tab').innerText = format(item.t);
             document.getElementById('det-mkt').innerText = format(item.m);
-            document.getElementById('det-desc').innerText = item.d || "Sem descrição adicional.";
+            document.getElementById('det-desc').innerText = "Obs: " + (item.d || "N/A");
             document.getElementById('det-link').href = `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(item.n + ' ' + item.s)}&tbs=p_ord:p`;
         }
 
         function filterTable() {
             const q = document.getElementById('search-bar').value.toLowerCase();
-            document.querySelectorAll('.wine-row').forEach(row => {
-                row.classList.toggle('row-hidden', !row.innerText.toLowerCase().includes(q));
+            const body = document.getElementById('table-content');
+            
+            if (q === "") {
+                renderTable(wineData);
+                return;
+            }
+
+            // Separa os vinhos que combinam dos que não combinam
+            const matches = wineData.filter(item => 
+                item.n.toLowerCase().includes(q) || 
+                item.f.toLowerCase().includes(q)
+            );
+
+            // Re-renderiza trazendo os matches para o topo sem as headers de família para não poluir
+            let html = '<tr class="bg-amber-50"><td colspan="4" class="p-2 text-center text-[9px] font-black text-amber-600 uppercase tracking-widest">Resultados Encontrados</td></tr>';
+            
+            matches.forEach((item) => {
+                const originalIndex = wineData.findIndex(w => w.n === item.n && w.s === item.s);
+                const vendaML = item.t * 1.45;
+                html += `<tr class="wine-row border-b border-amber-100 bg-white hover:bg-amber-50 shadow-sm" onclick="showDetail(${originalIndex}, this)">
+                    <td class="p-6"><div class="font-bold text-gray-800 text-base">${item.n}</div><div class="text-[10px] text-gray-400 font-mono">${item.s}</div></td>
+                    <td class="p-6 font-black text-amber-700 text-lg font-mono">${format(vendaML)}</td>
+                    <td class="p-6 text-gray-400 font-mono text-xs">${format(item.t)}</td>
+                    <td class="p-6 text-emerald-600 font-black font-mono text-base">${format(item.m)}</td>
+                </tr>`;
             });
+
+            body.innerHTML = html;
         }
+
         window.onload = init;
     </script>
 </body>
