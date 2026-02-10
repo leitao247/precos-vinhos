@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S&P - Inteligência de Margem</title>
+    <title>S&P - Inteligência de Vendas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { theme: { extend: { colors: { wine: '#722f37', ml: '#FFE600' } } } }
@@ -20,42 +20,30 @@
     <div class="max-w-full mx-auto">
         <header class="flex flex-col md:flex-row justify-between items-center mb-6 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 gap-4">
             <div>
-                <h1 class="text-2xl font-black text-wine uppercase tracking-tighter leading-none">Gestor de Vendas S&P</h1>
-                <p id="counter" class="text-[10px] text-emerald-600 font-bold uppercase mt-1 italic">Sincronizado: 247 itens</p>
+                <h1 class="text-2xl font-black text-wine uppercase tracking-tighter">Gestor de Vendas S&P</h1>
+                <p id="counter" class="text-[10px] text-emerald-600 font-bold uppercase italic">Sincronizado com sua base manual</p>
             </div>
-            <div class="flex gap-4 w-full md:w-auto">
-                <input type="text" id="search-bar" onkeyup="filterTable()" placeholder="🔍 Pesquisar vinho, safra ou região..." 
-                       class="w-full md:w-96 px-5 py-3 rounded-2xl border-2 border-gray-100 outline-none focus:border-wine shadow-inner">
-                <div class="hidden md:flex bg-ml px-4 py-2 rounded-2xl border border-yellow-400 items-center shadow-sm">
-                   <span class="text-[10px] font-black text-amber-900 uppercase">(Tabela - 30%) + 45%</span>
-                </div>
-            </div>
+            <input type="text" id="search-bar" onkeyup="filterTable()" placeholder="🔍 Pesquisar vinho, safra ou região..." 
+                   class="w-full max-w-md px-5 py-3 rounded-2xl border-2 border-gray-100 outline-none focus:border-wine shadow-inner">
         </header>
 
         <div class="grid grid-cols-1 xl:grid-cols-5 gap-6">
             <div class="xl:col-span-1">
                 <div id="detail-panel" class="bg-wine p-8 rounded-[2.5rem] shadow-2xl text-white min-h-[450px] flex flex-col justify-center sticky top-6 text-center border-4 border-white/10">
                     <div id="wine-details">
-                        <h2 id="det-name" class="text-xl font-black border-b border-white/20 pb-4 mb-8 italic text-ml leading-tight">Selecione um produto na tabela</h2>
-                        
+                        <h2 id="det-name" class="text-xl font-black border-b border-white/20 pb-4 mb-8 italic text-ml leading-tight uppercase">Selecione um produto</h2>
                         <div class="mb-8">
-                            <p class="text-[10px] uppercase opacity-60 font-bold mb-2 tracking-widest">Preço Sugerido Mercado Livre</p>
+                            <p class="text-[10px] uppercase opacity-60 font-bold mb-2 tracking-widest">Sugestão Mercado Livre</p>
                             <p id="det-ml" class="text-5xl font-black text-ml">R$ 0,00</p>
-                            <p class="text-[9px] opacity-40 mt-2 uppercase font-mono tracking-tighter">Custo Aquisição + 45% Margem/Taxas</p>
+                            <p class="text-[9px] opacity-40 mt-2 uppercase font-mono tracking-tighter">(Tabela - 30%) + 45%</p>
                         </div>
-
-                        <div class="space-y-5 border-t border-white/10 pt-8 text-left">
-                            <div class="flex justify-between items-end">
-                                <span class="text-[10px] opacity-50 uppercase font-bold">Custo (-30%)</span>
-                                <span id="det-cost" class="font-bold font-mono text-lg">---</span>
-                            </div>
-                            <div class="flex justify-between items-end">
-                                <span class="text-[10px] opacity-50 uppercase font-bold">Tabela S&P</span>
-                                <span id="det-tab" class="font-bold font-mono text-lg opacity-70">---</span>
-                            </div>
-                            <div class="flex justify-between items-end text-emerald-400 pt-2">
-                                <span class="text-[10px] font-black uppercase tracking-widest">Mercado Atual</span>
-                                <span id="det-mkt" class="font-black font-mono text-lg">---</span>
+                        <div class="space-y-4 border-t border-white/10 pt-8 text-left text-sm font-bold">
+                            <div class="flex justify-between"><span>CUSTO (-30%)</span><span id="det-cost">---</span></div>
+                            <div class="flex justify-between"><span>TABELA S&P</span><span id="det-tab" class="opacity-60">---</span></div>
+                            <hr class="opacity-20">
+                            <div class="flex flex-col gap-2 mt-4">
+                                <p class="text-[10px] uppercase opacity-60 font-black text-center mb-2">Monitoramento de Mercado</p>
+                                <a id="det-link" href="#" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white text-center py-3 rounded-xl transition-all uppercase tracking-widest text-xs font-black shadow-lg">Investigar Preço Online 🔍</a>
                             </div>
                         </div>
                     </div>
@@ -63,18 +51,17 @@
             </div>
 
             <div class="xl:col-span-4 bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
-                <div class="max-h-[78vh] overflow-y-auto custom-scroll">
+                <div class="max-h-[75vh] overflow-y-auto custom-scroll">
                     <table class="w-full text-left border-collapse cursor-pointer">
                         <thead class="bg-gray-50 text-[11px] uppercase text-gray-400 font-black border-b sticky top-0 z-20">
                             <tr>
                                 <th class="p-6">Vinho / Produto / Safra</th>
-                                <th class="p-6">Venda ML (+45%)</th>
+                                <th class="p-6">Venda ML</th>
                                 <th class="p-6">Tabela S&P</th>
-                                <th class="p-6 text-center">Ação</th>
+                                <th class="p-6 text-center">Pesquisa</th>
                             </tr>
                         </thead>
-                        <tbody id="table-content" class="text-sm font-medium text-gray-600">
-                            </tbody>
+                        <tbody id="table-content" class="text-sm"></tbody>
                     </table>
                 </div>
             </div>
@@ -178,7 +165,7 @@
             // O sistema de busca funcionará em cima desses itens agora.
         ];
 
-        const format = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+       const format = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
         function init() {
             const body = document.getElementById('table-content');
@@ -188,18 +175,18 @@
             wineData.forEach((item, index) => {
                 if (item.f !== currentFam) {
                     currentFam = item.f;
-                    html += `<tr class="family-header"><td colspan="4" class="p-5 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-100">${currentFam}</td></tr>`;
+                    html += `<tr class="family-header"><td colspan="4" class="p-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">${currentFam}</td></tr>`;
                 }
                 const custo = item.t * 0.70;
                 const vendaML = custo * 1.45;
                 const shopUrl = `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(item.n)}&tbs=p_ord:p`;
 
-                html += `<tr class="wine-row border-b border-gray-50 hover:bg-amber-50 transition-all duration-200" onclick="showDetail(${index}, this)">
+                html += `<tr class="wine-row border-b border-gray-50 hover:bg-amber-50" onclick="showDetail(${index}, this)">
                     <td class="p-6 font-bold text-gray-800">${item.n}</td>
-                    <td class="p-6 font-black text-amber-700 text-base">${format(vendaML)}</td>
+                    <td class="p-6 font-black text-amber-700">${format(vendaML)}</td>
                     <td class="p-6 text-gray-400 font-mono text-xs">${format(item.t)}</td>
                     <td class="p-6 text-center">
-                        <a href="${shopUrl}" target="_blank" class="inline-block text-[10px] border-2 border-emerald-500 text-emerald-600 px-4 py-1.5 rounded-xl font-black hover:bg-emerald-500 hover:text-white transition-all uppercase" onclick="event.stopPropagation()">Ver Preços</a>
+                        <a href="${shopUrl}" target="_blank" class="text-emerald-600 font-bold hover:underline text-xs" onclick="event.stopPropagation()">BUSCAR 🔗</a>
                     </td>
                 </tr>`;
             });
@@ -212,12 +199,13 @@
             const item = wineData[index];
             const custo = item.t * 0.70;
             const vendaML = custo * 1.45;
+            const shopUrl = `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(item.n)}&tbs=p_ord:p`;
 
             document.getElementById('det-name').innerText = item.n;
             document.getElementById('det-ml').innerText = format(vendaML);
             document.getElementById('det-cost').innerText = format(custo);
             document.getElementById('det-tab').innerText = format(item.t);
-            document.getElementById('det-mkt').innerText = format(item.m);
+            document.getElementById('det-link').href = shopUrl;
         }
 
         function filterTable() {
@@ -239,5 +227,6 @@
     </script>
 </body>
 </html>
+
 
 
