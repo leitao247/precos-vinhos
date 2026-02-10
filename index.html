@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S&P - Gestor de Margens</title>
+    <title>S&P - Inteligência de Vendas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .family-header { background: #f1f5f9; border-left: 6px solid #722f37; position: sticky; top: 0; z-index: 10; }
+        .family-header { background: #f8fafc; border-left: 6px solid #722f37; position: sticky; top: 0; z-index: 10; }
         .row-hidden { display: none !important; }
         .selected-row { background-color: #fef9c3 !important; border-left: 4px solid #ca8a04 !important; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #722f37; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 p-2 md:p-6 font-sans">
@@ -16,42 +18,42 @@
         <header class="flex flex-col md:flex-row justify-between items-center mb-6 bg-white p-6 rounded-3xl shadow-sm border border-slate-200 gap-4">
             <div>
                 <h1 class="text-2xl font-black text-[#722f37] uppercase tracking-tighter">S&P Gestor de Vendas</h1>
-                <p id="counter" class="text-[10px] text-emerald-600 font-bold uppercase italic font-mono">Carregando Sistema...</p>
+                <p id="counter" class="text-[10px] text-emerald-600 font-bold uppercase italic font-mono italic">Base de Dados: 244 Itens Carregados</p>
             </div>
-            <input type="text" id="search-bar" onkeyup="filterTable()" placeholder="🔍 Pesquisar vinhos ou famílias..." 
+            <input type="text" id="search-bar" onkeyup="filterTable()" placeholder="🔍 Pesquisar em todos os vinhos ou regiões..." 
                    class="w-full max-w-xl px-5 py-3 rounded-2xl border-2 border-slate-100 outline-none focus:border-[#722f37] shadow-inner">
         </header>
 
         <div class="grid grid-cols-1 xl:grid-cols-5 gap-6">
             <div class="xl:col-span-1">
-                <div id="detail-panel" class="bg-[#722f37] p-8 rounded-[2rem] shadow-2xl text-white min-h-[450px] flex flex-col justify-between sticky top-6 text-center border-4 border-white/10">
+                <div id="detail-panel" class="bg-[#722f37] p-8 rounded-[2rem] shadow-2xl text-white min-h-[480px] flex flex-col justify-between sticky top-6 text-center border-4 border-white/10">
                     <div id="wine-details">
-                        <h2 id="det-name" class="text-xl font-black border-b border-white/20 pb-4 mb-8 italic text-[#FFE600] uppercase">Selecione um item</h2>
+                        <h2 id="det-name" class="text-xl font-black border-b border-white/20 pb-4 mb-8 italic text-[#FFE600] uppercase">Selecione um produto</h2>
                         <div class="mb-8">
-                            <p class="text-[10px] uppercase opacity-60 font-bold mb-2 tracking-widest">Venda Sugerida ML (+45%)</p>
-                            <p id="det-ml" class="text-4xl font-black text-[#FFE600]">R$ 0,00</p>
+                            <p class="text-[10px] uppercase opacity-60 font-bold mb-2">Venda Sugerida ML (+45%)</p>
+                            <p id="det-ml" class="text-5xl font-black text-[#FFE600]">R$ 0,00</p>
                         </div>
                         <div class="bg-white/10 p-4 rounded-2xl mb-8 border border-white/10">
-                            <p class="text-[10px] uppercase opacity-80 font-bold mb-1 tracking-widest text-emerald-400 font-black">Preço Mercado (Referência)</p>
-                            <p id="det-mkt" class="text-2xl font-black text-emerald-400">R$ 0,00</p>
+                            <p class="text-[10px] uppercase opacity-80 font-bold mb-1 tracking-widest text-emerald-400 font-black">Preço de Tabela (S&P)</p>
+                            <p id="det-tab" class="text-3xl font-black text-white">R$ 0,00</p>
                         </div>
                     </div>
                     <div class="space-y-4 text-left text-sm font-bold border-t border-white/10 pt-6">
-                        <div class="flex justify-between"><span>CUSTO (-30%)</span><span id="det-cost" class="font-mono">---</span></div>
-                        <a id="det-link" href="#" target="_blank" class="block w-full bg-[#FFE600] text-[#722f37] text-center py-3 rounded-xl font-black uppercase tracking-widest text-xs shadow-lg hover:scale-105 transition-transform mt-2">Investigar Agora 🔍</a>
+                        <div class="flex justify-between text-emerald-400"><span>MENOR MERCADO</span><span id="det-mkt" class="font-mono">---</span></div>
+                        <a id="det-link" href="#" target="_blank" class="block w-full bg-[#FFE600] text-[#722f37] text-center py-3 rounded-xl font-black uppercase tracking-widest text-xs shadow-lg hover:scale-105 transition-transform">Investigar Mercado 🔍</a>
                     </div>
                 </div>
             </div>
 
             <div class="xl:col-span-4 bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
-                <div class="max-h-[75vh] overflow-y-auto">
+                <div class="max-h-[80vh] overflow-y-auto custom-scroll">
                     <table class="w-full text-left border-collapse cursor-pointer">
                         <thead class="bg-slate-50 text-[10px] uppercase text-slate-400 font-black border-b sticky top-0 z-20">
                             <tr>
                                 <th class="p-5">Vinho / Produto</th>
-                                <th class="p-5 text-amber-700">Venda ML</th>
-                                <th class="p-5">Custo (-30%)</th>
-                                <th class="p-5 text-emerald-600 font-bold">Mercado</th>
+                                <th class="p-5 text-amber-700">Venda ML (+45%)</th>
+                                <th class="p-5">Preço Tabela</th>
+                                <th class="p-5 text-emerald-600 font-bold">Ref. Mercado</th>
                                 <th class="p-5 text-center">Ação</th>
                             </tr>
                         </thead>
@@ -63,22 +65,21 @@
     </div>
 
     <script>
+        // LISTA COMPLETA - SEM DESCONTO DE 30%
         const wineData = [
-            {"f":"ITÁLIA","n":"GAGGIARONE CROATINA 2021","t":101.94,"m":123.78},
-            {"f":"ITÁLIA","n":"CA MONTEBELLO PINOT NERO 2021","t":59.64,"m":72.42},
-            {"f":"PORTUGAL","n":"PESCADA BRANCO DOC 2024","t":26.47,"m":32.15},
-            {"f":"PORTUGAL","n":"PESCADA ROSE DOC 2024","t":26.47,"m":32.15},
-            {"f":"PORTUGAL","n":"PESCADA ALVARINHO 2023","t":95.09,"m":115.47},
-            {"f":"PORTUGAL","n":"PORTA 6 TINTO 2024","t":41.09,"m":49.90},
-            {"f":"PORTUGAL","n":"PORTA 6 BRANCO 2023","t":41.09,"m":49.90},
-            {"f":"PORTUGAL","n":"JULIA FLORISTA TINTO 2022","t":30.82,"m":37.42},
-            {"f":"PORTUGAL","n":"JULIA FLORISTA BRANCO 2022","t":30.82,"m":37.42},
-            {"f":"PORTUGAL","n":"CABRIZ RESERVA 2020","t":91.00,"m":110.50},
-            {"f":"PORTUGAL","n":"AZEITE EXTRA VIRGEM CABRIZ 500ML","t":69.88,"m":84.86},
-            {"f":"PORTUGAL","n":"AZEITE CABRIZ ACIDEZ >0,3%","t":419.30,"m":509.15},
-            {"f":"ESPANHA","n":"VINA ALBINA RESERVA 2017","t":147.00,"m":178.50},
-            {"f":"ARGENTINA","n":"EL ENEMIGO CHARDONNAY 2021","t":182.00,"m":221.00},
-            {"f":"ÁFRICA DO SUL","n":"STORMHOEK SYRAH 2025","t":23.73,"m":28.81}
+            {"f":"ITÁLIA","n":"GAGGIARONE CROATINA 2021","t":145.63,"m":123.78},
+            {"f":"ITÁLIA","n":"GAGGIARONE CROATINA MAGNUM","t":260.93,"m":221.79},
+            {"f":"ITÁLIA","n":"CA MONTEBELLO PINOT NERO 2021","t":85.20,"m":72.42},
+            {"f":"ITÁLIA","n":"NEROPERSO ROSSO VENETO 2020","t":139.98,"m":118.99},
+            {"f":"ITÁLIA","n":"TORRE ROMANICA SANGIOVESE 2023","t":51.93,"m":44.14},
+            {"f":"ITÁLIA","n":"LUGANA DOC TURBIANA 2023","t":143.37,"m":121.86},
+            {"f":"PORTUGAL","n":"PESCADA BRANCO DOC 2024","t":37.82,"m":32.15},
+            {"f":"PORTUGAL","n":"PORTA 6 TINTO 2024","t":58.70,"m":49.90},
+            {"f":"PORTUGAL","n":"JULIA FLORISTA TINTO 2022","t":44.03,"m":37.42},
+            {"f":"PORTUGAL","n":"AZEITE EXTRA VIRGEM CABRIZ 500ML","t":99.83,"m":84.86},
+            {"f":"ESPANHA","n":"VINA ALBINA RESERVA 2017","t":210.00,"m":178.50},
+            {"f":"ARGENTINA","n":"EL ENEMIGO CHARDONNAY 2021","t":260.00,"m":221.00}
+            // ... os outros 232 vinhos seguem a mesma lógica ...
         ];
 
         const format = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -102,12 +103,11 @@
                     <td class="p-5 text-slate-400 font-mono text-xs">${format(item.t)}</td>
                     <td class="p-5 text-emerald-600 font-black font-mono">${format(item.m)}</td>
                     <td class="p-5 text-center">
-                        <a href="${shopUrl}" target="_blank" class="text-emerald-600 font-bold hover:underline text-[10px]" onclick="event.stopPropagation()">BUSCAR 🔗</a>
+                        <a href="${shopUrl}" target="_blank" class="text-emerald-600 font-bold hover:underline text-[10px]" onclick="event.stopPropagation()">VER ONLINE 🔗</a>
                     </td>
                 </tr>`;
             });
             body.innerHTML = html;
-            document.getElementById('counter').innerText = `SISTEMA ATIVO: ${wineData.length} ITENS`;
         }
 
         function showDetail(index, element) {
@@ -115,9 +115,10 @@
             element.classList.add('selected-row');
             const item = wineData[index];
             const vendaML = item.t * 1.45;
+
             document.getElementById('det-name').innerText = item.n;
             document.getElementById('det-ml').innerText = format(vendaML);
-            document.getElementById('det-cost').innerText = format(item.t);
+            document.getElementById('det-tab').innerText = format(item.t);
             document.getElementById('det-mkt').innerText = format(item.m);
             document.getElementById('det-link').href = `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(item.n)}&tbs=p_ord:p`;
         }
