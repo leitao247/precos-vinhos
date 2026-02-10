@@ -40,11 +40,13 @@
                             <p class="text-[9px] opacity-40 mt-1 uppercase">(Tabela S&P + 45%)</p>
                         </div>
 
-                        <a id="det-mkt-link" href="#" target="_blank" class="block decoration-none market-btn bg-emerald-500 p-5 rounded-3xl mb-4 shadow-lg border-2 border-emerald-400 group relative overflow-hidden">
+                        <a id="det-mkt-link" href="#" target="_blank" class="block decoration-none market-btn bg-emerald-600 p-5 rounded-3xl mb-4 shadow-lg border-4 border-emerald-400 group relative overflow-hidden ring-4 ring-emerald-600/30">
                             <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                            <p class="text-[10px] uppercase text-emerald-900 font-black mb-1 italic relative z-10">Menor Preço Mercado 🔗</p>
-                            <p id="det-mkt" class="text-4xl font-black text-white font-mono relative z-10">R$ 0,00</p>
-                            <p class="text-[8px] text-white/80 mt-1 font-bold relative z-10">Clique para investigar</p>
+                            <p class="text-[10px] uppercase text-emerald-100 font-bold mb-1 italic relative z-10">Menor Preço Mercado</p>
+                            <p id="det-mkt" class="text-4xl font-black text-white font-mono relative z-10 drop-shadow-md">R$ 0,00</p>
+                            <p class="text-[11px] text-yellow-300 mt-2 font-black relative z-10 uppercase tracking-widest animate-pulse border-t border-white/20 pt-2">
+                                👉 Clique p/ Investigar 👈
+                            </p>
                         </a>
                     </div>
 
@@ -345,6 +347,7 @@
 
         function init() {
             renderTable(wineData);
+            document.getElementById('counter').innerText = `Sincronizado: ${wineData.length} Itens`;
         }
 
         function renderTable(data) {
@@ -404,7 +407,7 @@
                 item.f.toLowerCase().includes(q)
             );
 
-            // Re-renderiza com os matches no topo (sem headers de família para limpar a visualização da busca)
+            // Re-renderiza com os matches no topo
             let html = '<tr class="bg-amber-50"><td colspan="4" class="p-2 text-center text-[9px] font-black text-amber-600 uppercase tracking-widest">Resultados da Busca</td></tr>';
             
             if (matches.length === 0) {
