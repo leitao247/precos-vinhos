@@ -3,6 +3,290 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plataforma Técnica da Distribuidora</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--vinho:#5D1823;
+--vinho-escuro:#3b0f17;
+--ouro:#C0A062;
+--bg:#f5f5f7;
+--card:#ffffff;
+--text:#1F252E;
+--borda:#e6e6e6;
+}
+
+body{
+margin:0;
+font-family:Inter,sans-serif;
+background:var(--bg);
+color:var(--text);
+}
+
+header{
+background:linear-gradient(135deg,var(--vinho),var(--vinho-escuro));
+color:white;
+padding:70px 20px;
+text-align:center;
+}
+
+header h1{
+font-family:"Playfair Display",serif;
+font-size:46px;
+margin:0;
+}
+
+header p{
+margin-top:15px;
+opacity:0.85;
+font-weight:300;
+}
+
+.container{
+max-width:1100px;
+margin:60px auto;
+padding:0 20px;
+}
+
+.section{
+background:var(--card);
+padding:40px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+margin-bottom:40px;
+border:1px solid var(--borda);
+}
+
+.section h2{
+font-family:"Playfair Display",serif;
+color:var(--vinho);
+margin-top:0;
+margin-bottom:10px;
+}
+
+.section p{
+margin-top:0;
+opacity:0.7;
+}
+
+.controls{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+margin-top:20px;
+}
+
+select,button{
+padding:14px 18px;
+border-radius:8px;
+font-size:15px;
+border:1px solid #ddd;
+}
+
+button{
+background:var(--vinho);
+color:white;
+border:none;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:var(--vinho-escuro);
+}
+
+.result-box{
+margin-top:30px;
+padding:25px;
+background:#fafafa;
+border-radius:12px;
+border-left:4px solid var(--ouro);
+}
+
+.result-box h3{
+margin-top:0;
+color:var(--vinho);
+}
+
+.result-box ul{
+margin:0;
+padding-left:20px;
+}
+
+.budget-buttons{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:20px;
+}
+
+.budget-buttons button{
+background:#f0f0f0;
+color:var(--text);
+border:1px solid #ddd;
+}
+
+.budget-buttons button:hover{
+background:var(--vinho);
+color:white;
+}
+
+footer{
+text-align:center;
+padding:40px;
+font-size:14px;
+opacity:0.6;
+}
+
+@media(max-width:768px){
+header h1{
+font-size:30px;
+}
+}
+
+</style>
+</head>
+<body>
+
+<header>
+<h1>Plataforma Técnica da Distribuidora</h1>
+<p>Motor Oficial de Harmonização e Estratégia Comercial</p>
+</header>
+
+<div class="container">
+
+<!-- 1 HARMONIZAÇÃO POR RÓTULO -->
+
+<div class="section">
+<h2>1. Harmonização por Rótulo</h2>
+<p>Selecione um vinho e veja as melhores sugestões gastronômicas.</p>
+
+<div class="controls">
+<select id="wineSelect"></select>
+<button onclick="harmonizarVinho()">Ver Pratos Sugeridos</button>
+</div>
+
+<div id="resultadoHarmonizacao"></div>
+</div>
+
+<!-- 2 GERADOR DE CARDÁPIO -->
+
+<div class="section">
+<h2>2. Gerador de Cardápio</h2>
+<p>Gere um menu completo com progressão técnica de vinhos.</p>
+
+<div class="controls">
+<button onclick="gerarCardapio()">Criar Cardápio do Dia</button>
+</div>
+
+<div id="resultadoCardapio"></div>
+</div>
+
+<!-- 3 SIMULADOR DE COMPRAS -->
+
+<div class="section">
+<h2>3. Simulador de Compras</h2>
+<p>Kits estratégicos baseados no orçamento.</p>
+
+<div class="budget-buttons">
+<button onclick="simularCompra(100)">Até R$ 100</button>
+<button onclick="simularCompra(200)">Até R$ 200</button>
+<button onclick="simularCompra(300)">Até R$ 300</button>
+<button onclick="simularCompra(500)">Até R$ 500</button>
+</div>
+
+<div id="resultadoCompra"></div>
+</div>
+
+</div>
+
+<footer>
+Distribuidora • Plataforma Interna de Inteligência Enológica
+</footer>
+
+<script>
+
+const INVENTORY=[
+{ name:"Espumante Porta 6 Brut", level:1, type:"Espumante", price:55.12 },
+{ name:"Porta 6 Reserva", level:4, type:"Tinto", price:80.91 },
+{ name:"Cabriz Touriga Nacional", level:5, type:"Tinto", price:110.94 },
+{ name:"Porto Ruby Martha's", level:6, type:"Porto", price:63.60 }
+];
+
+function carregarSelect(){
+const select=document.getElementById("wineSelect");
+INVENTORY.forEach(v=>{
+let opt=document.createElement("option");
+opt.value=v.name;
+opt.textContent=v.name;
+select.appendChild(opt);
+});
+}
+
+function harmonizarVinho(){
+const vinho=document.getElementById("wineSelect").value;
+const pratos=["Picanha na Brasa","Costela Assada","Risoto de Cogumelos","Salmão Grelhado"];
+document.getElementById("resultadoHarmonizacao").innerHTML=
+`<div class="result-box">
+<h3>${vinho}</h3>
+<ul>
+<li>${pratos[Math.floor(Math.random()*pratos.length)]}</li>
+<li>${pratos[Math.floor(Math.random()*pratos.length)]}</li>
+<li>${pratos[Math.floor(Math.random()*pratos.length)]}</li>
+</ul>
+</div>`;
+}
+
+function gerarCardapio(){
+const entrada=INVENTORY[0];
+const principal=INVENTORY[1];
+const sobremesa=INVENTORY[3];
+
+document.getElementById("resultadoCardapio").innerHTML=
+`<div class="result-box">
+<h3>Menu Completo</h3>
+<p><strong>Entrada:</strong> ${entrada.name}</p>
+<p><strong>Prato Principal:</strong> ${principal.name}</p>
+<p><strong>Sobremesa:</strong> ${sobremesa.name}</p>
+</div>`;
+}
+
+function simularCompra(limite){
+let total=0;
+let selecionados=[];
+
+for(let v of INVENTORY){
+if(total+v.price<=limite){
+selecionados.push(v);
+total+=v.price;
+}
+}
+
+document.getElementById("resultadoCompra").innerHTML=
+`<div class="result-box">
+<h3>Kit Selecionado</h3>
+<ul>
+${selecionados.map(v=>`<li>${v.name} - R$ ${v.price.toFixed(2)}</li>`).join("")}
+</ul>
+<p><strong>Total:</strong> R$ ${total.toFixed(2)}</p>
+</div>`;
+}
+
+carregarSelect();
+
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Plataforma Enológica Premium</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -321,3 +605,4 @@ document.body.classList.toggle("dark");
 
 </body>
 </html>
+
