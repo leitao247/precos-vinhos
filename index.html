@@ -3,78 +3,96 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Harmonizador Visual — Foto do Prato + Sugestões (rotaciona imagem)</title>
+  <title>Harmonizador Visual — Foto do Prato + Sugestões</title>
   <style>
     :root{
       --bg:#f6f7fb; --card:#fff; --muted:#6b7280; --accent:#2563eb; --radius:12px;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-    body{margin:0;background:var(--bg);color:#0f172a;display:flex;justify-content:center;padding:28px}
-    .wrap{width:100%;max-width:980px}
-    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-    h1{margin:0;font-size:1.15rem}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:#0f172a;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:28px;
+    }
+    .container{width:100%;max-width:980px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+    h1{font-size:1.15rem;margin:0;font-weight:600}
     .subtitle{color:var(--muted);font-size:0.95rem}
-    .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+    .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
     select,input,button{padding:10px 12px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:var(--card);font-size:0.95rem}
-    button{cursor:pointer}
-    .btn-primary{background:var(--accent);color:#fff;border:0}
-    .btn-ghost{background:#fff;border:1px solid rgba(15,23,42,0.06);color:var(--accent)}
-    .layout{display:grid;grid-template-columns:1fr 320px;gap:18px}
-    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.06)}
-    .dish-figure{height:420px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#f3f4f6,#eef2ff);display:flex;align-items:center;justify-content:center;border:1px solid rgba(15,23,42,0.04)}
+    .select{min-width:320px}
+    .input{min-width:260px}
+    .btn{cursor:pointer;border:0;background:var(--accent);color:#fff;box-shadow:0 6px 18px rgba(37,99,235,0.12)}
+    .btn.secondary{background:#fff;color:var(--accent);border:1px solid rgba(37,99,235,0.12);box-shadow:none}
+    .layout{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+    .card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:0 6px 20px rgba(2,6,23,0.06)}
+    .dish{display:flex;flex-direction:column;gap:12px;align-items:center}
+    .dish-figure{width:100%;max-width:760px;height:420px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#f3f4f6,#eef2ff);display:flex;align-items:center;justify-content:center;border:1px solid rgba(15,23,42,0.04)}
     .dish-figure img{width:100%;height:100%;object-fit:cover;display:block}
-    .muted{color:var(--muted)}
+    .dish-meta{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .dish-title{font-weight:600}
+    .dish-source{color:var(--muted);font-size:0.92rem}
     .wine-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-    .wine-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.04);background:linear-gradient(180deg,#fff,#fbfdff)}
+    .wine-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid rgba(15,23,42,0.04)}
+    .wine-left{display:flex;flex-direction:column;gap:4px}
     .wine-name{font-weight:600}
+    .wine-price{color:var(--muted);font-size:0.92rem}
+    .wine-meta{color:var(--muted);font-size:0.9rem}
     .panel-compact{display:flex;flex-direction:column;gap:12px}
     .small{font-size:0.9rem;color:var(--muted)}
-    @media (max-width:980px){ .layout{grid-template-columns:1fr} .dish-figure{height:320px} .controls{gap:8px} }
-    .harmo-note{margin-top:8px;padding:10px;border-radius:8px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid rgba(15,23,42,0.04);font-size:0.95rem}
+    .map-row{display:flex;gap:8px;align-items:center}
+    @media (max-width:980px){
+      .layout{grid-template-columns:1fr;}
+      .select{min-width:100%}
+      .input{min-width:100%}
+      .dish-figure{height:320px}
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="container">
     <header>
       <div>
         <h1>Harmonizador Visual</h1>
-        <div class="subtitle">Ao clicar em Buscar prato, a imagem muda para outra harmonizada com o vinho selecionado.</div>
+        <div class="subtitle">Foto do prato (buscada na web) e sugestões de vinhos — imagem rotativa coerente</div>
       </div>
-      <div class="small muted">TheMealDB (chave pública)</div>
+      <div class="small">TheMealDB (chave pública)</div>
     </header>
 
     <div class="controls">
-      <select id="wineSelect" aria-label="Selecione um vinho"></select>
-      <input id="termInput" placeholder="Ou digite termo do prato (ex.: salmon, paella)" />
-      <button id="btnFind" class="btn-primary">Buscar prato</button>
-      <button id="btnRandom" class="btn-ghost">Aleatório</button>
+      <select id="wineSelect" class="select" aria-label="Selecione um vinho"></select>
+      <input id="termInput" class="input" placeholder="Ou digite termo do prato (ex.: salmon, paella)" />
+      <button id="btnFind" class="btn">Buscar prato</button>
+      <button id="btnRandom" class="btn secondary">Aleatório</button>
     </div>
 
     <div class="layout">
       <main class="card">
-        <div id="status" class="small muted" style="margin-bottom:8px">Pronto. Selecione um vinho ou digite um termo e clique Buscar prato.</div>
+        <div id="status" class="small" style="margin-bottom:8px">Pronto. Selecione um rótulo ou digite um termo e clique Buscar prato.</div>
 
-        <figure class="dish-figure" id="dishContainer" aria-live="polite">
-          <div style="text-align:center;color:#9aa4b2;padding:18px">
-            <div style="font-weight:600;margin-bottom:6px">Nenhuma imagem carregada</div>
-            <div class="small">Busque um prato para ver a foto aqui</div>
+        <section class="dish">
+          <figure class="dish-figure" id="dishContainer" aria-live="polite">
+            <div style="text-align:center;color:#9aa4b2;padding:18px">
+              <div style="font-size:1.05rem;font-weight:600;margin-bottom:6px">Nenhuma imagem carregada</div>
+              <div class="small">Busque um prato para ver a foto aqui</div>
+            </div>
+          </figure>
+
+          <div class="dish-meta" id="dishMeta">
+            <div class="dish-title" id="dishTitle"></div>
+            <div class="dish-source" id="dishSource"></div>
           </div>
-        </figure>
 
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-          <div id="dishTitle" style="font-weight:600"></div>
-          <div id="dishSource" class="muted"></div>
-        </div>
-
-        <div class="harmo-note" id="harmoNote" style="display:none">
-          <strong>Harmonização sugerida</strong>
-          <div id="harmoText" class="muted" style="margin-top:6px"></div>
-        </div>
-
-        <div style="margin-top:14px">
-          <strong>Sugestões de vinhos</strong>
-          <div id="wineSuggestions" class="wine-list" aria-live="polite"></div>
-        </div>
+          <div>
+            <strong>Sugestões de vinhos</strong>
+            <div id="wineSuggestions" class="wine-list" aria-live="polite"></div>
+          </div>
+        </section>
       </main>
 
       <aside class="card panel-compact">
@@ -83,18 +101,13 @@
           <div class="small" style="margin-top:6px">Associe um vinho a um termo de busca; salvo localmente.</div>
         </div>
 
-        <div style="margin-top:8px;display:flex;gap:8px">
+        <div class="map-row" style="margin-top:8px">
           <select id="mapWine" style="flex:1"></select>
           <input id="mapTerm" placeholder="Termo (ex.: salmon)" style="width:140px" />
         </div>
         <div style="display:flex;gap:8px;margin-top:8px">
-          <button id="btnMapSave" class="btn-ghost">Salvar</button>
-          <button id="btnMapRemove" class="btn-ghost">Remover</button>
-        </div>
-
-        <div style="margin-top:12px">
-          <strong>Associações atuais</strong>
-          <pre id="mappingsPreview" style="white-space:pre-wrap;margin-top:8px;background:#fbfdff;padding:8px;border-radius:8px;border:1px solid rgba(15,23,42,0.04)">Nenhuma associação.</pre>
+          <button id="btnMapSave" class="btn secondary" style="flex:1">Salvar</button>
+          <button id="btnMapRemove" class="btn secondary" style="flex:1">Remover</button>
         </div>
 
         <div style="margin-top:12px">
@@ -106,11 +119,19 @@
   </div>
 
   <script>
-    // ---------- Configuração ----------
+    /* ========= Dados (mantidos) ========= */
+    // Vinhos com preço (mantive os preços e exibo ao lado do nome)
     const WINES = [
-      "Porta 6 Reserva","Porta 6 Tinto","Porta 6 Branco","Brutalis by Vidigal",
-      "Júlia Florista Tinto","Da Pipa Tinto","Vidigal Reserva","Coragem Reserva",
-      "3 Autores Douro","Reserva dos Amigos"
+      { name: "Porta 6 Reserva", price: 80.91 },
+      { name: "Porta 6 Tinto", price: 33.07 },
+      { name: "Porta 6 Branco", price: 33.07 },
+      { name: "Brutalis by Vidigal", price: 217.30 },
+      { name: "Júlia Florista Tinto", price: 41.34 },
+      { name: "Da Pipa Tinto", price: 36.54 },
+      { name: "Vidigal Reserva", price: 45.58 },
+      { name: "Coragem Reserva", price: 53.10 },
+      { name: "3 Autores Douro", price: 53.10 },
+      { name: "Reserva dos Amigos", price: 49.36 }
     ];
 
     const DEFAULT_MAPPINGS = {
@@ -122,13 +143,15 @@
     };
 
     const DEFAULT_SUGGESTIONS = [
-      "Porta 6 Reserva","Vidigal Reserva","Brutalis by Vidigal"
+      "Porta 6 Reserva",
+      "Vidigal Reserva",
+      "Brutalis by Vidigal"
     ];
 
     const API_KEY = '1';
     const BASE = `https://www.themealdb.com/api/json/v1/${API_KEY}`;
 
-    // ---------- Elementos ----------
+    /* ========= Elementos ========= */
     const wineSelect = document.getElementById('wineSelect');
     const termInput = document.getElementById('termInput');
     const btnFind = document.getElementById('btnFind');
@@ -138,25 +161,21 @@
     const dishSource = document.getElementById('dishSource');
     const wineSuggestions = document.getElementById('wineSuggestions');
     const status = document.getElementById('status');
-    const harmoNote = document.getElementById('harmoNote');
-    const harmoText = document.getElementById('harmoText');
 
     const mapWine = document.getElementById('mapWine');
     const mapTerm = document.getElementById('mapTerm');
     const btnMapSave = document.getElementById('btnMapSave');
     const btnMapRemove = document.getElementById('btnMapRemove');
-    const mappingsPreview = document.getElementById('mappingsPreview');
     const defaultPreview = document.getElementById('defaultPreview');
 
     const KEY_MAP = 'harmo_map_v1';
     const KEY_SUG = 'harmo_suggestions_v1';
 
-    // ---------- State to avoid repeats ----------
-    let lastShownMealId = null;          // idMeal of last displayed meal
-    let recentShownIds = [];             // small history to avoid immediate repeats
-    const RECENT_HISTORY_LIMIT = 6;      // how many recent ids to avoid
+    /* ========= Estado para evitar repetições imediatas ========= */
+    let recentShownIds = [];
+    const RECENT_HISTORY_LIMIT = 6;
 
-    // ---------- Storage helpers ----------
+    /* ========= Storage helpers ========= */
     function readMap(){ try{ const r = localStorage.getItem(KEY_MAP); return r ? JSON.parse(r) : {...DEFAULT_MAPPINGS}; } catch(e){ return {...DEFAULT_MAPPINGS}; } }
     function saveMap(m){ localStorage.setItem(KEY_MAP, JSON.stringify(m)); }
     function removeMapKey(k){ const m = readMap(); if(m[k]){ delete m[k]; saveMap(m); } }
@@ -164,30 +183,56 @@
     function readDefaultSuggestions(){ try{ const r = localStorage.getItem(KEY_SUG); return r ? JSON.parse(r) : DEFAULT_SUGGESTIONS.slice(); } catch(e){ return DEFAULT_SUGGESTIONS.slice(); } }
     function saveDefaultSuggestions(arr){ localStorage.setItem(KEY_SUG, JSON.stringify(arr)); }
 
-    // ---------- UI helpers ----------
+    /* ========= Utilitários UI ========= */
+    function formatPriceBR(value){
+      if (value === null || value === undefined || Number.isNaN(Number(value))) return '';
+      return Number(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function escapeHtml(s){ return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
     function populateWineSelect(){
       wineSelect.innerHTML = '<option value="">— selecione um rótulo —</option>';
-      for(const w of WINES){ const o = document.createElement('option'); o.value = w; o.textContent = w; wineSelect.appendChild(o); }
+      for(const w of WINES){
+        const o = document.createElement('option');
+        o.value = w.name;
+        o.textContent = `${w.name} — ${formatPriceBR(w.price)}`;
+        wineSelect.appendChild(o);
+      }
     }
+
     function populateMapWine(){
       mapWine.innerHTML = '<option value="">— selecione vinho —</option>';
-      for(const w of WINES){ const o = document.createElement('option'); o.value = w; o.textContent = w; mapWine.appendChild(o); }
+      for(const w of WINES){
+        const o = document.createElement('option');
+        o.value = w.name;
+        o.textContent = w.name;
+        mapWine.appendChild(o);
+      }
     }
-    function updateMappingsPreview(){
-      const m = readMap();
-      const keys = Object.keys(m).sort((a,b)=>a.localeCompare(b,'pt-BR'));
-      if(keys.length === 0){ mappingsPreview.textContent = 'Nenhuma associação.'; return; }
-      mappingsPreview.textContent = keys.map(k => `${k} → ${m[k]}`).join('\\n');
+
+    function renderDefaultPreview(){
+      const arr = readDefaultSuggestions();
+      // show with prices
+      const withPrices = arr.map(n => {
+        const obj = WINES.find(w => w.name === n);
+        return obj ? `${obj.name} — ${formatPriceBR(obj.price)}` : n;
+      });
+      defaultPreview.textContent = withPrices.join(' • ');
     }
-    function renderDefaultPreview(){ defaultPreview.textContent = readDefaultSuggestions().join(' • '); }
 
     function setStatus(txt){ status.textContent = txt || ''; }
     function clearDish(){
-      dishContainer.innerHTML = `<div style="text-align:center;color:#9aa4b2;padding:18px"><div style="font-weight:600;margin-bottom:6px">Nenhuma imagem carregada</div><div class="small">Busque um prato para ver a foto aqui</div></div>`;
-      dishTitle.textContent = ''; dishSource.textContent = ''; wineSuggestions.innerHTML = ''; harmoNote.style.display = 'none'; harmoText.textContent = '';
+      dishContainer.innerHTML = `<div style="text-align:center;color:#9aa4b2;padding:18px">
+        <div style="font-size:1.05rem;font-weight:600;margin-bottom:6px">Nenhuma imagem carregada</div>
+        <div class="small">Busque um prato para ver a foto aqui</div>
+      </div>`;
+      dishTitle.textContent = '';
+      dishSource.textContent = '';
+      wineSuggestions.innerHTML = '';
     }
 
-    // ---------- TheMealDB helpers ----------
+    /* ========= TheMealDB helpers ========= */
     async function fetchJson(url){
       const res = await fetch(url);
       if(!res.ok) throw new Error('Erro na requisição: ' + res.status);
@@ -212,26 +257,22 @@
       return json.meals ? json.meals[0] : null;
     }
 
-    // ---------- Utility: pick a meal different from recent ones ----------
+    /* ========= Escolha de prato evitando repetições ========= */
     function pickDifferentMealFromArray(meals){
       if(!Array.isArray(meals) || meals.length === 0) return null;
-      // build list of candidate ids
       const candidates = meals.map(m => m.idMeal || null).filter(Boolean);
-      // try to pick one not in recentShownIds
       const filtered = candidates.filter(id => !recentShownIds.includes(id));
       let chosenId = null;
       if(filtered.length > 0){
         chosenId = filtered[Math.floor(Math.random() * filtered.length)];
       } else {
-        // all are recent; pick random from all
         chosenId = candidates[Math.floor(Math.random() * candidates.length)];
       }
-      // find meal object
       const meal = meals.find(m => (m.idMeal || null) === chosenId) || meals[Math.floor(Math.random() * meals.length)];
       return meal;
     }
 
-    // ---------- Core logic: search and rotate image ----------
+    /* ========= Lógica principal: buscar e rotacionar imagem coerente ========= */
     async function showDishFor(wineName, explicitTerm){
       try{
         setStatus('Buscando prato...');
@@ -241,17 +282,17 @@
         if(!term && wineName) term = map[wineName] || wineName.split(' ').slice(-2).join(' ');
         let meals = null;
 
-        // 1) try search by term (name search)
+        // 1) busca por termo (nome)
         if(term){
           meals = await searchMealsByName(term);
         }
 
-        // 2) if no results, try category fallback
+        // 2) fallback por categoria
         if(!meals){
           meals = await filterByCategory('Seafood');
         }
 
-        // 3) if still no results, use random
+        // 3) fallback aleatório
         if(!meals){
           const random = await fetchRandomMeal();
           if(random){
@@ -263,31 +304,30 @@
           return;
         }
 
-        // If filter.php returned lightweight objects (no strMealThumb), try to enrich list
-        const enrichedMeals = [];
+        // enriquecer lista (lookup) quando necessário
+        const enriched = [];
         for(const m of meals){
           if(m.strMealThumb && m.strMeal && m.idMeal){
-            enrichedMeals.push(m);
+            enriched.push(m);
           } else if(m.idMeal){
             const full = await lookupById(m.idMeal);
-            if(full) enrichedMeals.push(full);
+            if(full) enriched.push(full);
           }
         }
-        const pool = enrichedMeals.length ? enrichedMeals : meals;
+        const pool = enriched.length ? enriched : meals;
 
-        // pick a meal different from recent ones
+        // escolher diferente das recentes
         const chosen = pickDifferentMealFromArray(pool);
         if(!chosen){
           setStatus('Nenhum prato válido encontrado.');
           return;
         }
 
-        // update recent history
+        // atualizar histórico recente
         const id = chosen.idMeal || null;
         if(id){
           recentShownIds.unshift(id);
           if(recentShownIds.length > RECENT_HISTORY_LIMIT) recentShownIds.length = RECENT_HISTORY_LIMIT;
-          lastShownMealId = id;
         }
 
         displayMeal(chosen, wineName, term);
@@ -298,7 +338,7 @@
       }
     }
 
-    // ---------- Render meal and harmonization note ----------
+    /* ========= Render do prato e sugestões (mantendo preços) ========= */
     function displayMeal(meal, wineName, term){
       const thumb = meal && meal.strMealThumb ? meal.strMealThumb : '';
       const title = meal && meal.strMeal ? meal.strMeal : '';
@@ -308,56 +348,42 @@
       dishTitle.textContent = title ? `Prato: ${title}` : '';
       dishSource.textContent = source ? `Fonte: ${source}` : '';
 
-      // Build harmonization note (simulated collaborative suggestion)
-      const chefSuggestions = [
-        "Preparar com redução cítrica e ervas frescas.",
-        "Grelhar levemente e finalizar com manteiga aromatizada.",
-        "Assar com crosta de ervas e servir com molho leve."
-      ];
-      const sommelierSuggestions = [
-        "Vinho branco fresco com boa acidez.",
-        "Rosé jovem para equilibrar gorduras.",
-        "Tinto leve com taninos suaves para pratos grelhados."
-      ];
-      const enologistHints = [
-        "Realçar notas minerais e acidez.",
-        "Buscar vinhos com final frutado e taninos macios.",
-        "Preferir vinhos com boa acidez para limpar o paladar."
-      ];
+      // nota de harmonização (simulada, coerente com vinho/termo)
+      const chef = suggestChef(wineName, term);
+      const sommelier = suggestSommelier(wineName, term);
+      const enologist = suggestEnologist(wineName, term);
+      // mostrar nota curta acima das sugestões
+      const harmoNote = `<strong>Chef:</strong> ${escapeHtml(chef)} — <strong>Sommelier:</strong> ${escapeHtml(sommelier)} — <strong>Enólogo:</strong> ${escapeHtml(enologist)}`;
+      // inserir nota simples no status (não desmonta layout)
+      setStatus(harmoNote);
 
-      // Choose suggestions based on wineName keywords and term
-      const lowerWine = (wineName || '').toLowerCase();
-      let chefPick = chefSuggestions[Math.floor(Math.random()*chefSuggestions.length)];
-      let sommelierPick = sommelierSuggestions[Math.floor(Math.random()*sommelierSuggestions.length)];
-      let enologistPick = enologistHints[Math.floor(Math.random()*enologistHints.length)];
-
-      if(/tinto|reserva|malbec|cab|syrah|merlot/i.test(lowerWine)){
-        chefPick = "Grelhar ou assar; usar temperos robustos.";
-        sommelierPick = "Vinho tinto médio a encorpado, taninos presentes.";
-        enologistPick = "Realçar taninos e notas de madeira com tempo de decantação.";
-      } else if(/branco|sauvignon|chardonnay|verde|pinot|grigio/i.test(lowerWine)){
-        chefPick = "Preparar com cítricos e ervas; evitar molhos pesados.";
-        sommelierPick = "Vinho branco com acidez marcada e notas cítricas.";
-        enologistPick = "Preservar frescor e mineralidade do vinho.";
-      } else if(/ros|rose/i.test(lowerWine)){
-        chefPick = "Grelhar levemente e usar ervas aromáticas.";
-        sommelierPick = "Rosé jovem, frutado e com boa acidez.";
-        enologistPick = "Equilibrar acidez e fruta para harmonizar com o prato.";
-      } else if(term && /seafood|prawn|shrimp|salmon|fish|sardine|calamari/i.test(term.toLowerCase())){
-        chefPick = "Grelhar com limão e ervas; manter o prato leve.";
-        sommelierPick = "Branco fresco ou rosé para complementar o marisco.";
-        enologistPick = "Realçar notas salinas e acidez do vinho.";
-      }
-
-      harmoNote.style.display = 'block';
-      harmoText.innerHTML = `<strong>Chef:</strong> ${escapeHtml(chefPick)}<br/><strong>Sommelier:</strong> ${escapeHtml(sommelierPick)}<br/><strong>Enólogo:</strong> ${escapeHtml(enologistPick)}`;
-
-      // Render wine suggestions (coherent with wineName)
+      // render sugestões com preço ao lado
       const suggestions = buildSuggestions(wineName);
-      renderSuggestions(suggestions);
+      renderSuggestionsWithPrices(suggestions);
     }
 
-    // ---------- Suggestions logic ----------
+    function suggestChef(wineName, term){
+      const lowerWine = (wineName || '').toLowerCase();
+      if(/tinto|reserva|malbec|cab|syrah|merlot/i.test(lowerWine)) return "Grelhar ou assar; temperos robustos.";
+      if(/branco|sauvignon|chardonnay|verde|pinot|grigio/i.test(lowerWine)) return "Preparar com cítricos e ervas; manter leve.";
+      if(term && /seafood|prawn|shrimp|salmon|fish|sardine|calamari/i.test(term.toLowerCase())) return "Grelhar com limão e ervas; manter o prato leve.";
+      return "Preparar com atenção ao equilíbrio de sabores.";
+    }
+    function suggestSommelier(wineName, term){
+      const lowerWine = (wineName || '').toLowerCase();
+      if(/tinto|reserva|malbec|cab|syrah|merlot/i.test(lowerWine)) return "Vinho tinto médio a encorpado.";
+      if(/branco|sauvignon|chardonnay|verde|pinot|grigio/i.test(lowerWine)) return "Branco fresco com boa acidez.";
+      if(term && /seafood|prawn|shrimp|salmon|fish|sardine|calamari/i.test(term.toLowerCase())) return "Branco ou rosé fresco para mariscos.";
+      return "Escolha vinho que complemente intensidade do prato.";
+    }
+    function suggestEnologist(wineName, term){
+      const lowerWine = (wineName || '').toLowerCase();
+      if(/tinto|reserva|malbec|cab|syrah|merlot/i.test(lowerWine)) return "Realçar taninos e notas de madeira.";
+      if(/branco|sauvignon|chardonnay|verde|pinot|grigio/i.test(lowerWine)) return "Preservar frescor e mineralidade.";
+      return "Buscar equilíbrio entre acidez e corpo.";
+    }
+
+    /* ========= Sugestões com preços ========= */
     function buildSuggestions(wineName){
       const defaults = readDefaultSuggestions();
       if(!wineName) return defaults.slice(0,3);
@@ -376,19 +402,23 @@
       return res.slice(0,3);
     }
 
-    function renderSuggestions(list){
+    function renderSuggestionsWithPrices(list){
       wineSuggestions.innerHTML = '';
-      if(!list || list.length === 0){ wineSuggestions.innerHTML = '<div class="small muted">Nenhuma sugestão disponível.</div>'; return; }
-      for(const w of list){
-        const div = document.createElement('div'); div.className = 'wine-item';
-        div.innerHTML = `<div class="wine-name">${escapeHtml(w)}</div><div class="wine-meta muted">Sugestão</div>`;
+      if(!list || list.length === 0){
+        wineSuggestions.innerHTML = '<div class="small muted">Nenhuma sugestão disponível.</div>';
+        return;
+      }
+      for(const name of list){
+        const wineObj = WINES.find(w => w.name === name) || null;
+        const priceText = wineObj ? formatPriceBR(wineObj.price) : '';
+        const div = document.createElement('div');
+        div.className = 'wine-item';
+        div.innerHTML = `<div class="wine-left"><div class="wine-name">${escapeHtml(name)}</div><div class="wine-price">${escapeHtml(priceText)}</div></div><div class="wine-meta muted">Sugestão</div>`;
         wineSuggestions.appendChild(div);
       }
     }
 
-    function escapeHtml(s){ return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-    // ---------- Events ----------
+    /* ========= Eventos ========= */
     btnFind.addEventListener('click', ()=> {
       const wine = (wineSelect.value || '').trim();
       const term = (termInput.value || '').trim();
@@ -398,27 +428,50 @@
 
     btnRandom.addEventListener('click', async ()=>{
       setStatus('Buscando prato aleatório...');
-      try{ const meal = await fetchRandomMeal(); if(meal) { displayMeal(meal, ''); setStatus('Prato aleatório carregado.'); } else setStatus('Nenhum prato aleatório encontrado.'); } catch(e){ console.error(e); setStatus('Erro ao buscar aleatório.'); }
+      try{
+        const meal = await fetchRandomMeal();
+        if(meal){
+          // evitar repetir imediatamente: se meal.idMeal estiver em recentShownIds, tentar outra vez algumas vezes
+          let attempts = 0;
+          while(recentShownIds.includes(meal.idMeal) && attempts < 6){
+            const next = await fetchRandomMeal();
+            if(!next) break;
+            meal.idMeal = next.idMeal; meal.strMeal = next.strMeal; meal.strMealThumb = next.strMealThumb; meal.strSource = next.strSource;
+            attempts++;
+          }
+          // atualizar histórico
+          if(meal.idMeal){
+            recentShownIds.unshift(meal.idMeal);
+            if(recentShownIds.length > RECENT_HISTORY_LIMIT) recentShownIds.length = RECENT_HISTORY_LIMIT;
+          }
+          displayMeal(meal, '');
+          setStatus('Prato aleatório carregado.');
+        } else {
+          setStatus('Nenhum prato aleatório encontrado.');
+        }
+      } catch(e){
+        console.error(e);
+        setStatus('Erro ao buscar aleatório.');
+      }
     });
 
     btnMapSave.addEventListener('click', ()=>{
       const wine = (mapWine.value || '').trim();
       const term = (mapTerm.value || '').trim();
       if(!wine || !term){ alert('Selecione um vinho e informe o termo.'); return; }
-      const m = readMap(); m[wine] = term; saveMap(m); updateMappingsPreview(); setStatus('Associação salva.'); mapTerm.value = '';
+      const m = readMap(); m[wine] = term; saveMap(m); setStatus('Associação salva.'); mapTerm.value = '';
     });
 
     btnMapRemove.addEventListener('click', ()=>{
       const wine = (mapWine.value || '').trim();
       if(!wine){ alert('Selecione um vinho para remover.'); return; }
-      removeMapKey(wine); updateMappingsPreview(); setStatus('Associação removida.');
+      removeMapKey(wine); setStatus('Associação removida.');
     });
 
-    // ---------- Init ----------
+    /* ========= Inicialização ========= */
     (function init(){
       populateWineSelect();
       populateMapWine();
-      updateMappingsPreview();
       renderDefaultPreview();
       clearDish();
       setStatus('Pronto. Use o seletor ou digite um termo e clique Buscar prato.');
