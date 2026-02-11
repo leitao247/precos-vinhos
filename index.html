@@ -3,156 +3,272 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Catálogo S&P — Verificação Completa</title>
+  <title>Catálogo S&P — Vinhos (nomes por família)</title>
   <style>
-    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
-    body{max-width:1200px;margin:20px auto;padding:18px;background:#f6f7fb;color:#111}
-    header{display:flex;justify-content:space-between;align-items:center;gap:12px}
-    h1{margin:0;font-size:1.25rem}
+    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;line-height:1.4}
+    body{max-width:1100px;margin:28px auto;padding:18px;background:#f6f7fb;color:#111}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{margin:0;font-size:1.3rem}
     .controls{display:flex;gap:8px;align-items:center}
     input,select,button{padding:8px;border:1px solid #d1d5db;border-radius:6px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:16px}
-    .card{background:#fff;padding:12px;border-radius:8px;box-shadow:0 1px 6px rgba(16,24,40,.06)}
-    .thumb{height:160px;background:#f3f4f6;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .thumb img{width:100%;height:100%;object-fit:cover}
+    .families{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:18px}
+    .family{background:#fff;padding:12px;border-radius:8px;box-shadow:0 1px 6px rgba(16,24,40,.06);display:flex;flex-direction:column;gap:10px}
+    .family .img{height:160px;background:#f3f4f6;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .family .img img{width:100%;height:100%;object-fit:cover}
+    .family h2{margin:0;font-size:1rem}
+    .list{margin:0;padding:0;list-style:none;max-height:220px;overflow:auto}
+    .list li{padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:0.95rem}
     .muted{color:#6b7280;font-size:0.9rem}
-    #debug{margin-top:12px;background:#fff;padding:10px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-    pre{white-space:pre-wrap;word-break:break-word}
+    footer{margin-top:18px;color:#6b7280;font-size:0.9rem}
   </style>
 </head>
 <body>
   <header>
     <div>
-      <h1>Catálogo S&P — Verificação</h1>
-      <div class="muted">Confirme se aparecem todos os produtos. Contador e logs ajudam a diagnosticar.</div>
+      <h1>Catálogo S&P — Vinhos (apenas nomes)</h1>
+      <div class="muted">Imagens por família: coloque arquivos em <strong>images/{family}.jpg</strong> (ex.: <code>images/Porta 6.jpg</code>).</div>
     </div>
 
     <div class="controls">
-      <input id="search" placeholder="Pesquisar código, nome ou família" style="width:300px" />
+      <input id="search" placeholder="Pesquisar por nome de vinho" style="width:320px" />
       <select id="filterFamily"><option value="">Todas as famílias</option></select>
-      <button id="btnExport">Exportar JSON</button>
     </div>
   </header>
 
-  <div id="debug" aria-live="polite">
-    <div><strong>Total esperado:</strong> <span id="expectedCount">56</span></div>
-    <div><strong>Total carregado:</strong> <span id="loadedCount">0</span></div>
-    <div class="muted small">Se o número carregado for menor que o esperado, abra o console do navegador (F12) e verifique erros.</div>
-    <details style="margin-top:8px"><summary>Logs de depuração</summary><pre id="logArea">—</pre></details>
-  </div>
+  <main>
+    <section id="families" class="families" aria-live="polite"></section>
+  </main>
 
-  <main id="mainGrid" class="grid" aria-live="polite"></main>
-
-  <hr style="margin:18px 0" />
-
-  <section class="card">
-    <strong>Dados brutos (JSON embutido)</strong>
-    <pre id="rawData" style="max-height:320px;overflow:auto"></pre>
-  </section>
+  <footer class="muted">
+    Observação: nomes exibidos sem preços ou safra. Se preferir que eu gere as imagens nomeadas automaticamente, diga e eu preparo a lista de nomes de arquivo.
+  </footer>
 
   <script>
-    /*************************************************************************
-     * ATENÇÃO
-     * - Verifique o valor em #expectedCount e ajuste se necessário.
-     * - Se aparecerem menos itens, abra o console (F12) e veja mensagens.
-     *************************************************************************/
-
-    // === DADOS (resumido aqui; substitua pelo array completo que você já tem) ===
-    // Para evitar truncamento acidental, garanta que PRODUCTS contenha todos os objetos.
+    // --- Dados: apenas nome e família (todos os rótulos extraídos) ---
     const PRODUCTS = [
-      /* Cole aqui o array completo de produtos (todos os objetos). 
-         Exemplo de item:
-         {"code":"3000211","product":"Gaggiarone ...","family":"Gaggiarone","vintage":"2021","pack":"6 / 750mL","price":820.44},
-         ... (todos os itens)
-      */
+      {"code":"3000211","product":"Gaggiarone Vitgni Giovani Tto - Croatina","family":"Gaggiarone"},
+      {"code":"3000420","product":"Gaggiarone Vitgni Giovani Tto - Croatina","family":"Gaggiarone"},
+      {"code":"208","product":"Ca Montebello Tto DOC - Pinot Nero","family":"Ca Montebello"},
+      {"code":"284","product":"Ca Montebello Bco DOC - Pinot Nero Bianco","family":"Ca Montebello"},
+      {"code":"3000209","product":"Ca Montebello Bco IGT - Pinot Grigio","family":"Ca Montebello"},
+      {"code":"3000210","product":"Ca Montebello Tto DOC - Barbera, Uva Rara","family":"Ca Montebello"},
+      {"code":"290","product":"Neroperso Rosso Veneto IGT - Apassimento","family":"Neroperso"},
+      {"code":"3000291","product":"Liburna DOC Sicilia Tto - Nero d'Avola","family":"Liburna"},
+      {"code":"3000288","product":"Borgo del Filari DOC d'Abruzzo - Montepulciano","family":"Borgo del Filari"},
+      {"code":"355","product":"La Fogliata di Puglia - Primitivo","family":"La Fogliata"},
+      {"code":"3000388","product":"Torre Romanica - Rosso","family":"Torre Romanica"},
+      {"code":"405","product":"Torre Romanica - Bianco","family":"Torre Romanica"},
+      {"code":"3000405","product":"Torre Romanica - Bianco","family":"Torre Romanica"},
+      {"code":"422","product":"Torre Romanica - Rosato","family":"Torre Romanica"},
+      {"code":"3000422","product":"Torre Romanica - Rosato","family":"Torre Romanica"},
+      {"code":"3000406","product":"Torre Romanica Tto - Sangiovese","family":"Torre Romanica"},
+      {"code":"3000428","product":"Torre Romanica Pinot Grigio","family":"Torre Romanica"},
+      {"code":"3000389","product":"Torre Romanica Puglia - Primitivo","family":"Torre Romanica"},
+      {"code":"397","product":"Torre Romanica Premium - Montepulciano","family":"Torre Romanica"},
+      {"code":"413","product":"Le Cime Passito IGT – Garganega, Moscato Amarelo","family":"Le Cime"},
+      {"code":"412","product":"Carpino Garda DOC – Merlot","family":"Carpino"},
+      {"code":"216","product":"Ribó Garda DOC - Cabernet Franc, Cabernet Sauvignon","family":"Ribó"},
+      {"code":"415","product":"Meridiano Garda DOC – Chardonnay","family":"Meridiano"},
+      {"code":"414","product":"Lugana DOC – Turbiana","family":"Lugana"},
+      {"code":"408","product":"Cornalino Rosso IGT Alto Mincio – Merlot, Cabernet","family":"Cornalino"},
+      {"code":"407","product":"I Ciottoli Garda DOC – Cabernet Franc, Cab. Sauvignon","family":"I Ciottoli"},
+      {"code":"411","product":"Le Mure Garda DOC – Chardonnay","family":"Le Mure"},
+      {"code":"215","product":"Mandorlo Bianco IGT Mantova – Tocai Friulano","family":"Mandorlo"},
+      {"code":"410","product":"La Casina Bianco Garda DOC – Garganega, Trebbiano, Chardonnay","family":"La Casina"},
+      {"code":"214","product":"La Casina Chiaretto Garda DOC – Merlot, Cabernet, Rondinella","family":"La Casina"},
+      {"code":"409","product":"La Casina Rosso Garda DOC – Merlot, Rondinella, Cab. Sauvignon, Sangiovese","family":"La Casina"},
+      {"code":"3000221","product":"Dirty Rabbit Tto - Petit Verdot","family":"Rabbit"},
+      {"code":"220","product":"Charming Rabbit Bco - Chardonnay","family":"Rabbit"},
+      {"code":"3000222","product":"Mrs. Rabbit Tto - Pinot Noir","family":"Rabbit"},
+      {"code":"245","product":"Pink Rabbit Rosé - Grenache, Syrah","family":"Rabbit"},
+      {"code":"223","product":"Mr. Rabbit Tto - Cabernet Sauvignon","family":"Rabbit"},
+      {"code":"224","product":"Master Rabbit Tto - Syrah","family":"Rabbit"},
+      {"code":"272","product":"Spring Rabbit Bco - Sauvignon Blanc","family":"Rabbit"},
+      {"code":"225","product":"Chatelain Valmont Cotes du Rhone Tto - Grenache Syrah","family":"Chatelain"},
+      {"code":"3000444","product":"Pescada Branco, DOC Verde","family":"Pescada"},
+      {"code":"3000467","product":"Pescada Rosé, DOC Verde","family":"Pescada"},
+      {"code":"445","product":"Pescada - Arinto e Trajadura","family":"Pescada"},
+      {"code":"446","product":"Pescada - 100% Alvarinho","family":"Pescada"},
+      {"code":"171","product":"Porta 6 Tto meia garrafa","family":"Porta 6"},
+      {"code":"172","product":"Porta 6 Bco meia garrafa","family":"Porta 6"},
+      {"code":"130","product":"Espumante Porta 6 Bco Brut","family":"Porta 6"},
+      {"code":"160","product":"Vinho Verde Porta 6 DOC","family":"Porta 6"},
+      {"code":"3000160","product":"Vinho Verde Porta 6 DOC","family":"Porta 6"},
+      {"code":"931","product":"Porta 6 Bco","family":"Porta 6"},
+      {"code":"300093","product":"Porta 6 Bco","family":"Porta 6"},
+      {"code":"185","product":"Porta 6 Rosé","family":"Porta 6"},
+      {"code":"300078","product":"Porta 6 Tto","family":"Porta 6"},
+      {"code":"170","product":"Porta 6 Reserva Tto","family":"Porta 6"},
+      {"code":"3000157","product":"Porta 6 Magnum Tto","family":"Porta 6"},
+      {"code":"3000250","product":"Porta 6 Double Magnum Tto","family":"Porta 6"},
+      {"code":"3000173","product":"Bag in Box Porta 6 Tto","family":"Porta 6"},
+      {"code":"3000466","product":"Bag in Box Porta 6 Bco","family":"Porta 6"},
+      {"code":"3000296","product":"Pack 2un - Porta 6 Tto","family":"Porta 6"},
+      {"code":"3000400","product":"Pack 2un - (1 Porta 6 Tto 1 Porta 6 Bco)","family":"Porta 6"},
+      {"code":"3000348","product":"Porta 6 Bitube Tto","family":"Porta 6"},
+      {"code":"110","product":"Dom Dinis Reserva Tto","family":"Dom Dinis"},
+      {"code":"161","product":"Dom Dinis Mesa Bco","family":"Dom Dinis"},
+      {"code":"39","product":"Reserva dos Amigos Tinto","family":"Reserva dos Amigos"},
+      {"code":"83","product":"Reserva dos Amigos Magnum Tto","family":"Reserva dos Amigos"},
+      {"code":"162","product":"Reserva dos Amigos Seleção Especial Tto","family":"Reserva dos Amigos"},
+      {"code":"3000163","product":"Bag in Box Branco dos Amigos","family":"Reserva dos Amigos"},
+      {"code":"97","product":"Bag in Box Tinto dos Amigos","family":"Reserva dos Amigos"},
+      {"code":"120","product":"3 Autores Verde DOC Branco","family":"3 Autores"},
+      {"code":"96","product":"3 Autores Douro DOC Tinto","family":"3 Autores"},
+      {"code":"246","product":"3 Autores Douro DOC Branco","family":"3 Autores"},
+      {"code":"114","product":"3 Autores Grande Reserva Tto","family":"3 Autores"},
+      {"code":"3000116","product":"Coragem Superior Tto","family":"Coragem"},
+      {"code":"115","product":"Coragem Superior Bco","family":"Coragem"},
+      {"code":"178","product":"Coragem Reserva Tto","family":"Coragem"},
+      {"code":"180","product":"Coragem Regional Lisboa Tto","family":"Coragem"},
+      {"code":"111","product":"N.B.N.C No Branding No Cry Tto (Vidigal)","family":"Vidigal"},
+      {"code":"300046","product":"Brutalis by Vidigal Tto","family":"Vidigal"},
+      {"code":"3000297","product":"Brutalis by Vidigal Tto","family":"Vidigal"},
+      {"code":"41","product":"Vidigal Reserva Tto","family":"Vidigal"},
+      {"code":"300043","product":"Vidigal Single Grape Tto - Touriga Nacional","family":"Vidigal"},
+      {"code":"159","product":"Vidigal Chapeu de Praia Rosé","family":"Vidigal"},
+      {"code":"326","product":"Zé do Telhado DOC Douro","family":"Vidigal"},
+      {"code":"333","product":"Boa Noite Lisboa Tinto","family":"Boa Noite Lisboa"},
+      {"code":"334","product":"Boa Noite Lisboa Branco","family":"Boa Noite Lisboa"},
+      {"code":"344","product":"Boa Noite Lisboa Rosé","family":"Boa Noite Lisboa"},
+      {"code":"3000154","product":"Júlia Florista Tto","family":"Júlia Florista"},
+      {"code":"3000181","product":"Júlia Florista Bco","family":"Júlia Florista"},
+      {"code":"3000346","product":"Júlia Florista Rosé","family":"Júlia Florista"},
+      {"code":"3000345","product":"Júlia Florista Reserva Tto","family":"Júlia Florista"},
+      {"code":"3000196","product":"Bag in Box Júlia Florista Bco","family":"Júlia Florista"},
+      {"code":"3000179","product":"Bag in Box Júlia Florista Tto","family":"Júlia Florista"},
+      {"code":"347","product":"Júlia Florista Bitube Tto","family":"Júlia Florista"},
+      {"code":"232","product":"Artolas Reserva Tto","family":"Artolas"},
+      {"code":"153","product":"Artolas Tinto","family":"Artolas"},
+      {"code":"158","product":"Artolas Branco","family":"Artolas"},
+      {"code":"3000233","product":"Artolas Rosé","family":"Artolas"},
+      {"code":"90","product":"Da Pipa Branco","family":"Da Pipa"},
+      {"code":"3000273","product":"Da Pipa Tinto","family":"Da Pipa"},
+      {"code":"298","product":"Da Pipa Rosé","family":"Da Pipa"},
+      {"code":"241","product":"Da Pipa Branco","family":"Da Pipa"},
+      {"code":"247","product":"Da Pipa Rosé","family":"Da Pipa"},
+      {"code":"3000242","product":"Da Pipa Tinto","family":"Da Pipa"},
+      {"code":"358","product":"Da Pipa Frisante Branco","family":"Da Pipa"},
+      {"code":"359","product":"Da Pipa Frisante Rosé","family":"Da Pipa"},
+      {"code":"356","product":"Da Pipa Espumante Branco (Blanc de Blancs)","family":"Da Pipa"},
+      {"code":"357","product":"Da Pipa Espumante Rosé","family":"Da Pipa"},
+      {"code":"3000243","product":"Da Pipa Bag in Box Bco","family":"Da Pipa"},
+      {"code":"3000248","product":"Da Pipa Bag in Box Rosé","family":"Da Pipa"},
+      {"code":"3000244","product":"Da Pipa Bag in Box Tto","family":"Da Pipa"},
+      {"code":"266","product":"Da Pipa Reserva IG Bco","family":"Da Pipa"},
+      {"code":"3000267","product":"Da Pipa Reserva IG Tto","family":"Da Pipa"},
+      {"code":"3000268","product":"Da Pipa Colheita Selecionada Tto","family":"Da Pipa"},
+      {"code":"270","product":"Da Pipa Signature Bco","family":"Da Pipa"},
+      {"code":"3000314","product":"Fonte da Perdiz Reserva Tinto - Douro DOC","family":"Fonte da Perdiz"},
+      {"code":"3000317","product":"Fonte da Perdiz Tinto - Douro DOC","family":"Fonte da Perdiz"},
+      {"code":"3000315","product":"Fonte da Perdiz Branco - Douro DOC","family":"Fonte da Perdiz"},
+      {"code":"3000427","product":"Fonte da Perdiz Superior Tinto","family":"Fonte da Perdiz"},
+      {"code":"3000327","product":"Intimista Tinto","family":"Amareleza"},
+      {"code":"3000343","product":"Intimista Branco","family":"Amareleza"},
+      {"code":"3000310","product":"Intimista Rosé","family":"Amareleza"},
+      {"code":"3000299","product":"Eruptio Blend Açores D.O Pico","family":"Eruptio"},
+      {"code":"3000300","product":"Eruptio Arinto D.O Pico","family":"Eruptio"},
+      {"code":"3000301","product":"Eruptio Verdelho D.O Pico","family":"Eruptio"},
+      {"code":"3000354","product":"Moscatel do Douro - Martha's","family":"Martha's"},
+      {"code":"3000350","product":"Porto White - Martha's","family":"Martha's"},
+      {"code":"3000351","product":"Porto Ruby - Martha's","family":"Martha's"},
+      {"code":"3000423","product":"Porto Rosé - Martha's","family":"Martha's"},
+      {"code":"353","product":"Porto 10 anos - Martha's","family":"Martha's"},
+      {"code":"423","product":"Porto 20 anos - Martha's","family":"Martha's"},
+      {"code":"3000360","product":"Isla Negra Reserva - Cabernet Sauvignon","family":"Isla Negra"},
+      {"code":"3000361","product":"Isla Negra Reserva - Carmenere","family":"Isla Negra"},
+      {"code":"3000362","product":"Isla Negra Reserva - Merlot","family":"Isla Negra"},
+      {"code":"3000363","product":"Isla Negra Reserva - Sauvignon Blanc","family":"Isla Negra"},
+      {"code":"3000263","product":"New Roads Tto - Malbec, Tempranillo, Bonarda","family":"New Roads"},
+      {"code":"3000271","product":"New Roads Bco - Ugni Blanc, Chenin, Pedro Gimenez","family":"New Roads"},
+      {"code":"456","product":"New Roads Tto - Malbec 100%","family":"New Roads"},
+      {"code":"382","product":"Viñas del Tango Rosé","family":"Viñas del Tango"},
+      {"code":"381","product":"Viñas del Tango Varietal - Chardonnay","family":"Viñas del Tango"},
+      {"code":"3000404","product":"Viñas del Tango Varietal - Torrontes","family":"Viñas del Tango"},
+      {"code":"3000402","product":"Viñas del Tango Varietal - Cabernet Franc","family":"Viñas del Tango"},
+      {"code":"403","product":"Viñas del Tango Varietal - Cabernet Sauvignon","family":"Viñas del Tango"},
+      {"code":"3000403","product":"Viñas del Tango Varietal - Cabernet Sauvignon","family":"Viñas del Tango"},
+      {"code":"383","product":"Viñas del Tango Varietal - Malbec","family":"Viñas del Tango"},
+      {"code":"3000383","product":"Viñas del Tango Varietal - Malbec","family":"Viñas del Tango"},
+      {"code":"385","product":"Viñas del Tango Gran - Malbec","family":"Viñas del Tango"},
+      {"code":"3000385","product":"Viñas del Tango Selection - Malbec","family":"Viñas del Tango"},
+      {"code":"3000387","product":"Viñas del Tango Selection - Cabernet Sauvignon","family":"Viñas del Tango"},
+      {"code":"452","product":"Viñas del Tango Malbec Premium","family":"Viñas del Tango"},
+      {"code":"3000452","product":"Viñas del Tango Malbec Premium","family":"Viñas del Tango"},
+      {"code":"3000191","product":"Cava Bonaval Brut Rosé - Garnacha","family":"Cava Bonaval"},
+      {"code":"3000192","product":"Cava Bonaval Brut Branco - Macabeo","family":"Cava Bonaval"},
+      {"code":"3000468","product":"Cava Bonaval Branca Brut Sleeve","family":"Cava Bonaval"},
+      {"code":"3000251","product":"La Vache Espagnole Tto - Tempranillo, Monastrell","family":"La Vache"},
+      {"code":"3000269","product":"La Vache Espagnole Bco - Macabeo","family":"La Vache"},
+      {"code":"3000492","product":"Vinho Vidigal Rosé (6x750ml)","family":"Marques de Vitoria / Vidigal"},
+      {"code":"3000491","product":"Vinho Prado Molar Tinto (6x750ml)","family":"Marques de Vitoria"},
+      {"code":"3000490","product":"Vinho Marques de Vitoria Joven (6x750ml)","family":"Marques de Vitoria"},
+      {"code":"3000489","product":"Vinho Marques de Vitoria Rosé (6x750ml)","family":"Marques de Vitoria"},
+      {"code":"3000488","product":"Vinho Marques de Vitoria Blanco (6x750ml)","family":"Marques de Vitoria"},
+      {"code":"3000487","product":"Vinho Marques de Vitoria Crianza (6x750ml)","family":"Marques de Vitoria"},
+      {"code":"3000486","product":"Vinho Marques de Vitoria Reserva (6x750ml)","family":"Marques de Vitoria"},
+      {"code":"3000485","product":"Vinho Marques de Vitoria Gran Reserva (6x750ml)","family":"Marques de Vitoria"},
+      {"code":"3000476","product":"Vinho S.A Tto Stormhoek Pure Shiraz","family":"Stormhoek"},
+      {"code":"3000475","product":"Vinho S.A Tto Stormhoek Cabernet/Merlot","family":"Stormhoek"},
+      {"code":"3000474","product":"Vinho S.A Tto Stormhoek Syrah","family":"Stormhoek"},
+      {"code":"3000473","product":"Vinho S.A Bco Stormhoek Sauvignon Blanc","family":"Stormhoek"},
+      {"code":"3000472","product":"Vinho S.A Tto Stormhoek Pinotage","family":"Stormhoek"},
+      {"code":"3000471","product":"Vinho S.A Tto Stormhoek Pinotage/Malbec","family":"Stormhoek"},
+      {"code":"3000470","product":"Vinho S.A Bco Stormhoek Pinot Grigio","family":"Stormhoek"},
+      {"code":"3000469","product":"Vinho S.A Bco Stormhoek Chard./Viognier","family":"Stormhoek"}
     ];
 
-    // === UTILITÁRIOS ===
-    const mainGrid = document.getElementById('mainGrid');
-    const rawData = document.getElementById('rawData');
-    const searchInput = document.getElementById('search');
+    // --- Agrupa por família ---
+    function groupByFamily(items){
+      const map = new Map();
+      for(const p of items){
+        const fam = (p.family || 'Outros').trim();
+        if(!map.has(fam)) map.set(fam, []);
+        map.get(fam).push(p);
+      }
+      return map;
+    }
+
+    // --- UI helpers ---
+    const familiesEl = document.getElementById('families');
     const filterFamily = document.getElementById('filterFamily');
-    const btnExport = document.getElementById('btnExport');
-    const loadedCountEl = document.getElementById('loadedCount');
-    const logArea = document.getElementById('logArea');
-    const expectedCountEl = document.getElementById('expectedCount');
+    const searchInput = document.getElementById('search');
 
-    // Ajuste visual do número esperado (se você sabe que são 56, mantenha; senão altere)
-    const EXPECTED_COUNT = 56;
-    expectedCountEl.textContent = EXPECTED_COUNT;
+    function imageForFamily(family){
+      // arquivo esperado: images/{family}.jpg (espaços mantidos)
+      return `images/${encodeURIComponent(family)}.jpg`;
+    }
 
-    function log(...args){
-      console.log(...args);
-      const line = args.map(a => (typeof a === 'object' ? JSON.stringify(a) : String(a))).join(' ');
-      if(logArea.textContent === '—') logArea.textContent = '';
-      logArea.textContent += line + '\\n';
+    function placeholder(){
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="Arial" font-size="20">Imagem não disponível</text></svg>`
+      );
+    }
+
+    function createFamilyCard(family, items){
+      const div = document.createElement('section');
+      div.className = 'family';
+      const imgSrc = imageForFamily(family);
+      div.innerHTML = `
+        <div class="img"><img src="${imgSrc}" alt="${escapeHtml(family)}" onerror="this.onerror=null;this.src='${placeholder()}';" /></div>
+        <h2>${escapeHtml(family)}</h2>
+        <ul class="list"></ul>
+      `;
+      const ul = div.querySelector('.list');
+      for(const it of items){
+        const li = document.createElement('li');
+        li.textContent = it.product;
+        ul.appendChild(li);
+      }
+      return div;
     }
 
     function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-    function imageUrlFor(code){ return `images/${code}.jpg`; }
-
-    function handleImgError(img){
-      if(img.dataset.tried === 'jpg'){
-        if(!img.dataset.triedPng){
-          img.dataset.triedPng = '1';
-          img.src = img.src.replace(/\\.jpg$/i, '.png');
-        } else {
-          img.src = placeholderDataUrl();
-        }
-      } else {
-        img.dataset.tried = 'jpg';
-        // trigger onerror again (browser will call onerror if src fails)
-        img.src = img.src;
-      }
-    }
-
-    function placeholderDataUrl(){
-      return 'data:image/svg+xml;utf8,' + encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="Arial" font-size="20">Imagem não disponível</text></svg>`
-      );
-    }
-
-    function createCard(item){
-      const div = document.createElement('div');
-      div.className = 'card';
-      div.tabIndex = 0;
-      div.innerHTML = `
-        <div class="thumb"><img alt="${escapeHtml(item.product)}" src="${imageUrlFor(item.code)}" onerror="handleImgError(this)" /></div>
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <strong>${escapeHtml(item.product)}</strong>
-            <span class="muted">${escapeHtml(item.code)}</span>
-          </div>
-          <div class="muted" style="margin-top:6px">${item.vintage || '—'} • ${escapeHtml(item.pack)} • R$ ${item.price !== null ? Number(item.price).toFixed(2) : '—'}</div>
-        </div>
-      `;
-      return div;
-    }
-
-    // === RENDERIZAÇÃO SEM LIMITES ===
-    function render(list){
-      mainGrid.innerHTML = '';
-      if(!Array.isArray(list)) list = [];
-      loadedCountEl.textContent = list.length;
-      log('Renderizando', list.length, 'itens');
-      if(list.length === 0){
-        mainGrid.innerHTML = '<div class="muted">Nenhum produto encontrado.</div>';
-        rawData.textContent = JSON.stringify(list, null, 2);
-        return;
-      }
-      // Renderiza todos os itens (sem paginação)
-      const frag = document.createDocumentFragment();
-      for(const item of list){
-        frag.appendChild(createCard(item));
-      }
-      mainGrid.appendChild(frag);
-      rawData.textContent = JSON.stringify(list, null, 2);
-    }
-
-    // === FILTROS E EXPORT ===
-    function populateFamilies(){
-      const families = Array.from(new Set(PRODUCTS.map(p=>p.family || 'Outros'))).sort();
+    // --- Render principal ---
+    const grouped = groupByFamily(PRODUCTS);
+    function populateFilter(){
+      const families = Array.from(grouped.keys()).sort((a,b)=>a.localeCompare(b,'pt-BR'));
       for(const f of families){
         const opt = document.createElement('option');
         opt.value = f;
@@ -161,59 +277,27 @@
       }
     }
 
-    function applyFilters(){
-      const q = searchInput.value.trim().toLowerCase();
-      const fam = filterFamily.value;
-      let list = PRODUCTS.slice();
-      if(fam) list = list.filter(p => (p.family || '').toLowerCase() === fam.toLowerCase());
-      if(q){
-        list = list.filter(p => {
-          return (p.code && p.code.toLowerCase().includes(q)) ||
-                 (p.product && p.product.toLowerCase().includes(q)) ||
-                 (p.family && p.family.toLowerCase().includes(q));
-        });
+    function renderAll(selectedFamily = '', q = ''){
+      familiesEl.innerHTML = '';
+      const families = Array.from(grouped.keys()).sort((a,b)=>a.localeCompare(b,'pt-BR'));
+      for(const fam of families){
+        if(selectedFamily && fam !== selectedFamily) continue;
+        const items = grouped.get(fam).filter(p => !q || p.product.toLowerCase().includes(q));
+        if(items.length === 0) continue;
+        familiesEl.appendChild(createFamilyCard(fam, items));
       }
-      render(list);
     }
 
-    searchInput.addEventListener('input', applyFilters);
-    filterFamily.addEventListener('change', applyFilters);
+    // --- Eventos ---
+    filterFamily.addEventListener('change', ()=> renderAll(filterFamily.value, searchInput.value.trim().toLowerCase()));
+    searchInput.addEventListener('input', ()=> renderAll(filterFamily.value, searchInput.value.trim().toLowerCase()));
 
-    btnExport.addEventListener('click', ()=>{
-      const w = window.open('', '_blank');
-      w.document.write('<pre>' + escapeHtml(JSON.stringify(PRODUCTS, null, 2)) + '</pre>');
-      w.document.title = 'Export JSON';
-    });
+    // inicializa
+    populateFilter();
+    renderAll();
 
-    // === INICIALIZAÇÃO E VERIFICAÇÃO ===
-    (function init(){
-      try{
-        log('Inicializando catálogo...');
-        // Basic sanity checks
-        if(!Array.isArray(PRODUCTS)){
-          throw new Error('VARIÁVEL PRODUCTS não é um array. Verifique se você colou o array completo.');
-        }
-        log('PRODUCTS length =', PRODUCTS.length);
-        // Atualiza contador esperado visualmente (se quiser ajustar)
-        loadedCountEl.textContent = 0;
-        populateFamilies();
-        render(PRODUCTS);
-        // Se houver discrepância, logue aviso
-        if(PRODUCTS.length !== EXPECTED_COUNT){
-          log('Aviso: número de itens carregados (' + PRODUCTS.length + ') difere do esperado (' + EXPECTED_COUNT + ').');
-        } else {
-          log('Contagem conferida: OK.');
-        }
-      } catch(err){
-        log('Erro na inicialização:', err.message || err);
-        mainGrid.innerHTML = '<div class="muted">Erro ao inicializar catálogo. Veja o console para detalhes.</div>';
-      }
-    })();
-
-    // Expor para depuração
+    // expor para depuração
     window.PRODUCTS = PRODUCTS;
-    window.logArea = logArea;
-    window.handleImgError = handleImgError;
   </script>
 </body>
 </html>
