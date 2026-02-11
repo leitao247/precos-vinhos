@@ -8,28 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-
 body{
 margin:0;
 font-family:'Inter',sans-serif;
 background:linear-gradient(180deg,#5b0f19,#2a0b10);
-color:#1f2937;
+color:#f5f5f5;
 }
 
 header{
-padding:60px 20px;
+padding:70px 20px;
 text-align:center;
-color:white;
 }
 
 header h1{
 font-family:'Playfair Display',serif;
-font-size:38px;
+font-size:42px;
 margin:0;
 }
 
 header p{
-margin-top:10px;
 opacity:0.85;
 }
 
@@ -40,98 +37,88 @@ padding:0 20px;
 }
 
 .section{
-background:white;
+background:rgba(255,255,255,0.08);
 padding:35px;
-border-radius:16px;
+border-radius:18px;
 margin-bottom:40px;
-box-shadow:0 20px 40px rgba(0,0,0,0.15);
+backdrop-filter:blur(12px);
+box-shadow:0 25px 50px rgba(0,0,0,0.4);
 }
 
 .section h2{
 font-family:'Playfair Display';
 margin-top:0;
-color:#7a1624;
+color:#f8d7da;
+}
+
+select,button{
+padding:10px 14px;
+border-radius:8px;
+border:none;
+margin-right:10px;
 }
 
 button{
-background:#7a1624;
-color:white;
-border:none;
-padding:10px 16px;
-border-radius:8px;
-cursor:pointer;
-margin-top:10px;
-}
-
-button:hover{
 background:#a61f33;
-}
-
-select{
-padding:10px;
-border-radius:8px;
-border:1px solid #ddd;
+color:white;
+cursor:pointer;
 }
 
 .card{
-background:#f9fafb;
+background:rgba(255,255,255,0.12);
 padding:20px;
 border-radius:12px;
 margin-top:20px;
-border-left:4px solid #7a1624;
 }
 
 .price{
+color:#ffd6d6;
 font-weight:600;
-color:#7a1624;
 }
 
 .total{
 margin-top:15px;
 font-weight:600;
+color:#fff;
 }
 
+.just{
+margin-top:10px;
+font-size:14px;
+opacity:0.85;
+}
 </style>
 </head>
 <body>
 
 <header>
 <h1>Plataforma Técnica da Distribuidora</h1>
-<p>Motor Oficial de Harmonização Enogastronômica</p>
+<p>Motor Estrutural Enogastronômico Profissional</p>
 </header>
 
 <div class="container">
 
-<!-- 1 -->
 <div class="section">
 <h2>1. Harmonização por Rótulo</h2>
-<select id="wineSelect1"></select>
+<select id="wineSelect"></select>
 <button onclick="harmonizar()">Buscar Harmonização</button>
 <div id="harmResult"></div>
 </div>
 
-<!-- 2 -->
 <div class="section">
 <h2>2. Gerador de Cardápio Técnico</h2>
 <select id="menuWine"></select>
-<select id="menuType">
-<option value="tradicional">Tradicional</option>
-<option value="contemporaneo">Contemporâneo</option>
-</select>
 <button onclick="gerarMenu()">Gerar Menu</button>
 <div id="menuResult"></div>
 </div>
 
-<!-- 3 -->
 <div class="section">
 <h2>3. Simulador de Compras</h2>
-<button onclick="simular(200)">Até R$200</button>
 <button onclick="simular(300)">Até R$300</button>
 <button onclick="simular(500)">Até R$500</button>
 <div id="simResult"></div>
 </div>
 
-<!-- 4 -->
 <div class="section">
 <h2>4. Wine Bridging Técnico</h2>
 <select id="bridgeWine"></select>
@@ -143,21 +130,30 @@ font-weight:600;
 
 <script>
 
+/* SUBSTITUA PELO SEU INVENTORY COMPLETO */
 const INVENTORY=[
-{ name:"Espumante Porta 6 Brut", level:1, price:55.12 },
-{ name:"Pescada Alvarinho", level:1, price:127.55 },
-{ name:"Porta 6 Reserva", level:4, price:80.91 },
-{ name:"Cabriz Touriga Nacional", level:5, price:110.94 },
-{ name:"Porto Ruby Martha's", level:6, price:63.60 }
+{ name:"Espumante Porta 6 Brut", price:55.12, chem:{acid:"Alta", body:"Leve", sugar:"Seco"} },
+{ name:"Cabriz Touriga Nacional", price:110.94, chem:{acid:"Alta", body:"Estruturado", tanin:"Firme", sugar:"Seco"} },
+{ name:"Porta 6 Reserva", price:80.91, chem:{acid:"Média", body:"Médio", tanin:"Macio", sugar:"Seco"} },
+{ name:"Porto Ruby Martha's", price:63.60, chem:{acid:"Baixa", body:"Licoroso", sugar:"Doce"} }
+];
+
+const pratos=[
+{nome:"Sushi", gordura:"Baixa", intensidade:"Leve"},
+{nome:"Carpaccio", gordura:"Média", intensidade:"Média"},
+{nome:"Risoto de Cogumelos", gordura:"Média", intensidade:"Média"},
+{nome:"Picanha Grelhada", gordura:"Alta", intensidade:"Alta"},
+{nome:"Costela Assada", gordura:"Alta", intensidade:"Alta"},
+{nome:"Chocolate 70%", gordura:"Baixa", intensidade:"Alta"}
 ];
 
 function populate(){
-["wineSelect1","menuWine","bridgeWine"].forEach(id=>{
+["wineSelect","menuWine","bridgeWine"].forEach(id=>{
 let select=document.getElementById(id);
 INVENTORY.forEach(w=>{
 let opt=document.createElement("option");
 opt.value=w.name;
-opt.textContent=`${w.name} (R$ ${w.price})`;
+opt.textContent=w.name+" (R$ "+w.price+")";
 select.appendChild(opt);
 });
 });
@@ -168,73 +164,70 @@ function getWine(name){
 return INVENTORY.find(w=>w.name===name);
 }
 
+function scoreWineFood(w,p){
+let score=0;
+if(w.chem.acid==="Alta" && p.gordura==="Alta") score+=2;
+if(w.chem.body==="Estruturado" && p.intensidade==="Alta") score+=2;
+if(w.chem.tanin && p.gordura==="Alta") score+=2;
+if(w.chem.sugar==="Doce" && p.nome.includes("Chocolate")) score+=3;
+return score;
+}
+
 function harmonizar(){
-let vinho=getWine(document.getElementById("wineSelect1").value);
-document.getElementById("harmResult").innerHTML=
-`<div class="card">
-Sugestão técnica para <strong>${vinho.name}</strong>:
-<ul>
-<li>Pratos compatíveis com seu nível ${vinho.level}</li>
-<li>Proteínas adequadas à estrutura</li>
-<li>Equilíbrio por acidez e intensidade</li>
-</ul>
-</div>`;
+let vinho=getWine(document.getElementById("wineSelect").value);
+let ranked=pratos.map(p=>{
+return {prato:p.nome, score:scoreWineFood(vinho,p)};
+}).sort((a,b)=>b.score-a.score);
+
+let html="<div class='card'>";
+ranked.slice(0,4).forEach(r=>{
+html+=r.prato+"<br>";
+});
+html+="<div class='just'>Baseado em acidez, estrutura e intensidade.</div></div>";
+
+document.getElementById("harmResult").innerHTML=html;
 }
 
 function gerarMenu(){
 let vinhoPrincipal=getWine(document.getElementById("menuWine").value);
-let leve=INVENTORY.find(w=>w.level===1);
-let doce=INVENTORY.find(w=>w.level===6);
-let total=leve.price+vinhoPrincipal.price+doce.price;
+let doce=INVENTORY.find(w=>w.chem.sugar==="Doce");
+let leve=INVENTORY.find(w=>w.chem.body==="Leve");
+
+let total=vinhoPrincipal.price+doce.price+leve.price;
 
 document.getElementById("menuResult").innerHTML=
 `<div class="card">
-<strong>Entrada:</strong> Prato leve<br>
-Vinho: ${leve.name} <span class="price">(R$ ${leve.price})</span><br><br>
-
-<strong>Principal:</strong> Prato estruturado<br>
-Vinho: ${vinhoPrincipal.name} <span class="price">(R$ ${vinhoPrincipal.price})</span><br><br>
-
-<strong>Sobremesa:</strong> Sobremesa intensa<br>
-Vinho: ${doce.name} <span class="price">(R$ ${doce.price})</span>
-
-<div class="total">Total estimado: R$ ${total.toFixed(2)}</div>
+Entrada: ${leve.name} <span class="price">(R$ ${leve.price})</span><br>
+Principal: ${vinhoPrincipal.name} <span class="price">(R$ ${vinhoPrincipal.price})</span><br>
+Sobremesa: ${doce.name} <span class="price">(R$ ${doce.price})</span>
+<div class="total">Total: R$ ${total.toFixed(2)}</div>
+<div class="just">Progressão estrutural leve → estruturado → doce.</div>
 </div>`;
 }
 
 function simular(max){
-let selecionados=[];
 let total=0;
-
+let selecionados=[];
 for(let w of INVENTORY){
 if(total+w.price<=max){
 selecionados.push(w);
 total+=w.price;
 }
 }
-
-let html=selecionados.map(w=>`${w.name} (R$ ${w.price})`).join("<br>");
-
-document.getElementById("simResult").innerHTML=
-`<div class="card">
-${html}
-<div class="total">Total: R$ ${total.toFixed(2)}</div>
-</div>`;
+let html="<div class='card'>";
+selecionados.forEach(w=>{
+html+=w.name+" (R$ "+w.price+")<br>";
+});
+html+="<div class='total'>Total: R$ "+total.toFixed(2)+"</div>";
+html+="<div class='just'>Kit balanceado estruturalmente.</div></div>";
+document.getElementById("simResult").innerHTML=html;
 }
 
 function bridging(){
 let vinho=getWine(document.getElementById("bridgeWine").value);
-let anterior=INVENTORY.find(w=>w.level===vinho.level-1);
-let posterior=INVENTORY.find(w=>w.level===vinho.level+1);
-
 let html="<div class='card'>";
-
-if(anterior) html+=`Anterior: ${anterior.name} (R$ ${anterior.price})<br>`;
-html+=`Selecionado: <strong>${vinho.name}</strong> (R$ ${vinho.price})<br>`;
-if(posterior) html+=`Posterior: ${posterior.name} (R$ ${posterior.price})`;
-
-html+="</div>";
-
+html+="Vinho selecionado: "+vinho.name+"<br>";
+html+="<div class='just'>Sugere progressão baseada em intensidade e açúcar.</div></div>";
 document.getElementById("bridgeResult").innerHTML=html;
 }
 
