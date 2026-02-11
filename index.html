@@ -3,276 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataforma Técnica da Distribuidora</title>
+<title>Plataforma Técnica Premium</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
+
 body{
     margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background:#f3f4f6;
+    font-family:'Inter',sans-serif;
+    background:linear-gradient(180deg,#4b0f17,#1b0b0f);
     color:#1f2937;
 }
 
-header{
-    background:linear-gradient(135deg,#5b0f1a,#2a0b10);
-    color:white;
-    padding:60px 20px;
+.hero{
+    padding:80px 20px;
     text-align:center;
+    color:white;
 }
 
-header h1{
+.hero h1{
+    font-family:'Playfair Display',serif;
+    font-size:42px;
     margin:0;
-    font-size:32px;
-    letter-spacing:1px;
 }
 
-header p{
-    margin-top:10px;
+.hero p{
+    margin-top:15px;
     opacity:0.85;
 }
 
 .container{
     max-width:1100px;
-    margin:40px auto;
+    margin:-40px auto 60px;
     padding:0 20px;
 }
 
-.card{
-    background:white;
-    border-radius:14px;
-    padding:30px;
-    margin-bottom:30px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.06);
-    border-left:6px solid #5b0f1a;
-}
-
-.card h2{
-    margin-top:0;
-    color:#5b0f1a;
+.glass{
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(15px);
+    border-radius:18px;
+    padding:40px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.25);
 }
 
 select,button{
-    padding:10px 14px;
-    border-radius:8px;
-    border:1px solid #d1d5db;
+    padding:12px 16px;
+    border-radius:10px;
+    border:1px solid #ddd;
     font-size:14px;
 }
 
 button{
-    background:#5b0f1a;
+    background:#7a1624;
     color:white;
     border:none;
     cursor:pointer;
-    margin-left:8px;
+    margin-left:10px;
     transition:0.3s;
 }
 
 button:hover{
-    background:#7a1425;
+    background:#a61f33;
 }
 
-.result{
-    margin-top:20px;
-    padding:20px;
+.result-card{
+    margin-top:40px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+}
+
+.image-box img{
+    width:100%;
+    border-radius:16px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
+
+.tech-box{
     background:#f9fafb;
-    border-radius:10px;
-    border:1px solid #e5e7eb;
+    padding:25px;
+    border-radius:16px;
+    border-left:6px solid #7a1624;
 }
 
-.section-title{
-    font-weight:600;
-    margin-top:10px;
+.tech-box h2{
+    margin-top:0;
+    font-family:'Playfair Display';
+    color:#7a1624;
 }
 
-.footer{
-    text-align:center;
-    padding:40px;
+.meta{
+    margin-top:15px;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.badge{
+    display:inline-block;
+    background:#7a1624;
+    color:white;
+    padding:6px 12px;
+    border-radius:50px;
     font-size:12px;
-    color:#6b7280;
+    margin-bottom:10px;
 }
+
+@media(max-width:900px){
+.result-card{
+grid-template-columns:1fr;
+}
+}
+
 </style>
 </head>
 <body>
 
-<header>
-<h1>Plataforma Técnica da Distribuidora</h1>
-<p>Motor Oficial de Harmonização Enogastronômica</p>
-</header>
+<div class="hero">
+    <h1>Plataforma Técnica da Distribuidora</h1>
+    <p>Motor Oficial de Harmonização Enogastronômica</p>
+</div>
 
 <div class="container">
+<div class="glass">
 
-<!-- 1 -->
-<div class="card">
-<h2>1. Harmonização por Rótulo</h2>
 <select id="wineSelect"></select>
-<button onclick="harmonizar()">Ver Sugestões</button>
-<div id="harmResultado"></div>
-</div>
+<button onclick="buscarPrato()">Buscar Harmonização Técnica</button>
 
-<!-- 2 -->
-<div class="card">
-<h2>2. Gerador de Cardápio Técnico</h2>
-<button onclick="gerarCardapio()">Criar Menu Coerente</button>
-<div id="menuResultado"></div>
-</div>
-
-<!-- 3 -->
-<div class="card">
-<h2>3. Simulador de Compras</h2>
-<button onclick="gerarKit(200)">Até R$200</button>
-<button onclick="gerarKit(300)">Até R$300</button>
-<button onclick="gerarKit(500)">Até R$500</button>
-<div id="kitResultado"></div>
-</div>
-
-<!-- 4 -->
-<div class="card">
-<h2>4. Wine Bridging Técnico</h2>
-<select id="bridgeSelect"></select>
-<button onclick="wineBridge()">Buscar Progressão</button>
-<div id="bridgeResultado"></div>
-</div>
+<div id="resultado"></div>
 
 </div>
-
-<div class="footer">
-Distribuidora • Plataforma Técnica Interna
 </div>
 
 <script>
 
-/* INVENTÁRIO EXEMPLO (SUBSTITUIR PELO COMPLETO) */
-const INVENTORY = [
-{ name:"Espumante Porta 6 Brut", type:"Espumante", level:1, price:55.12 },
-{ name:"Pescada Alvarinho", type:"Branco", level:2, price:127.55 },
-{ name:"Porta 6 Reserva", type:"Tinto", level:4, price:80.91 },
-{ name:"Cabriz Touriga Nacional", type:"Tinto Estruturado", level:5, price:110.94 },
-{ name:"Porto Ruby Martha's", type:"Porto", level:6, price:63.60 }
+/* INVENTÁRIO EXEMPLO */
+const INVENTORY=[
+{ name:"Espumante Porta 6 Brut", type:"Espumante", acid:"Alta", body:"Leve", price:55.12 },
+{ name:"Pescada Alvarinho", type:"Branco", acid:"Alta", body:"Médio", price:127.55 },
+{ name:"Porta 6 Reserva", type:"Tinto", acid:"Média", body:"Médio", price:80.91 },
+{ name:"Cabriz Touriga Nacional", type:"Tinto Estruturado", acid:"Alta", body:"Encorpado", price:110.94 },
+{ name:"Porto Ruby Martha's", type:"Porto", acid:"Baixa", body:"Licoroso", price:63.60 }
 ];
 
-const harmonizacaoReal = {
-Espumante:["Sushi","Ostras","Ceviche"],
-Branco:["Peixe Grelhado","Risoto de Cogumelos","Camarões"],
-Tinto:["Massas com molho vermelho","Frango Assado"],
-"Tinto Estruturado":["Picanha na Brasa","Costela Assada","Cordeiro"],
-Porto:["Chocolate Amargo","Tiramisù"]
-};
-
 const wineSelect=document.getElementById("wineSelect");
-const bridgeSelect=document.getElementById("bridgeSelect");
 
 INVENTORY.forEach(w=>{
 let opt=document.createElement("option");
 opt.value=w.name;
-opt.textContent=`${w.name} (${formatBRL(w.price)})`;
+opt.textContent=`${w.name} (R$ ${w.price})`;
 wineSelect.appendChild(opt);
-bridgeSelect.appendChild(opt.cloneNode(true));
 });
-
-function formatBRL(v){
-return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-}
 
 function getWine(name){
 return INVENTORY.find(w=>w.name===name);
 }
 
-/* 1 Harmonização */
-function harmonizar(){
+function mapWineToCategory(type){
+if(type==="Espumante") return "Seafood";
+if(type==="Branco") return "Seafood";
+if(type==="Tinto") return "Pasta";
+if(type==="Tinto Estruturado") return "Beef";
+if(type==="Porto") return "Dessert";
+return "Seafood";
+}
+
+function explicacaoTecnica(vinho,categoria){
+if(categoria==="Seafood") return "Alta acidez e frescor equilibram salinidade e gordura.";
+if(categoria==="Pasta") return "Estrutura média acompanha molhos e proteínas leves.";
+if(categoria==="Beef") return "Taninos estruturados harmonizam com gordura e proteína intensa.";
+if(categoria==="Dessert") return "Doçura e densidade acompanham sobremesas intensas.";
+return "Harmonização por equilíbrio estrutural.";
+}
+
+async function buscarPrato(){
+
 const vinho=getWine(wineSelect.value);
-const pratos=harmonizacaoReal[vinho.type] || [];
+const categoria=mapWineToCategory(vinho.type);
 
-document.getElementById("harmResultado").innerHTML=
-`<div class="result">
-<strong>${vinho.name} (${formatBRL(vinho.price)})</strong>
-<ul>${pratos.map(p=>`<li>${p}</li>`).join("")}</ul>
-</div>`;
+const res=await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoria}`);
+const data=await res.json();
+
+if(!data.meals){
+document.getElementById("resultado").innerHTML="Nenhum prato encontrado.";
+return;
 }
 
-/* 2 Menu coerente */
-function gerarCardapio(){
+const prato=data.meals[Math.floor(Math.random()*data.meals.length)];
 
-const entrada="Sushi";
-const principal="Picanha na Brasa";
-const sobremesa="Tiramisù";
+document.getElementById("resultado").innerHTML=
+`<div class="result-card">
 
-const vinhoEntrada=INVENTORY.find(w=>w.type==="Espumante");
-const vinhoPrincipal=INVENTORY.find(w=>w.type==="Tinto Estruturado");
-const vinhoSobremesa=INVENTORY.find(w=>w.type==="Porto");
+<div class="image-box">
+<img src="${prato.strMealThumb}">
+</div>
 
-const total=vinhoEntrada.price+vinhoPrincipal.price+vinhoSobremesa.price;
+<div class="tech-box">
+<div class="badge">${categoria}</div>
+<h2>${vinho.name}</h2>
+<div class="meta">
+<strong>Preço:</strong> R$ ${vinho.price}<br>
+<strong>Acidez:</strong> ${vinho.acid}<br>
+<strong>Corpo:</strong> ${vinho.body}<br><br>
 
-document.getElementById("menuResultado").innerHTML=
-`<div class="result">
-<div class="section-title">Entrada:</div>
-${entrada}<br>
-Vinho: ${vinhoEntrada.name} (${formatBRL(vinhoEntrada.price)})
+<strong>Prato sugerido:</strong> ${prato.strMeal}<br><br>
 
-<hr>
+<strong>Justificativa técnica:</strong><br>
+${explicacaoTecnica(vinho,categoria)}
+</div>
+</div>
 
-<div class="section-title">Prato Principal:</div>
-${principal}<br>
-Vinho: ${vinhoPrincipal.name} (${formatBRL(vinhoPrincipal.price)})
-
-<hr>
-
-<div class="section-title">Sobremesa:</div>
-${sobremesa}<br>
-Vinho: ${vinhoSobremesa.name} (${formatBRL(vinhoSobremesa.price)})
-
-<hr>
-<strong>Total estimado: ${formatBRL(total)}</strong>
-</div>`;
-}
-
-/* 3 Kit */
-function gerarKit(limite){
-let total=0;
-let lista=[];
-
-for(let v of INVENTORY){
-if(total+v.price<=limite){
-lista.push(v);
-total+=v.price;
-}
-}
-
-document.getElementById("kitResultado").innerHTML=
-`<div class="result">
-${lista.map(v=>`${v.name} (${formatBRL(v.price)})<br>`).join("")}
-<hr>
-<strong>Total: ${formatBRL(total)}</strong>
-</div>`;
-}
-
-/* 4 Wine Bridging coerente */
-function wineBridge(){
-const vinho=getWine(bridgeSelect.value);
-let candidatos=[];
-
-if(vinho.type==="Espumante"){
-candidatos=INVENTORY.filter(w=>w.type==="Branco");
-}
-else if(vinho.type==="Branco"){
-candidatos=INVENTORY.filter(w=>w.type==="Tinto");
-}
-else if(vinho.type==="Tinto"){
-candidatos=INVENTORY.filter(w=>w.type==="Tinto Estruturado");
-}
-else if(vinho.type==="Tinto Estruturado"){
-candidatos=INVENTORY.filter(w=>w.type==="Porto");
-}
-else if(vinho.type==="Porto"){
-candidatos=INVENTORY.filter(w=>w.type==="Espumante");
-}
-
-if(candidatos.length===0){
-candidatos=INVENTORY.filter(w=>w.name!==vinho.name);
-}
-
-document.getElementById("bridgeResultado").innerHTML=
-`<div class="result">
-${candidatos.slice(0,3).map(v=>`${v.name} (${formatBRL(v.price)})<br>`).join("")}
 </div>`;
 }
 
