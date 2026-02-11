@@ -127,7 +127,9 @@
       background:linear-gradient(180deg,#fff,#fbfdff);
       border:1px solid rgba(15,23,42,0.04);
     }
+    .wine-left{display:flex;flex-direction:column;gap:4px}
     .wine-name{font-weight:600}
+    .wine-price{color:var(--muted);font-size:0.92rem}
     .wine-meta{color:var(--muted);font-size:0.9rem}
 
     /* Right column */
@@ -148,7 +150,7 @@
     <header>
       <div>
         <h1>Harmonizador Visual</h1>
-        <div class="subtitle">Foto do prato + sugestões de vinhos — interface limpa e responsiva</div>
+        <div class="subtitle">Foto do prato + sugestões de vinhos — agora com preço ao lado do nome</div>
       </div>
       <div class="small">Protótipo • TheMealDB (chave pública)</div>
     </header>
@@ -187,7 +189,7 @@
       <aside class="card panel-compact">
         <div>
           <strong>Configuração rápida</strong>
-          <div class="small" style="margin-top:6px">Edite associações vinho → termo no console ou peça que eu gere o painel de edição.</div>
+          <div class="small" style="margin-top:6px">Peça para eu adicionar edição inline se quiser alterar preços ou mapeamentos na UI.</div>
         </div>
 
         <div>
@@ -203,17 +205,25 @@
           </div>
         </div>
 
-        <div class="small" style="margin-top:6px">Quer que eu deixe este painel editável na UI? Digo e eu atualizo.</div>
+        <div class="small" style="margin-top:6px">Quer que eu deixe este painel editável na UI? Diga e eu atualizo.</div>
       </aside>
     </div>
   </div>
 
   <script>
-    // ====== Dados e configuração ======
+    // ====== Dados: vinhos com preço ======
+    // Preços em reais (número). Você pode editar os valores aqui.
     const WINES = [
-      "Porta 6 Reserva","Porta 6 Tinto","Porta 6 Branco","Brutalis by Vidigal",
-      "Júlia Florista Tinto","Da Pipa Tinto","Vidigal Reserva","Coragem Reserva",
-      "3 Autores Douro","Reserva dos Amigos"
+      { name: "Porta 6 Reserva", price: 80.91 },
+      { name: "Porta 6 Tinto", price: 33.07 },
+      { name: "Porta 6 Branco", price: 33.07 },
+      { name: "Brutalis by Vidigal", price: 217.30 },
+      { name: "Júlia Florista Tinto", price: 41.34 },
+      { name: "Da Pipa Tinto", price: 36.54 },
+      { name: "Vidigal Reserva", price: 45.58 },
+      { name: "Coragem Reserva", price: 53.10 },
+      { name: "3 Autores Douro", price: 53.10 },
+      { name: "Reserva dos Amigos", price: 49.36 }
     ];
 
     const DEFAULT_MAPPINGS = {
@@ -254,13 +264,22 @@
     function readDefaultSuggestions(){ try{ const r = localStorage.getItem(KEY_SUG); return r ? JSON.parse(r) : DEFAULT_SUGGESTIONS.slice(); } catch(e){ return DEFAULT_SUGGESTIONS.slice(); } }
     function saveDefaultSuggestions(arr){ localStorage.setItem(KEY_SUG, JSON.stringify(arr)); }
 
-    // ====== UI helpers ======
+    // ====== Utilitários ======
+    function formatPriceBR(value){
+      if(typeof value !== 'number') return '';
+      return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
     function populateWineSelect(){
       wineSelect.innerHTML = '<option value="">— selecione um rótulo —</option>';
       for(const w of WINES){
-        const o = document.createElement('option'); o.value = w; o.textContent = w; wineSelect.appendChild(o);
+        const o = document.createElement('option');
+        o.value = w.name;
+        o.textContent = `${w.name} — ${formatPriceBR(w.price)}`;
+        wineSelect.appendChild(o);
       }
     }
+
     function setStatus(txt){ status.textContent = txt || ''; }
     function clearDish(){
       dishContainer.innerHTML = `<div style="text-align:center;color:#9aa4b2;padding:18px">
@@ -336,6 +355,10 @@
       }
     }
 
+    function findWineObjectByName(name){
+      return WINES.find(w => w.name === name) || null;
+    }
+
     function renderDish(meal, wineName){
       const thumb = meal.strMealThumb || '';
       const title = meal.strMeal || '';
@@ -353,7 +376,7 @@
 
     function buildSuggestions(wineName){
       const defaults = readDefaultSuggestions();
-      if(!wineName) return defaults.slice(0,3);
+      if(!wineName) return defaults.slice(0,3).map(n => ({ name: n, price: (findWineObjectByName(n) || {}).price || null }));
       const lower = wineName.toLowerCase();
       const reds = defaults.filter(w => /tinto|reserva|brutalis|malbec|cab|syrah|merlot/i.test(w));
       const whites = defaults.filter(w => /branco|white|sauvignon|chardonnay|verde|pinot|grigio/i.test(w));
@@ -366,7 +389,11 @@
       const res = [];
       for(const w of out){ if(res.length >= 3) break; if(!res.includes(w)) res.push(w); }
       for(const d of defaults){ if(res.length >= 3) break; if(!res.includes(d)) res.push(d); }
-      return res.slice(0,3);
+      // map to objects with price
+      return res.slice(0,3).map(n => {
+        const obj = findWineObjectByName(n);
+        return { name: n, price: obj ? obj.price : null };
+      });
     }
 
     function renderSuggestions(list){
@@ -378,7 +405,14 @@
       for(const w of list){
         const div = document.createElement('div');
         div.className = 'wine-item';
-        div.innerHTML = `<div class="wine-name">${escapeHtml(w)}</div><div class="wine-meta">Sugestão</div>`;
+        const left = document.createElement('div');
+        left.className = 'wine-left';
+        left.innerHTML = `<div class="wine-name">${escapeHtml(w.name)}</div><div class="wine-price">${w.price != null ? formatPriceBR(w.price) : ''}</div>`;
+        const meta = document.createElement('div');
+        meta.className = 'wine-meta';
+        meta.textContent = 'Sugestão';
+        div.appendChild(left);
+        div.appendChild(meta);
         wineSuggestions.appendChild(div);
       }
     }
@@ -417,7 +451,7 @@
     })();
 
     // expose for debug
-    window._harmo = { readMap: () => readMap(), saveMap: (m) => saveMap(m), readDefaultSuggestions, saveDefaultSuggestions };
+    window._harmo = { readMap: () => readMap(), saveMap: (m) => saveMap(m), readDefaultSuggestions, saveDefaultSuggestions, WINES };
   </script>
 </body>
 </html>
