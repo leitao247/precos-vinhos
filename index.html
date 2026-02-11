@@ -3,110 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataforma Executiva de Harmonização</title>
+<title>Plataforma Técnica da Distribuidora</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
-    margin:0;
-    background:#f4f6f8;
-    font-family:'Inter',sans-serif;
-    color:#1f2937;
+margin:0;
+font-family:'Inter',sans-serif;
+background:linear-gradient(180deg,#5b0f19,#2a0b10);
+color:#1f2937;
 }
 
 header{
-    padding:60px 20px;
-    text-align:center;
-    background:white;
-    border-bottom:1px solid #e5e7eb;
+padding:60px 20px;
+text-align:center;
+color:white;
 }
 
 header h1{
-    font-family:'Playfair Display',serif;
-    font-size:38px;
-    margin:0;
+font-family:'Playfair Display',serif;
+font-size:38px;
+margin:0;
 }
 
 header p{
-    margin-top:10px;
-    color:#6b7280;
+margin-top:10px;
+opacity:0.85;
 }
 
 .container{
-    max-width:1100px;
-    margin:50px auto;
-    padding:0 20px;
+max-width:1200px;
+margin:0 auto 80px;
+padding:0 20px;
 }
 
-.panel{
-    background:white;
-    padding:40px;
-    border-radius:16px;
-    box-shadow:0 20px 40px rgba(0,0,0,0.05);
+.section{
+background:white;
+padding:35px;
+border-radius:16px;
+margin-bottom:40px;
+box-shadow:0 20px 40px rgba(0,0,0,0.15);
 }
 
-.controls{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-    margin-bottom:30px;
-}
-
-select,button{
-    padding:12px 16px;
-    border-radius:10px;
-    border:1px solid #d1d5db;
-    font-size:14px;
+.section h2{
+font-family:'Playfair Display';
+margin-top:0;
+color:#7a1624;
 }
 
 button{
-    background:#7a1624;
-    color:white;
-    border:none;
-    cursor:pointer;
-    font-weight:500;
+background:#7a1624;
+color:white;
+border:none;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
 }
 
 button:hover{
-    background:#a61f33;
+background:#a61f33;
 }
 
-.menu-card{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:25px;
-    margin-top:30px;
+select{
+padding:10px;
+border-radius:8px;
+border:1px solid #ddd;
 }
 
-.course{
-    background:#f9fafb;
-    padding:20px;
-    border-radius:12px;
-    border-left:4px solid #7a1624;
-}
-
-.course h3{
-    margin-top:0;
-    font-family:'Playfair Display';
+.card{
+background:#f9fafb;
+padding:20px;
+border-radius:12px;
+margin-top:20px;
+border-left:4px solid #7a1624;
 }
 
 .price{
-    font-weight:600;
-    color:#7a1624;
+font-weight:600;
+color:#7a1624;
 }
 
 .total{
-    margin-top:25px;
-    font-size:18px;
-    font-weight:600;
-}
-
-@media(max-width:900px){
-.menu-card{
-grid-template-columns:1fr;
-}
+margin-top:15px;
+font-weight:600;
 }
 
 </style>
@@ -114,121 +96,146 @@ grid-template-columns:1fr;
 <body>
 
 <header>
-<h1>Motor Executivo de Harmonização</h1>
-<p>Distribuidora • Plataforma Técnica Profissional</p>
+<h1>Plataforma Técnica da Distribuidora</h1>
+<p>Motor Oficial de Harmonização Enogastronômica</p>
 </header>
 
 <div class="container">
-<div class="panel">
 
-<div class="controls">
-<select id="wineSelect"></select>
+<!-- 1 -->
+<div class="section">
+<h2>1. Harmonização por Rótulo</h2>
+<select id="wineSelect1"></select>
+<button onclick="harmonizar()">Buscar Harmonização</button>
+<div id="harmResult"></div>
+</div>
 
-<select id="menuStyle">
-<option value="tradicional">Menu Tradicional</option>
-<option value="contemporaneo">Menu Contemporâneo</option>
+<!-- 2 -->
+<div class="section">
+<h2>2. Gerador de Cardápio Técnico</h2>
+<select id="menuWine"></select>
+<select id="menuType">
+<option value="tradicional">Tradicional</option>
+<option value="contemporaneo">Contemporâneo</option>
 </select>
-
-<button onclick="gerarMenu()">Gerar Menu Técnico</button>
+<button onclick="gerarMenu()">Gerar Menu</button>
+<div id="menuResult"></div>
 </div>
 
-<div id="resultado"></div>
-
+<!-- 3 -->
+<div class="section">
+<h2>3. Simulador de Compras</h2>
+<button onclick="simular(200)">Até R$200</button>
+<button onclick="simular(300)">Até R$300</button>
+<button onclick="simular(500)">Até R$500</button>
+<div id="simResult"></div>
 </div>
+
+<!-- 4 -->
+<div class="section">
+<h2>4. Wine Bridging Técnico</h2>
+<select id="bridgeWine"></select>
+<button onclick="bridging()">Buscar Progressão</button>
+<div id="bridgeResult"></div>
+</div>
+
 </div>
 
 <script>
 
-/* INVENTÁRIO EXEMPLO
-Substitua pelo seu INVENTORY completo */
 const INVENTORY=[
-{ name:"Espumante Porta 6 Brut", level:1, type:"Espumante", price:55.12 },
-{ name:"Pescada Alvarinho", level:1, type:"Branco", price:127.55 },
-{ name:"Porta 6 Reserva", level:4, type:"Tinto", price:80.91 },
-{ name:"Cabriz Touriga Nacional", level:5, type:"Tinto", price:110.94 },
-{ name:"Porto Ruby Martha's", level:6, type:"Porto", price:63.60 }
+{ name:"Espumante Porta 6 Brut", level:1, price:55.12 },
+{ name:"Pescada Alvarinho", level:1, price:127.55 },
+{ name:"Porta 6 Reserva", level:4, price:80.91 },
+{ name:"Cabriz Touriga Nacional", level:5, price:110.94 },
+{ name:"Porto Ruby Martha's", level:6, price:63.60 }
 ];
 
-const wineSelect=document.getElementById("wineSelect");
-
+function populate(){
+["wineSelect1","menuWine","bridgeWine"].forEach(id=>{
+let select=document.getElementById(id);
 INVENTORY.forEach(w=>{
 let opt=document.createElement("option");
 opt.value=w.name;
 opt.textContent=`${w.name} (R$ ${w.price})`;
-wineSelect.appendChild(opt);
+select.appendChild(opt);
 });
+});
+}
+populate();
 
 function getWine(name){
 return INVENTORY.find(w=>w.name===name);
 }
 
-function getLeve(){
-return INVENTORY.find(w=>w.level<=2);
-}
-
-function getDoce(){
-return INVENTORY.find(w=>w.level===6);
+function harmonizar(){
+let vinho=getWine(document.getElementById("wineSelect1").value);
+document.getElementById("harmResult").innerHTML=
+`<div class="card">
+Sugestão técnica para <strong>${vinho.name}</strong>:
+<ul>
+<li>Pratos compatíveis com seu nível ${vinho.level}</li>
+<li>Proteínas adequadas à estrutura</li>
+<li>Equilíbrio por acidez e intensidade</li>
+</ul>
+</div>`;
 }
 
 function gerarMenu(){
+let vinhoPrincipal=getWine(document.getElementById("menuWine").value);
+let leve=INVENTORY.find(w=>w.level===1);
+let doce=INVENTORY.find(w=>w.level===6);
+let total=leve.price+vinhoPrincipal.price+doce.price;
 
-const vinhoPrincipal=getWine(wineSelect.value);
-const estilo=document.getElementById("menuStyle").value;
+document.getElementById("menuResult").innerHTML=
+`<div class="card">
+<strong>Entrada:</strong> Prato leve<br>
+Vinho: ${leve.name} <span class="price">(R$ ${leve.price})</span><br><br>
 
-const vinhoEntrada=getLeve();
-const vinhoSobremesa=getDoce();
+<strong>Principal:</strong> Prato estruturado<br>
+Vinho: ${vinhoPrincipal.name} <span class="price">(R$ ${vinhoPrincipal.price})</span><br><br>
 
-let entrada, principal, sobremesa;
+<strong>Sobremesa:</strong> Sobremesa intensa<br>
+Vinho: ${doce.name} <span class="price">(R$ ${doce.price})</span>
 
-if(estilo==="tradicional"){
-
-entrada="Carpaccio clássico ou salada leve";
-principal="Prato principal alinhado ao perfil do vinho escolhido";
-sobremesa="Sobremesa estruturada com base em chocolate ou creme";
-
-}else{
-
-entrada="Burrata ou entrada vegetal refinada";
-principal="Proteína com técnica contemporânea e redução aromática";
-sobremesa="Sobremesa equilibrando textura e intensidade";
-
+<div class="total">Total estimado: R$ ${total.toFixed(2)}</div>
+</div>`;
 }
 
-let total=vinhoEntrada.price+vinhoPrincipal.price+vinhoSobremesa.price;
+function simular(max){
+let selecionados=[];
+let total=0;
 
-document.getElementById("resultado").innerHTML=`
+for(let w of INVENTORY){
+if(total+w.price<=max){
+selecionados.push(w);
+total+=w.price;
+}
+}
 
-<div class="menu-card">
+let html=selecionados.map(w=>`${w.name} (R$ ${w.price})`).join("<br>");
 
-<div class="course">
-<h3>Entrada</h3>
-<p>${entrada}</p>
-<p><strong>${vinhoEntrada.name}</strong></p>
-<p class="price">R$ ${vinhoEntrada.price}</p>
-</div>
+document.getElementById("simResult").innerHTML=
+`<div class="card">
+${html}
+<div class="total">Total: R$ ${total.toFixed(2)}</div>
+</div>`;
+}
 
-<div class="course">
-<h3>Principal</h3>
-<p>${principal}</p>
-<p><strong>${vinhoPrincipal.name}</strong></p>
-<p class="price">R$ ${vinhoPrincipal.price}</p>
-</div>
+function bridging(){
+let vinho=getWine(document.getElementById("bridgeWine").value);
+let anterior=INVENTORY.find(w=>w.level===vinho.level-1);
+let posterior=INVENTORY.find(w=>w.level===vinho.level+1);
 
-<div class="course">
-<h3>Sobremesa</h3>
-<p>${sobremesa}</p>
-<p><strong>${vinhoSobremesa.name}</strong></p>
-<p class="price">R$ ${vinhoSobremesa.price}</p>
-</div>
+let html="<div class='card'>";
 
-</div>
+if(anterior) html+=`Anterior: ${anterior.name} (R$ ${anterior.price})<br>`;
+html+=`Selecionado: <strong>${vinho.name}</strong> (R$ ${vinho.price})<br>`;
+if(posterior) html+=`Posterior: ${posterior.name} (R$ ${posterior.price})`;
 
-<div class="total">
-Total estimado: R$ ${total.toFixed(2)}
-</div>
+html+="</div>";
 
-`;
-
+document.getElementById("bridgeResult").innerHTML=html;
 }
 
 </script>
