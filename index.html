@@ -3,117 +3,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Distribuidora - Motor Enológico</title>
+<title>Plataforma Enológica | Distribuidora</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+
+:root{
+--vinho:#5D1823;
+--vinho-dark:#3E0F18;
+--ouro:#C0A062;
+--bg:#f4f4f6;
+--card:#ffffff;
+--text:#1F252E;
+}
+
+*{
+box-sizing:border-box;
+}
+
 body{
-    font-family: Arial;
-    background:#f4f4f4;
-    padding:20px;
+margin:0;
+font-family:Inter,sans-serif;
+background:var(--bg);
+color:var(--text);
 }
 
-h1{
-    color:#5D1823;
+/* HERO */
+
+.hero{
+background:linear-gradient(135deg,var(--vinho),var(--vinho-dark));
+color:white;
+padding:80px 20px;
+text-align:center;
 }
 
-.card{
-    background:white;
-    padding:15px;
-    margin:15px 0;
-    border-radius:6px;
-    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+.hero h1{
+font-family:"Playfair Display",serif;
+font-size:48px;
+margin:0;
+letter-spacing:1px;
+}
+
+.hero p{
+margin-top:20px;
+font-weight:300;
+opacity:0.9;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:1200px;
+margin:60px auto;
+padding:0 20px;
+}
+
+/* CARD PRINCIPAL */
+
+.panel{
+background:var(--card);
+padding:40px;
+border-radius:16px;
+box-shadow:0 15px 40px rgba(0,0,0,0.06);
+}
+
+/* CONTROLES */
+
+.controls{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+margin-bottom:30px;
 }
 
 select,button{
-    padding:10px;
-    margin:5px 0;
+padding:16px;
+font-size:15px;
+border-radius:10px;
+border:1px solid #ddd;
+min-width:220px;
 }
 
 button{
-    background:#5D1823;
-    color:white;
-    border:none;
-    cursor:pointer;
+background:var(--vinho);
+color:white;
+border:none;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
 }
 
-canvas{
-    background:white;
-    margin-top:10px;
+button:hover{
+background:var(--vinho-dark);
 }
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:30px;
+}
+
+/* CARD VINHO */
+
+.wine-card{
+background:white;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+transition:0.3s;
+position:relative;
+}
+
+.wine-card:hover{
+transform:translateY(-6px);
+}
+
+.wine-card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.wine-content{
+padding:25px;
+}
+
+.wine-content h3{
+margin:0 0 10px 0;
+font-family:"Playfair Display",serif;
+color:var(--vinho);
+font-size:20px;
+}
+
+.badge{
+position:absolute;
+top:15px;
+left:15px;
+background:var(--ouro);
+color:white;
+padding:6px 10px;
+border-radius:8px;
+font-size:12px;
+font-weight:600;
+}
+
+.score{
+font-size:26px;
+font-weight:700;
+margin-top:10px;
+}
+
+.price{
+margin-top:5px;
+opacity:0.7;
+}
+
+footer{
+text-align:center;
+padding:40px;
+font-size:14px;
+color:#777;
+}
+
+@media(max-width:768px){
+.hero h1{
+font-size:32px;
+}
+}
+
 </style>
 </head>
+
 <body>
 
-<h1>Motor Enológico da Distribuidora</h1>
+<div class="hero">
+<h1>Plataforma Enológica Premium</h1>
+<p>Motor Técnico Oficial da Distribuidora</p>
+</div>
 
+<div class="container">
+<div class="panel">
+
+<div class="controls">
 <select id="filtroTipo">
-<option value="TODOS">Todos</option>
-<option value="Tinto">Somente Tintos</option>
-<option value="Branco">Somente Brancos</option>
-<option value="Espumante">Somente Espumantes</option>
-<option value="Porto">Somente Fortificados</option>
+<option value="TODOS">Todos os Tipos</option>
+<option value="Tinto">Tintos</option>
+<option value="Branco">Brancos</option>
+<option value="Espumante">Espumantes</option>
+<option value="Porto">Fortificados</option>
 </select>
 
-<button onclick="gerarRankingTop5()">Gerar Ranking Top 5</button>
+<button onclick="gerarRankingTop5()">Gerar Ranking Técnico</button>
+</div>
 
-<div id="resultadoRanking"></div>
+<div id="resultadoRanking" class="grid"></div>
+
+</div>
+</div>
+
+<footer>
+Distribuidora • Plataforma Técnica de Harmonização
+</footer>
 
 <script>
 
-// ========================
-// INVENTORY (SUA LISTA)
-// ========================
+/* INVENTORY REDUZIDO PARA EXEMPLO */
+/* Substitua pelo seu INVENTORY COMPLETO */
 
 const INVENTORY = [
 { id:'130', name:"Espumante Porta 6 Brut", level:1, type:'Espumante', price:55.12, chem:{acid:'Alta', body:'Leve', sugar:'Seco'} },
-{ id:'191', name:"Cava Bonaval Rosé", level:1, type:'Espumante', price:46.78, chem:{acid:'Vibrante', body:'Médio', sugar:'Brut'} },
-{ id:'446', name:"Pescada Alvarinho", level:1, type:'Branco', price:127.55, chem:{acid:'Muito Alta', body:'Médio', sugar:'Seco'} },
-{ id:'209', name:"Ca Montebello Pinot Grigio", level:2, type:'Branco', price:80.00, chem:{acid:'Média', body:'Médio', sugar:'Seco'} },
-{ id:'220', name:"Charming Rabbit Chardonnay", level:3, type:'Branco', price:60.00, chem:{acid:'Baixa', body:'Untuoso', sugar:'Seco'} },
 { id:'170', name:"Porta 6 Reserva", level:4, type:'Tinto', price:80.91, chem:{acid:'Média', body:'Médio+', sugar:'Seco', tanin:'Macio'} },
-{ id:'300078', name:"Porta 6 Tinto", level:4, type:'Tinto', price:55.12, chem:{acid:'Média', body:'Macio', sugar:'Seco'} },
-{ id:'355', name:"La Fogliata Primitivo", level:5, type:'Tinto', price:59.18, chem:{acid:'Baixa', body:'Médio', sugar:'Residual', tanin:'Doce'} },
 { id:'448', name:"Cabriz Touriga Nacional", level:5, type:'Tinto', price:110.94, chem:{acid:'Alta', body:'Estruturado', sugar:'Seco', tanin:'Firme'} },
 { id:'350', name:"Porto Ruby Martha's", level:6, type:'Porto', price:63.60, chem:{acid:'Baixa', body:'Licoroso', sugar:'Doce'} }
 ];
 
-// ========================
-// NORMALIZAÇÃO SENSORIAL
-// ========================
+/* MAPS SENSORIAIS */
 
-function mapAcidez(a){
-if(!a) return 3;
-if(a.includes("Muito")) return 6;
-if(a.includes("Alta")) return 5;
-if(a.includes("Média")) return 3;
-if(a.includes("Baixa")) return 1;
-return 3;
-}
-
-function mapCorpo(c){
-if(!c) return 3;
-if(c.includes("Encorpado")) return 5;
-if(c.includes("Estruturado")) return 4;
-if(c.includes("Médio")) return 3;
-if(c.includes("Leve")) return 1;
-return 3;
-}
-
-function mapTanino(t){
-if(!t) return 2;
-if(t.includes("Firme")) return 5;
-if(t.includes("Médio")) return 3;
-if(t.includes("Baixo")) return 1;
-return 2;
-}
-
-function mapAcucar(s){
-if(!s) return 1;
-if(s.includes("Muito")) return 6;
-if(s.includes("Doce")) return 5;
-if(s.includes("Seco")) return 1;
-return 2;
-}
+function mapAcidez(a){if(!a)return 3;if(a.includes("Alta"))return 5;if(a.includes("Baixa"))return 1;return 3;}
+function mapCorpo(c){if(!c)return 3;if(c.includes("Estruturado"))return 4;if(c.includes("Leve"))return 1;return 3;}
+function mapTanino(t){if(!t)return 2;if(t.includes("Firme"))return 5;return 2;}
+function mapAcucar(s){if(!s)return 1;if(s.includes("Doce"))return 5;return 1;}
 
 function normalizarVinho(v){
 return{
@@ -124,42 +236,19 @@ doce:mapAcucar(v.chem?.sugar)
 };
 }
 
-// ========================
-// PERFIL DO PRATO
-// ========================
-
-function perfilPrato(categoria){
-
-if(categoria==="Beef")
-return{acidez:2,corpo:6,tanino:5,doce:1};
-
-if(categoria==="Seafood")
-return{acidez:5,corpo:2,tanino:1,doce:1};
-
-if(categoria==="Dessert")
-return{acidez:3,corpo:4,tanino:1,doce:6};
-
+function perfilPrato(cat){
+if(cat==="Beef")return{acidez:2,corpo:6,tanino:5,doce:1};
+if(cat==="Seafood")return{acidez:5,corpo:2,tanino:1,doce:1};
+if(cat==="Dessert")return{acidez:3,corpo:4,tanino:1,doce:6};
 return{acidez:3,corpo:3,tanino:2,doce:1};
 }
 
-// ========================
-// SCORE
-// ========================
-
 function calcularCompatibilidade(p,v){
-
-const diff=
-Math.abs(p.acidez-v.acidez)+
-Math.abs(p.corpo-v.corpo)+
-Math.abs(p.tanino-v.tanino)+
-Math.abs(p.doce-v.doce);
-
+const diff=Math.abs(p.acidez-v.acidez)+Math.abs(p.corpo-v.corpo)+Math.abs(p.tanino-v.tanino)+Math.abs(p.doce-v.doce);
 return Math.round(100-((diff/24)*100));
 }
 
-// ========================
-// RANKING
-// ========================
+/* RANKING */
 
 async function gerarRankingTop5(){
 
@@ -170,47 +259,34 @@ const res=await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${ca
 const data=await res.json();
 const prato=data.meals[Math.floor(Math.random()*data.meals.length)];
 
-const perfil=perfilPrato(categoria);
-
 let base=INVENTORY;
 const filtro=document.getElementById("filtroTipo").value;
+if(filtro!=="TODOS")base=INVENTORY.filter(v=>v.type===filtro);
 
-if(filtro!=="TODOS"){
-base=INVENTORY.filter(v=>v.type===filtro);
-}
+const perfil=perfilPrato(categoria);
 
-const ranking=base.map(v=>{
-return{
-vinho:v,
-score:calcularCompatibilidade(perfil,normalizarVinho(v))
-};
-})
+const ranking=base.map(v=>({vinho:v,score:calcularCompatibilidade(perfil,normalizarVinho(v))}))
 .sort((a,b)=>b.score-a.score)
 .slice(0,5);
 
 renderRanking(prato,ranking);
 }
 
-// ========================
-// RENDER
-// ========================
-
 function renderRanking(prato,ranking){
 
-document.getElementById("resultadoRanking").innerHTML=`
-<div class="card">
-<img src="${prato.strMealThumb}" width="250">
-<h2>${prato.strMeal}</h2>
-<h3>Top 5 Harmonizações</h3>
-${ranking.map((r,i)=>`
-<div class="card">
-<strong>#${i+1} ${r.vinho.name}</strong>
-<p>Compatibilidade: ${r.score}%</p>
-<p>Preço: R$ ${r.vinho.price.toFixed(2)}</p>
+document.getElementById("resultadoRanking").innerHTML=
+ranking.map((r,i)=>`
+<div class="wine-card">
+${i===0?'<div class="badge">Recomendação Oficial</div>':''}
+<img src="${prato.strMealThumb}">
+<div class="wine-content">
+<h3>${r.vinho.name}</h3>
+<div class="score">${r.score}%</div>
+<div class="price">R$ ${r.vinho.price.toFixed(2)}</div>
 </div>
-`).join("")}
 </div>
-`;
+`).join("");
+
 }
 
 </script>
