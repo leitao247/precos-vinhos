@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distribuidora - Motor Enológico</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f4f4f4;
+    padding:20px;
+}
+
+h1{
+    color:#5D1823;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    margin:15px 0;
+    border-radius:6px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+}
+
+select,button{
+    padding:10px;
+    margin:5px 0;
+}
+
+button{
+    background:#5D1823;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+canvas{
+    background:white;
+    margin-top:10px;
+}
+</style>
+</head>
+<body>
+
+<h1>Motor Enológico da Distribuidora</h1>
+
+<select id="filtroTipo">
+<option value="TODOS">Todos</option>
+<option value="Tinto">Somente Tintos</option>
+<option value="Branco">Somente Brancos</option>
+<option value="Espumante">Somente Espumantes</option>
+<option value="Porto">Somente Fortificados</option>
+</select>
+
+<button onclick="gerarRankingTop5()">Gerar Ranking Top 5</button>
+
+<div id="resultadoRanking"></div>
+
+<script>
+
+// ========================
+// INVENTORY (SUA LISTA)
+// ========================
+
+const INVENTORY = [
+{ id:'130', name:"Espumante Porta 6 Brut", level:1, type:'Espumante', price:55.12, chem:{acid:'Alta', body:'Leve', sugar:'Seco'} },
+{ id:'191', name:"Cava Bonaval Rosé", level:1, type:'Espumante', price:46.78, chem:{acid:'Vibrante', body:'Médio', sugar:'Brut'} },
+{ id:'446', name:"Pescada Alvarinho", level:1, type:'Branco', price:127.55, chem:{acid:'Muito Alta', body:'Médio', sugar:'Seco'} },
+{ id:'209', name:"Ca Montebello Pinot Grigio", level:2, type:'Branco', price:80.00, chem:{acid:'Média', body:'Médio', sugar:'Seco'} },
+{ id:'220', name:"Charming Rabbit Chardonnay", level:3, type:'Branco', price:60.00, chem:{acid:'Baixa', body:'Untuoso', sugar:'Seco'} },
+{ id:'170', name:"Porta 6 Reserva", level:4, type:'Tinto', price:80.91, chem:{acid:'Média', body:'Médio+', sugar:'Seco', tanin:'Macio'} },
+{ id:'300078', name:"Porta 6 Tinto", level:4, type:'Tinto', price:55.12, chem:{acid:'Média', body:'Macio', sugar:'Seco'} },
+{ id:'355', name:"La Fogliata Primitivo", level:5, type:'Tinto', price:59.18, chem:{acid:'Baixa', body:'Médio', sugar:'Residual', tanin:'Doce'} },
+{ id:'448', name:"Cabriz Touriga Nacional", level:5, type:'Tinto', price:110.94, chem:{acid:'Alta', body:'Estruturado', sugar:'Seco', tanin:'Firme'} },
+{ id:'350', name:"Porto Ruby Martha's", level:6, type:'Porto', price:63.60, chem:{acid:'Baixa', body:'Licoroso', sugar:'Doce'} }
+];
+
+// ========================
+// NORMALIZAÇÃO SENSORIAL
+// ========================
+
+function mapAcidez(a){
+if(!a) return 3;
+if(a.includes("Muito")) return 6;
+if(a.includes("Alta")) return 5;
+if(a.includes("Média")) return 3;
+if(a.includes("Baixa")) return 1;
+return 3;
+}
+
+function mapCorpo(c){
+if(!c) return 3;
+if(c.includes("Encorpado")) return 5;
+if(c.includes("Estruturado")) return 4;
+if(c.includes("Médio")) return 3;
+if(c.includes("Leve")) return 1;
+return 3;
+}
+
+function mapTanino(t){
+if(!t) return 2;
+if(t.includes("Firme")) return 5;
+if(t.includes("Médio")) return 3;
+if(t.includes("Baixo")) return 1;
+return 2;
+}
+
+function mapAcucar(s){
+if(!s) return 1;
+if(s.includes("Muito")) return 6;
+if(s.includes("Doce")) return 5;
+if(s.includes("Seco")) return 1;
+return 2;
+}
+
+function normalizarVinho(v){
+return{
+acidez:mapAcidez(v.chem?.acid),
+corpo:mapCorpo(v.chem?.body),
+tanino:mapTanino(v.chem?.tanin),
+doce:mapAcucar(v.chem?.sugar)
+};
+}
+
+// ========================
+// PERFIL DO PRATO
+// ========================
+
+function perfilPrato(categoria){
+
+if(categoria==="Beef")
+return{acidez:2,corpo:6,tanino:5,doce:1};
+
+if(categoria==="Seafood")
+return{acidez:5,corpo:2,tanino:1,doce:1};
+
+if(categoria==="Dessert")
+return{acidez:3,corpo:4,tanino:1,doce:6};
+
+return{acidez:3,corpo:3,tanino:2,doce:1};
+}
+
+// ========================
+// SCORE
+// ========================
+
+function calcularCompatibilidade(p,v){
+
+const diff=
+Math.abs(p.acidez-v.acidez)+
+Math.abs(p.corpo-v.corpo)+
+Math.abs(p.tanino-v.tanino)+
+Math.abs(p.doce-v.doce);
+
+return Math.round(100-((diff/24)*100));
+}
+
+// ========================
+// RANKING
+// ========================
+
+async function gerarRankingTop5(){
+
+const categorias=["Beef","Seafood","Dessert"];
+const categoria=categorias[Math.floor(Math.random()*categorias.length)];
+
+const res=await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoria}`);
+const data=await res.json();
+const prato=data.meals[Math.floor(Math.random()*data.meals.length)];
+
+const perfil=perfilPrato(categoria);
+
+let base=INVENTORY;
+const filtro=document.getElementById("filtroTipo").value;
+
+if(filtro!=="TODOS"){
+base=INVENTORY.filter(v=>v.type===filtro);
+}
+
+const ranking=base.map(v=>{
+return{
+vinho:v,
+score:calcularCompatibilidade(perfil,normalizarVinho(v))
+};
+})
+.sort((a,b)=>b.score-a.score)
+.slice(0,5);
+
+renderRanking(prato,ranking);
+}
+
+// ========================
+// RENDER
+// ========================
+
+function renderRanking(prato,ranking){
+
+document.getElementById("resultadoRanking").innerHTML=`
+<div class="card">
+<img src="${prato.strMealThumb}" width="250">
+<h2>${prato.strMeal}</h2>
+<h3>Top 5 Harmonizações</h3>
+${ranking.map((r,i)=>`
+<div class="card">
+<strong>#${i+1} ${r.vinho.name}</strong>
+<p>Compatibilidade: ${r.score}%</p>
+<p>Preço: R$ ${r.vinho.price.toFixed(2)}</p>
+</div>
+`).join("")}
+</div>
+`;
+}
+
+</script>
+
+</body>
+</html>
