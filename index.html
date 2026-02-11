@@ -8,15 +8,27 @@
 <style>
 body{
     margin:0;
-    font-family:'Segoe UI',sans-serif;
-    background:#f4f4f4;
+    font-family: 'Segoe UI', sans-serif;
+    background:#f3f4f6;
+    color:#1f2937;
 }
 
 header{
-    background:linear-gradient(135deg,#6e0f1f,#3b0b12);
+    background:linear-gradient(135deg,#5b0f1a,#2a0b10);
     color:white;
-    padding:50px;
+    padding:60px 20px;
     text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:32px;
+    letter-spacing:1px;
+}
+
+header p{
+    margin-top:10px;
+    opacity:0.85;
 }
 
 .container{
@@ -27,49 +39,56 @@ header{
 
 .card{
     background:white;
-    border-radius:12px;
-    padding:25px;
-    margin-bottom:25px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.05);
-    border-left:6px solid #6e0f1f;
+    border-radius:14px;
+    padding:30px;
+    margin-bottom:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+    border-left:6px solid #5b0f1a;
 }
 
 .card h2{
     margin-top:0;
-    color:#6e0f1f;
+    color:#5b0f1a;
 }
 
 select,button{
     padding:10px 14px;
     border-radius:8px;
-    border:1px solid #ccc;
+    border:1px solid #d1d5db;
     font-size:14px;
 }
 
 button{
-    background:#6e0f1f;
+    background:#5b0f1a;
     color:white;
     border:none;
     cursor:pointer;
     margin-left:8px;
+    transition:0.3s;
 }
 
 button:hover{
-    background:#8c162c;
+    background:#7a1425;
 }
 
 .result{
-    margin-top:15px;
-    padding:15px;
-    background:#f9f9f9;
-    border-radius:8px;
+    margin-top:20px;
+    padding:20px;
+    background:#f9fafb;
+    border-radius:10px;
+    border:1px solid #e5e7eb;
+}
+
+.section-title{
+    font-weight:600;
+    margin-top:10px;
 }
 
 .footer{
     text-align:center;
-    padding:30px;
+    padding:40px;
     font-size:12px;
-    color:#777;
+    color:#6b7280;
 }
 </style>
 </head>
@@ -82,10 +101,35 @@ button:hover{
 
 <div class="container">
 
+<!-- 1 -->
 <div class="card">
-<h2>4. Wine Bridging</h2>
+<h2>1. Harmonização por Rótulo</h2>
+<select id="wineSelect"></select>
+<button onclick="harmonizar()">Ver Sugestões</button>
+<div id="harmResultado"></div>
+</div>
+
+<!-- 2 -->
+<div class="card">
+<h2>2. Gerador de Cardápio Técnico</h2>
+<button onclick="gerarCardapio()">Criar Menu Coerente</button>
+<div id="menuResultado"></div>
+</div>
+
+<!-- 3 -->
+<div class="card">
+<h2>3. Simulador de Compras</h2>
+<button onclick="gerarKit(200)">Até R$200</button>
+<button onclick="gerarKit(300)">Até R$300</button>
+<button onclick="gerarKit(500)">Até R$500</button>
+<div id="kitResultado"></div>
+</div>
+
+<!-- 4 -->
+<div class="card">
+<h2>4. Wine Bridging Técnico</h2>
 <select id="bridgeSelect"></select>
-<button onclick="wineBridge()">Buscar Opções</button>
+<button onclick="wineBridge()">Buscar Progressão</button>
 <div id="bridgeResultado"></div>
 </div>
 
@@ -97,21 +141,32 @@ Distribuidora • Plataforma Técnica Interna
 
 <script>
 
-const INVENTORY=[
-{ name:"Espumante Porta 6 Brut", level:1, price:55.12, type:"Espumante"},
-{ name:"Pescada Alvarinho", level:2, price:127.55, type:"Branco"},
-{ name:"Porta 6 Reserva", level:4, price:80.91, type:"Tinto"},
-{ name:"Cabriz Touriga Nacional", level:5, price:110.94, type:"Tinto"},
-{ name:"Porto Ruby Martha's", level:6, price:63.60, type:"Porto"}
+/* INVENTÁRIO EXEMPLO (SUBSTITUIR PELO COMPLETO) */
+const INVENTORY = [
+{ name:"Espumante Porta 6 Brut", type:"Espumante", level:1, price:55.12 },
+{ name:"Pescada Alvarinho", type:"Branco", level:2, price:127.55 },
+{ name:"Porta 6 Reserva", type:"Tinto", level:4, price:80.91 },
+{ name:"Cabriz Touriga Nacional", type:"Tinto Estruturado", level:5, price:110.94 },
+{ name:"Porto Ruby Martha's", type:"Porto", level:6, price:63.60 }
 ];
 
+const harmonizacaoReal = {
+Espumante:["Sushi","Ostras","Ceviche"],
+Branco:["Peixe Grelhado","Risoto de Cogumelos","Camarões"],
+Tinto:["Massas com molho vermelho","Frango Assado"],
+"Tinto Estruturado":["Picanha na Brasa","Costela Assada","Cordeiro"],
+Porto:["Chocolate Amargo","Tiramisù"]
+};
+
+const wineSelect=document.getElementById("wineSelect");
 const bridgeSelect=document.getElementById("bridgeSelect");
 
 INVENTORY.forEach(w=>{
 let opt=document.createElement("option");
 opt.value=w.name;
 opt.textContent=`${w.name} (${formatBRL(w.price)})`;
-bridgeSelect.appendChild(opt);
+wineSelect.appendChild(opt);
+bridgeSelect.appendChild(opt.cloneNode(true));
 });
 
 function formatBRL(v){
@@ -122,49 +177,102 @@ function getWine(name){
 return INVENTORY.find(w=>w.name===name);
 }
 
+/* 1 Harmonização */
+function harmonizar(){
+const vinho=getWine(wineSelect.value);
+const pratos=harmonizacaoReal[vinho.type] || [];
+
+document.getElementById("harmResultado").innerHTML=
+`<div class="result">
+<strong>${vinho.name} (${formatBRL(vinho.price)})</strong>
+<ul>${pratos.map(p=>`<li>${p}</li>`).join("")}</ul>
+</div>`;
+}
+
+/* 2 Menu coerente */
+function gerarCardapio(){
+
+const entrada="Sushi";
+const principal="Picanha na Brasa";
+const sobremesa="Tiramisù";
+
+const vinhoEntrada=INVENTORY.find(w=>w.type==="Espumante");
+const vinhoPrincipal=INVENTORY.find(w=>w.type==="Tinto Estruturado");
+const vinhoSobremesa=INVENTORY.find(w=>w.type==="Porto");
+
+const total=vinhoEntrada.price+vinhoPrincipal.price+vinhoSobremesa.price;
+
+document.getElementById("menuResultado").innerHTML=
+`<div class="result">
+<div class="section-title">Entrada:</div>
+${entrada}<br>
+Vinho: ${vinhoEntrada.name} (${formatBRL(vinhoEntrada.price)})
+
+<hr>
+
+<div class="section-title">Prato Principal:</div>
+${principal}<br>
+Vinho: ${vinhoPrincipal.name} (${formatBRL(vinhoPrincipal.price)})
+
+<hr>
+
+<div class="section-title">Sobremesa:</div>
+${sobremesa}<br>
+Vinho: ${vinhoSobremesa.name} (${formatBRL(vinhoSobremesa.price)})
+
+<hr>
+<strong>Total estimado: ${formatBRL(total)}</strong>
+</div>`;
+}
+
+/* 3 Kit */
+function gerarKit(limite){
+let total=0;
+let lista=[];
+
+for(let v of INVENTORY){
+if(total+v.price<=limite){
+lista.push(v);
+total+=v.price;
+}
+}
+
+document.getElementById("kitResultado").innerHTML=
+`<div class="result">
+${lista.map(v=>`${v.name} (${formatBRL(v.price)})<br>`).join("")}
+<hr>
+<strong>Total: ${formatBRL(total)}</strong>
+</div>`;
+}
+
+/* 4 Wine Bridging coerente */
 function wineBridge(){
-
 const vinho=getWine(bridgeSelect.value);
-
 let candidatos=[];
 
-/* Lógica técnica */
-
 if(vinho.type==="Espumante"){
-    candidatos=INVENTORY.filter(w=>w.type==="Branco" || w.type==="Tinto");
+candidatos=INVENTORY.filter(w=>w.type==="Branco");
 }
-
 else if(vinho.type==="Branco"){
-    candidatos=INVENTORY.filter(w=>w.type==="Tinto");
+candidatos=INVENTORY.filter(w=>w.type==="Tinto");
 }
-
-else if(vinho.type==="Tinto" && vinho.level<5){
-    candidatos=INVENTORY.filter(w=>w.level>vinho.level);
+else if(vinho.type==="Tinto"){
+candidatos=INVENTORY.filter(w=>w.type==="Tinto Estruturado");
 }
-
-else if(vinho.type==="Tinto" && vinho.level>=5){
-    candidatos=INVENTORY.filter(w=>w.type==="Porto");
+else if(vinho.type==="Tinto Estruturado"){
+candidatos=INVENTORY.filter(w=>w.type==="Porto");
 }
-
 else if(vinho.type==="Porto"){
-    candidatos=INVENTORY.filter(w=>w.type==="Espumante");
+candidatos=INVENTORY.filter(w=>w.type==="Espumante");
 }
-
-/* remover o próprio vinho */
-candidatos=candidatos.filter(w=>w.name!==vinho.name);
-
-/* limitar a 3 */
-candidatos=candidatos.slice(0,3);
 
 if(candidatos.length===0){
-document.getElementById("bridgeResultado").innerHTML=
-`<div class="result">Nenhuma progressão encontrada.</div>`;
-return;
+candidatos=INVENTORY.filter(w=>w.name!==vinho.name);
 }
 
 document.getElementById("bridgeResultado").innerHTML=
 `<div class="result">
-${candidatos.map(v=>`${v.name} (${formatBRL(v.price)})<br>`).join("")}
+${candidatos.slice(0,3).map(v=>`${v.name} (${formatBRL(v.price)})<br>`).join("")}
 </div>`;
 }
 
