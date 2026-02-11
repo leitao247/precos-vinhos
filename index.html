@@ -3,54 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plataforma Técnica Premium</title>
+<title>Plataforma Executiva de Harmonização</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
     margin:0;
+    background:#f4f6f8;
     font-family:'Inter',sans-serif;
-    background:linear-gradient(180deg,#4b0f17,#1b0b0f);
     color:#1f2937;
 }
 
-.hero{
-    padding:80px 20px;
+header{
+    padding:60px 20px;
     text-align:center;
-    color:white;
+    background:white;
+    border-bottom:1px solid #e5e7eb;
 }
 
-.hero h1{
+header h1{
     font-family:'Playfair Display',serif;
-    font-size:42px;
+    font-size:38px;
     margin:0;
 }
 
-.hero p{
-    margin-top:15px;
-    opacity:0.85;
+header p{
+    margin-top:10px;
+    color:#6b7280;
 }
 
 .container{
     max-width:1100px;
-    margin:-40px auto 60px;
+    margin:50px auto;
     padding:0 20px;
 }
 
-.glass{
-    background:rgba(255,255,255,0.92);
-    backdrop-filter:blur(15px);
-    border-radius:18px;
+.panel{
+    background:white;
     padding:40px;
-    box-shadow:0 30px 60px rgba(0,0,0,0.25);
+    border-radius:16px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.05);
+}
+
+.controls{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
 }
 
 select,button{
     padding:12px 16px;
     border-radius:10px;
-    border:1px solid #ddd;
+    border:1px solid #d1d5db;
     font-size:14px;
 }
 
@@ -59,58 +66,45 @@ button{
     color:white;
     border:none;
     cursor:pointer;
-    margin-left:10px;
-    transition:0.3s;
+    font-weight:500;
 }
 
 button:hover{
     background:#a61f33;
 }
 
-.result-card{
-    margin-top:40px;
+.menu-card{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:30px;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:25px;
+    margin-top:30px;
 }
 
-.image-box img{
-    width:100%;
-    border-radius:16px;
-    box-shadow:0 20px 40px rgba(0,0,0,0.2);
-}
-
-.tech-box{
+.course{
     background:#f9fafb;
-    padding:25px;
-    border-radius:16px;
-    border-left:6px solid #7a1624;
+    padding:20px;
+    border-radius:12px;
+    border-left:4px solid #7a1624;
 }
 
-.tech-box h2{
+.course h3{
     margin-top:0;
     font-family:'Playfair Display';
+}
+
+.price{
+    font-weight:600;
     color:#7a1624;
 }
 
-.meta{
-    margin-top:15px;
-    font-size:14px;
-    line-height:1.6;
-}
-
-.badge{
-    display:inline-block;
-    background:#7a1624;
-    color:white;
-    padding:6px 12px;
-    border-radius:50px;
-    font-size:12px;
-    margin-bottom:10px;
+.total{
+    margin-top:25px;
+    font-size:18px;
+    font-weight:600;
 }
 
 @media(max-width:900px){
-.result-card{
+.menu-card{
 grid-template-columns:1fr;
 }
 }
@@ -119,16 +113,24 @@ grid-template-columns:1fr;
 </head>
 <body>
 
-<div class="hero">
-    <h1>Plataforma Técnica da Distribuidora</h1>
-    <p>Motor Oficial de Harmonização Enogastronômica</p>
-</div>
+<header>
+<h1>Motor Executivo de Harmonização</h1>
+<p>Distribuidora • Plataforma Técnica Profissional</p>
+</header>
 
 <div class="container">
-<div class="glass">
+<div class="panel">
 
+<div class="controls">
 <select id="wineSelect"></select>
-<button onclick="buscarPrato()">Buscar Harmonização Técnica</button>
+
+<select id="menuStyle">
+<option value="tradicional">Menu Tradicional</option>
+<option value="contemporaneo">Menu Contemporâneo</option>
+</select>
+
+<button onclick="gerarMenu()">Gerar Menu Técnico</button>
+</div>
 
 <div id="resultado"></div>
 
@@ -137,13 +139,14 @@ grid-template-columns:1fr;
 
 <script>
 
-/* INVENTÁRIO EXEMPLO */
+/* INVENTÁRIO EXEMPLO
+Substitua pelo seu INVENTORY completo */
 const INVENTORY=[
-{ name:"Espumante Porta 6 Brut", type:"Espumante", acid:"Alta", body:"Leve", price:55.12 },
-{ name:"Pescada Alvarinho", type:"Branco", acid:"Alta", body:"Médio", price:127.55 },
-{ name:"Porta 6 Reserva", type:"Tinto", acid:"Média", body:"Médio", price:80.91 },
-{ name:"Cabriz Touriga Nacional", type:"Tinto Estruturado", acid:"Alta", body:"Encorpado", price:110.94 },
-{ name:"Porto Ruby Martha's", type:"Porto", acid:"Baixa", body:"Licoroso", price:63.60 }
+{ name:"Espumante Porta 6 Brut", level:1, type:"Espumante", price:55.12 },
+{ name:"Pescada Alvarinho", level:1, type:"Branco", price:127.55 },
+{ name:"Porta 6 Reserva", level:4, type:"Tinto", price:80.91 },
+{ name:"Cabriz Touriga Nacional", level:5, type:"Tinto", price:110.94 },
+{ name:"Porto Ruby Martha's", level:6, type:"Porto", price:63.60 }
 ];
 
 const wineSelect=document.getElementById("wineSelect");
@@ -159,63 +162,76 @@ function getWine(name){
 return INVENTORY.find(w=>w.name===name);
 }
 
-function mapWineToCategory(type){
-if(type==="Espumante") return "Seafood";
-if(type==="Branco") return "Seafood";
-if(type==="Tinto") return "Pasta";
-if(type==="Tinto Estruturado") return "Beef";
-if(type==="Porto") return "Dessert";
-return "Seafood";
+function getLeve(){
+return INVENTORY.find(w=>w.level<=2);
 }
 
-function explicacaoTecnica(vinho,categoria){
-if(categoria==="Seafood") return "Alta acidez e frescor equilibram salinidade e gordura.";
-if(categoria==="Pasta") return "Estrutura média acompanha molhos e proteínas leves.";
-if(categoria==="Beef") return "Taninos estruturados harmonizam com gordura e proteína intensa.";
-if(categoria==="Dessert") return "Doçura e densidade acompanham sobremesas intensas.";
-return "Harmonização por equilíbrio estrutural.";
+function getDoce(){
+return INVENTORY.find(w=>w.level===6);
 }
 
-async function buscarPrato(){
+function gerarMenu(){
 
-const vinho=getWine(wineSelect.value);
-const categoria=mapWineToCategory(vinho.type);
+const vinhoPrincipal=getWine(wineSelect.value);
+const estilo=document.getElementById("menuStyle").value;
 
-const res=await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoria}`);
-const data=await res.json();
+const vinhoEntrada=getLeve();
+const vinhoSobremesa=getDoce();
 
-if(!data.meals){
-document.getElementById("resultado").innerHTML="Nenhum prato encontrado.";
-return;
+let entrada, principal, sobremesa;
+
+if(estilo==="tradicional"){
+
+entrada="Carpaccio clássico ou salada leve";
+principal="Prato principal alinhado ao perfil do vinho escolhido";
+sobremesa="Sobremesa estruturada com base em chocolate ou creme";
+
+}else{
+
+entrada="Burrata ou entrada vegetal refinada";
+principal="Proteína com técnica contemporânea e redução aromática";
+sobremesa="Sobremesa equilibrando textura e intensidade";
+
 }
 
-const prato=data.meals[Math.floor(Math.random()*data.meals.length)];
+let total=vinhoEntrada.price+vinhoPrincipal.price+vinhoSobremesa.price;
 
-document.getElementById("resultado").innerHTML=
-`<div class="result-card">
+document.getElementById("resultado").innerHTML=`
 
-<div class="image-box">
-<img src="${prato.strMealThumb}">
+<div class="menu-card">
+
+<div class="course">
+<h3>Entrada</h3>
+<p>${entrada}</p>
+<p><strong>${vinhoEntrada.name}</strong></p>
+<p class="price">R$ ${vinhoEntrada.price}</p>
 </div>
 
-<div class="tech-box">
-<div class="badge">${categoria}</div>
-<h2>${vinho.name}</h2>
-<div class="meta">
-<strong>Preço:</strong> R$ ${vinho.price}<br>
-<strong>Acidez:</strong> ${vinho.acid}<br>
-<strong>Corpo:</strong> ${vinho.body}<br><br>
-
-<strong>Prato sugerido:</strong> ${prato.strMeal}<br><br>
-
-<strong>Justificativa técnica:</strong><br>
-${explicacaoTecnica(vinho,categoria)}
-</div>
+<div class="course">
+<h3>Principal</h3>
+<p>${principal}</p>
+<p><strong>${vinhoPrincipal.name}</strong></p>
+<p class="price">R$ ${vinhoPrincipal.price}</p>
 </div>
 
-</div>`;
+<div class="course">
+<h3>Sobremesa</h3>
+<p>${sobremesa}</p>
+<p><strong>${vinhoSobremesa.name}</strong></p>
+<p class="price">R$ ${vinhoSobremesa.price}</p>
+</div>
+
+</div>
+
+<div class="total">
+Total estimado: R$ ${total.toFixed(2)}
+</div>
+
+`;
+
 }
 
 </script>
+
 </body>
 </html>
