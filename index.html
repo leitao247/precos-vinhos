@@ -10,139 +10,46 @@
       --card:#ffffff;
       --muted:#6b7280;
       --accent:#2563eb;
-      --glass: rgba(37,99,235,0.06);
       --radius:12px;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      color-scheme: light;
     }
     html,body{height:100%}
     body{
       margin:0;
       background:var(--bg);
       color:#0f172a;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
       display:flex;
       align-items:flex-start;
       justify-content:center;
       padding:28px;
     }
-
-    .container{
-      width:100%;
-      max-width:980px;
-    }
-
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:18px;
-    }
+    .container{width:100%;max-width:980px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
     h1{font-size:1.15rem;margin:0;font-weight:600}
     .subtitle{color:var(--muted);font-size:0.95rem}
-
-    .controls{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-bottom:18px;
-    }
-    .select, .input, .btn {
-      border-radius:10px;
-      border:1px solid rgba(15,23,42,0.06);
-      padding:10px 12px;
-      background:var(--card);
-      font-size:0.95rem;
-      outline:none;
-    }
+    .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+    .select, .input, .btn {border-radius:10px;border:1px solid rgba(15,23,42,0.06);padding:10px 12px;background:var(--card);font-size:0.95rem}
     .select{min-width:320px}
     .input{min-width:260px}
-    .btn{
-      cursor:pointer;
-      border:0;
-      background:var(--accent);
-      color:#fff;
-      box-shadow:0 6px 18px rgba(37,99,235,0.12);
-      transition:transform .12s ease, box-shadow .12s ease;
-    }
-    .btn.secondary{
-      background:#fff;color:var(--accent);border:1px solid rgba(37,99,235,0.12);box-shadow:none;
-    }
-    .btn:active{transform:translateY(1px)}
-    .layout{
-      display:grid;
-      grid-template-columns: 1fr 320px;
-      gap:18px;
-      align-items:start;
-    }
-
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:16px;
-      box-shadow:0 6px 20px rgba(2,6,23,0.06);
-    }
-
-    /* Dish area */
-    .dish{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      align-items:center;
-    }
-    .dish-figure{
-      width:100%;
-      max-width:760px;
-      height:420px;
-      border-radius:10px;
-      overflow:hidden;
-      background:linear-gradient(180deg,#f3f4f6,#eef2ff);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border:1px solid rgba(15,23,42,0.04);
-    }
-    .dish-figure img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
+    .btn{cursor:pointer;border:0;background:var(--accent);color:#fff;box-shadow:0 6px 18px rgba(37,99,235,0.12)}
+    .btn.secondary{background:#fff;color:var(--accent);border:1px solid rgba(37,99,235,0.12);box-shadow:none}
+    .layout{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+    .card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:0 6px 20px rgba(2,6,23,0.06)}
+    .dish{display:flex;flex-direction:column;gap:12px;align-items:center}
+    .dish-figure{width:100%;max-width:760px;height:420px;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#f3f4f6,#eef2ff);display:flex;align-items:center;justify-content:center;border:1px solid rgba(15,23,42,0.04)}
+    .dish-figure img{width:100%;height:100%;object-fit:cover;display:block}
     .dish-meta{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px}
     .dish-title{font-weight:600}
     .dish-source{color:var(--muted);font-size:0.92rem}
-
-    /* Wine suggestions */
     .wine-list{display:flex;flex-direction:column;gap:10px;margin-top:6px}
-    .wine-item{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:10px 12px;
-      border-radius:10px;
-      background:linear-gradient(180deg,#fff,#fbfdff);
-      border:1px solid rgba(15,23,42,0.04);
-    }
+    .wine-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid rgba(15,23,42,0.04)}
     .wine-left{display:flex;flex-direction:column;gap:4px}
     .wine-name{font-weight:600}
     .wine-price{color:var(--muted);font-size:0.92rem}
     .wine-meta{color:var(--muted);font-size:0.9rem}
-
-    /* Right column */
     .panel-compact{display:flex;flex-direction:column;gap:12px}
     .small{font-size:0.9rem;color:var(--muted)}
-
-    /* Responsive */
-    @media (max-width:980px){
-      .layout{grid-template-columns:1fr; }
-      .select{min-width:100%}
-      .input{min-width:100%}
-      .dish-figure{height:320px}
-    }
+    @media (max-width:980px){ .layout{grid-template-columns:1fr;} .select{min-width:100%} .input{min-width:100%} .dish-figure{height:320px} }
   </style>
 </head>
 <body>
@@ -150,7 +57,7 @@
     <header>
       <div>
         <h1>Harmonizador Visual</h1>
-        <div class="subtitle">Foto do prato + sugestões de vinhos — agora com preço ao lado do nome</div>
+        <div class="subtitle">Foto do prato + sugestões de vinhos — preço ao lado do nome</div>
       </div>
       <div class="small">Protótipo • TheMealDB (chave pública)</div>
     </header>
@@ -211,8 +118,7 @@
   </div>
 
   <script>
-    // ====== Dados: vinhos com preço ======
-    // Preços em reais (número). Você pode editar os valores aqui.
+    // ====== Vinhos com preço (edite aqui se precisar) ======
     const WINES = [
       { name: "Porta 6 Reserva", price: 80.91 },
       { name: "Porta 6 Tinto", price: 33.07 },
@@ -266,8 +172,12 @@
 
     // ====== Utilitários ======
     function formatPriceBR(value){
-      if(typeof value !== 'number') return '';
-      return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      if (value === null || value === undefined || Number.isNaN(Number(value))) return '';
+      return Number(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function findWineObjectByName(name){
+      return WINES.find(w => w.name === name) || null;
     }
 
     function populateWineSelect(){
@@ -342,7 +252,7 @@
         }
         let chosen = null;
         for(const m of meals){
-          const full = m.idMeal && m.strMeal ? m : (m.idMeal ? await lookupById(m.idMeal) : null);
+          const full = (m && m.idMeal && m.strMeal && m.strMealThumb) ? m : (m && m.idMeal ? await lookupById(m.idMeal) : null);
           if(full && full.strMealThumb){ chosen = full; break; }
         }
         if(!chosen) chosen = meals[0];
@@ -355,14 +265,10 @@
       }
     }
 
-    function findWineObjectByName(name){
-      return WINES.find(w => w.name === name) || null;
-    }
-
     function renderDish(meal, wineName){
-      const thumb = meal.strMealThumb || '';
-      const title = meal.strMeal || '';
-      const source = meal.strSource || meal.strYoutube || '';
+      const thumb = meal && meal.strMealThumb ? meal.strMealThumb : '';
+      const title = meal && meal.strMeal ? meal.strMeal : '';
+      const source = meal && (meal.strSource || meal.strYoutube) ? (meal.strSource || meal.strYoutube) : '';
       if(thumb){
         dishContainer.innerHTML = `<img src="${escapeHtml(thumb)}" alt="${escapeHtml(title)}" />`;
       } else {
@@ -376,7 +282,10 @@
 
     function buildSuggestions(wineName){
       const defaults = readDefaultSuggestions();
-      if(!wineName) return defaults.slice(0,3).map(n => ({ name: n, price: (findWineObjectByName(n) || {}).price || null }));
+      if(!wineName) return defaults.slice(0,3).map(n => {
+        const obj = findWineObjectByName(n);
+        return { name: n, price: obj ? obj.price : null };
+      });
       const lower = wineName.toLowerCase();
       const reds = defaults.filter(w => /tinto|reserva|brutalis|malbec|cab|syrah|merlot/i.test(w));
       const whites = defaults.filter(w => /branco|white|sauvignon|chardonnay|verde|pinot|grigio/i.test(w));
@@ -389,7 +298,6 @@
       const res = [];
       for(const w of out){ if(res.length >= 3) break; if(!res.includes(w)) res.push(w); }
       for(const d of defaults){ if(res.length >= 3) break; if(!res.includes(d)) res.push(d); }
-      // map to objects with price
       return res.slice(0,3).map(n => {
         const obj = findWineObjectByName(n);
         return { name: n, price: obj ? obj.price : null };
