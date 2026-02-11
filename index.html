@@ -3,57 +3,92 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Catálogo S&P — Vinhos por Família</title>
+  <title>Catálogo S&P — Vinhos e Harmonizador</title>
   <style>
     :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;line-height:1.4}
-    body{max-width:1200px;margin:28px auto;padding:18px;background:#f6f7fb;color:#111}
+    body{max-width:1200px;margin:20px auto;padding:18px;background:#f6f7fb;color:#111}
     header{display:flex;align-items:center;justify-content:space-between;gap:12px}
     h1{margin:0;font-size:1.25rem}
-    .controls{display:flex;gap:8px;align-items:center}
+    .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
     input,select,button{padding:8px;border:1px solid #d1d5db;border-radius:6px}
     .families{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:18px}
     .family{background:#fff;padding:12px;border-radius:8px;box-shadow:0 1px 6px rgba(16,24,40,.06);display:flex;flex-direction:column;gap:10px}
     .family .img{height:160px;background:#f3f4f6;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center}
     .family .img img{width:100%;height:100%;object-fit:cover}
-    .family h2{margin:0;font-size:1rem}
+    .family h2{margin:0;font-size:1rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
     .list{margin:0;padding:0;list-style:none;max-height:260px;overflow:auto}
     .list li{padding:6px 0;border-bottom:1px solid #f1f5f9;font-size:0.95rem}
     .muted{color:#6b7280;font-size:0.9rem}
-    #info{margin-top:12px;background:#fff;padding:10px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-    pre{white-space:pre-wrap;word-break:break-word}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:18px}
+    .card{background:#fff;padding:12px;border-radius:8px;box-shadow:0 1px 6px rgba(16,24,40,.06)}
+    .thumb{height:160px;background:#f3f4f6;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    .actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+    pre{background:#0f172a;color:#fff;padding:12px;border-radius:6px;overflow:auto;max-height:320px}
+    footer{margin-top:18px;color:#6b7280;font-size:0.9rem}
+    .badge{background:#eef2ff;color:#1e3a8a;padding:4px 8px;border-radius:999px;font-weight:600}
   </style>
 </head>
 <body>
   <header>
     <div>
-      <h1>Catálogo S&P — Vinhos (nomes por família)</h1>
-      <div class="muted">Coloque imagens em <strong>images/{family}.jpg</strong> (ex.: <code>images/Porta 6.jpg</code>).</div>
+      <h1>Catálogo S&P — Vinhos e Harmonizador</h1>
+      <div class="muted">Exibe nomes por família; imagens em <code>images/</code>. Harmonizador usa TheMealDB (chave pública).</div>
     </div>
 
     <div class="controls">
-      <input id="search" placeholder="Pesquisar por nome de vinho" style="width:320px" />
+      <input id="search" placeholder="Pesquisar por nome de vinho" style="width:300px" />
       <select id="filterFamily"><option value="">Todas as famílias</option></select>
       <button id="btnShowAll">Mostrar Todos</button>
     </div>
   </header>
 
-  <div id="info">
+  <section id="info" style="margin-top:12px;background:#fff;padding:10px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,.04)">
     <strong>Total de rótulos:</strong> <span id="totalCount">0</span>
     &nbsp;•&nbsp;
     <strong>Famílias:</strong> <span id="familyCount">0</span>
-    <div class="muted" style="margin-top:6px">Se algum rótulo não aparecer, abra o console (F12) e cole as mensagens aqui.</div>
-  </div>
+  </section>
 
   <main>
     <section id="families" class="families" aria-live="polite"></section>
   </main>
 
-  <footer style="margin-top:18px" class="muted">
-    Dados exibidos apenas como nomes; sem preços ou safra. Para imagens, use o nome exato da família.
+  <hr style="margin:18px 0" />
+
+  <section style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start">
+    <div style="flex:1;min-width:320px">
+      <h2 style="margin:0 0 8px">Harmonizador rápido (TheMealDB)</h2>
+      <div class="muted" style="margin-bottom:8px">Selecione um rótulo e clique em Buscar Top 3. Se não houver resultado por nome, usa categoria Seafood.</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select id="wineSelect" style="flex:1"></select>
+        <button id="btnSearch">Buscar Top 3</button>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <button id="btnRandom">Buscar Aleatório (3)</button>
+        <button id="btnShowSaved">Ver Salvos</button>
+        <button id="btnExport">Exportar Salvos</button>
+        <button id="btnClearSaved" style="background:#fff;border:1px solid #f87171;color:#b91c1c">Limpar Salvos</button>
+      </div>
+      <div id="status" class="muted" style="margin-top:8px"></div>
+    </div>
+
+    <div style="flex:1;min-width:320px">
+      <strong>Dados salvos (preview)</strong>
+      <pre id="savedPreview">Nenhum item salvo.</pre>
+    </div>
+  </section>
+
+  <main id="results" class="grid" aria-live="polite" style="margin-top:14px"></main>
+
+  <footer>
+    <div class="muted">Se quiser que eu gere a lista de nomes de arquivo sugeridos para as imagens (ex.: <code>Porta_6.jpg</code>), eu preparo.</div>
   </footer>
 
   <script>
-    // ===== DADOS: lista completa de rótulos (nome + família + código) =====
+    /************************************************************************
+     * Dados completos: lista de rótulos (code, product, family)
+     * (Este array foi extraído da planilha; mantenha-o intacto)
+     ************************************************************************/
     const PRODUCTS = [
       {"code":"3000211","product":"Gaggiarone Vitgni Giovani Tto - Croatina","family":"Gaggiarone"},
       {"code":"3000420","product":"Gaggiarone Vitgni Giovani Tto - Croatina","family":"Gaggiarone"},
@@ -227,16 +262,62 @@
       {"code":"3000469","product":"Vinho S.A Bco Stormhoek Chard./Viognier","family":"Stormhoek"}
     ];
 
-    // ===== Helpers =====
-    const familiesEl = document.getElementById('families');
-    const filterFamily = document.getElementById('filterFamily');
-    const searchInput = document.getElementById('search');
-    const totalCountEl = document.getElementById('totalCount');
-    const familyCountEl = document.getElementById('familyCount');
-    const btnShowAll = document.getElementById('btnShowAll');
+    /************************************************************************
+     * Utilitários e renderização (corrigidos para evitar erros comuns)
+     ************************************************************************/
 
-    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    // escape HTML
+    function escapeHtml(s){ return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+    // remove acentos e normaliza para nome de arquivo
+    function normalizeFilename(name){
+      if(!name) return '';
+      // remove diacríticos
+      const noDiacritics = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      // replace spaces and slashes with underscore, remove problematic chars
+      return noDiacritics.replace(/[\/\\]+/g,'_').replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_\-\.]/g,'').trim();
+    }
+
+    // tenta várias variações de nome de arquivo (cru, underscore, normalized)
+    function candidateImagePaths(family){
+      const raw = `images/${family}.jpg`;
+      const rawPng = `images/${family}.png`;
+      const unders = `images/${family.replace(/\s+/g,'_')}.jpg`;
+      const undersPng = `images/${family.replace(/\s+/g,'_')}.png`;
+      const norm = `images/${normalizeFilename(family)}.jpg`;
+      const normPng = `images/${normalizeFilename(family)}.png`;
+      return [raw, rawPng, unders, undersPng, norm, normPng];
+    }
+
+    // cria elemento img que tenta as variações em sequência
+    function createImgWithFallback(family){
+      const img = document.createElement('img');
+      img.alt = family;
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'cover';
+      const candidates = candidateImagePaths(family);
+      let idx = 0;
+      img.src = candidates[idx];
+      img.onerror = function(){
+        idx++;
+        if(idx < candidates.length){
+          img.src = candidates[idx];
+        } else {
+          img.onerror = null;
+          img.src = placeholderDataUrl();
+        }
+      };
+      return img;
+    }
+
+    function placeholderDataUrl(){
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="Arial" font-size="20">Imagem não disponível</text></svg>`
+      );
+    }
+
+    // agrupa por família
     function groupByFamily(items){
       const map = new Map();
       for(const p of items){
@@ -247,40 +328,41 @@
       return map;
     }
 
-    function imageForFamily(family){
-      // tenta jpg e png; usamos encodeURIComponent para evitar problemas com espaços
-      return `images/${encodeURIComponent(family)}.jpg`;
-    }
-
-    function placeholder(){
-      return 'data:image/svg+xml;utf8,' + encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="Arial" font-size="20">Imagem não disponível</text></svg>`
-      );
-    }
-
+    // cria cartão de família (usa createImgWithFallback)
     function createFamilyCard(family, items){
-      const div = document.createElement('section');
-      div.className = 'family';
-      const imgSrc = imageForFamily(family);
-      div.innerHTML = `
-        <div class="img"><img src="${imgSrc}" alt="${escapeHtml(family)}" onerror="this.onerror=null;this.src='${placeholder()}';" /></div>
-        <h2>${escapeHtml(family)} <span class="muted">(${items.length})</span></h2>
-        <ul class="list"></ul>
-      `;
-      const ul = div.querySelector('.list');
+      const section = document.createElement('section');
+      section.className = 'family';
+      const imgWrap = document.createElement('div');
+      imgWrap.className = 'img';
+      imgWrap.appendChild(createImgWithFallback(family));
+      const h = document.createElement('h2');
+      h.innerHTML = `${escapeHtml(family)} <span class="muted">(${items.length})</span>`;
+      const ul = document.createElement('ul');
+      ul.className = 'list';
       for(const it of items){
         const li = document.createElement('li');
         li.textContent = it.product;
         ul.appendChild(li);
       }
-      return div;
+      section.appendChild(imgWrap);
+      section.appendChild(h);
+      section.appendChild(ul);
+      return section;
     }
 
-    // ===== Render e eventos =====
-    const grouped = groupByFamily(PRODUCTS);
+    // render principal
+    const familiesEl = document.getElementById('families');
+    const filterFamily = document.getElementById('filterFamily');
+    const searchInput = document.getElementById('search');
+    const totalCountEl = document.getElementById('totalCount');
+    const familyCountEl = document.getElementById('familyCount');
+    const btnShowAll = document.getElementById('btnShowAll');
 
+    let grouped;
     function populateFilter(){
+      grouped = groupByFamily(PRODUCTS);
       const families = Array.from(grouped.keys()).sort((a,b)=>a.localeCompare(b,'pt-BR'));
+      filterFamily.innerHTML = '<option value="">Todas as famílias</option>';
       for(const f of families){
         const opt = document.createElement('option');
         opt.value = f;
@@ -302,34 +384,238 @@
         shown += items.length;
       }
       totalCountEl.textContent = shown;
-      console.log('Renderizado', shown, 'rótulos em', families.length, 'famílias (filtro:', selectedFamily || 'todas', 'pesquisa:', q || '—', ')');
+      console.log('Renderizado', shown, 'rótulos (filtro:', selectedFamily || 'todas', 'pesquisa:', q || '—', ')');
     }
 
     filterFamily.addEventListener('change', ()=> renderAll(filterFamily.value, searchInput.value.trim().toLowerCase()));
     searchInput.addEventListener('input', ()=> renderAll(filterFamily.value, searchInput.value.trim().toLowerCase()));
     btnShowAll.addEventListener('click', ()=> { filterFamily.value = ''; searchInput.value = ''; renderAll(); });
 
-    // inicialização
-    (function init(){
+    // inicialização segura
+    (function initCatalog(){
       try{
+        if(!Array.isArray(PRODUCTS)) throw new Error('PRODUCTS não é um array.');
         populateFilter();
         renderAll();
-        // verificação rápida: se o total não bater com o tamanho do array, logue
-        const totalItems = PRODUCTS.length;
-        const shown = Number(totalCountEl.textContent || 0);
-        console.log('PRODUCTS length =', totalItems);
-        if(shown !== totalItems){
-          // quando há filtro por família, shown pode ser menor; aqui apenas aviso
-          console.warn('Aviso: contagem exibida pode diferir do total de PRODUCTS se houver pesquisa/filtro ativo.');
-        }
-      } catch(e){
-        console.error('Erro inicializando catálogo:', e);
+        console.log('PRODUCTS length =', PRODUCTS.length);
+      } catch(err){
+        console.error('Erro inicializando catálogo:', err);
         familiesEl.innerHTML = '<div class="muted">Erro ao carregar catálogo. Veja console para detalhes.</div>';
       }
     })();
 
+    /************************************************************************
+     * Harmonizador (TheMealDB) + salvamento local (localStorage)
+     ************************************************************************/
+    const WINES = Array.from(new Set(PRODUCTS.map(p => p.product))).slice(0, 200); // lista de rótulos (evita duplicatas)
+    const wineSelect = document.getElementById('wineSelect');
+    const btnSearch = document.getElementById('btnSearch');
+    const btnRandom = document.getElementById('btnRandom');
+    const btnShowSaved = document.getElementById('btnShowSaved');
+    const btnExport = document.getElementById('btnExport');
+    const btnClearSaved = document.getElementById('btnClearSaved');
+    const results = document.getElementById('results');
+    const status = document.getElementById('status');
+    const savedPreview = document.getElementById('savedPreview');
+
+    // preencher select de vinhos
+    (function populateWines(){
+      wineSelect.innerHTML = '<option value="">— selecione um rótulo (ou deixe em branco para aleatório) —</option>';
+      for(const w of WINES){
+        const o = document.createElement('option');
+        o.value = w;
+        o.textContent = w;
+        wineSelect.appendChild(o);
+      }
+    })();
+
+    const API_KEY = '1';
+    const BASE = `https://www.themealdb.com/api/json/v1/${API_KEY}`;
+    const STORAGE_KEY = 'harmonizador_salvos_v1';
+
+    function readSaved(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return [];
+        return JSON.parse(raw);
+      } catch(e){
+        console.error('Erro lendo storage', e);
+        return [];
+      }
+    }
+    function saveItem(item){
+      const arr = readSaved();
+      if(item.idMeal && arr.some(x => x.idMeal === item.idMeal)) return false;
+      arr.push(item);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      return true;
+    }
+    function clearSaved(){
+      localStorage.removeItem(STORAGE_KEY);
+    }
+    function updateSavedPreview(){
+      const arr = readSaved();
+      savedPreview.textContent = arr.length ? JSON.stringify(arr, null, 2) : 'Nenhum item salvo.';
+    }
+
+    async function fetchJson(url){
+      const res = await fetch(url);
+      if(!res.ok) throw new Error('Erro na requisição: ' + res.status);
+      return res.json();
+    }
+
+    async function searchByName(q){
+      const url = `${BASE}/search.php?s=${encodeURIComponent(q)}`;
+      status.textContent = 'Buscando por nome: ' + q + ' ...';
+      const json = await fetchJson(url);
+      return json.meals;
+    }
+
+    async function filterByCategory(cat){
+      const url = `${BASE}/filter.php?c=${encodeURIComponent(cat)}`;
+      status.textContent = 'Fallback: buscando por categoria: ' + cat + ' ...';
+      const json = await fetchJson(url);
+      return json.meals;
+    }
+
+    async function lookupById(id){
+      const url = `${BASE}/lookup.php?i=${encodeURIComponent(id)}`;
+      const json = await fetchJson(url);
+      return json.meals ? json.meals[0] : null;
+    }
+
+    function createMealCard(meal, showSave=true){
+      const div = document.createElement('div');
+      div.className = 'card';
+      const thumb = meal.strMealThumb || '';
+      const name = meal.strMeal || '—';
+      const id = meal.idMeal || '';
+      const source = meal.strSource || meal.strYoutube || '#';
+      div.innerHTML = `
+        <div class="thumb"><img src="${thumb}" alt="${escapeHtml(name)}" onerror="this.src='${placeholderDataUrl()}'" /></div>
+        <h3 style="margin:8px 0 6px">${escapeHtml(name)}</h3>
+        <div class="muted small">ID: ${escapeHtml(id)}</div>
+        <div class="actions">
+          <a class="badge" href="${source || '#'}" target="_blank" rel="noopener">Abrir receita</a>
+          ${ showSave ? '<button class="btnSave" style="padding:6px 10px;border-radius:6px">Salvar</button>' : '' }
+        </div>
+      `;
+      if(showSave){
+        const btn = div.querySelector('.btnSave');
+        btn.addEventListener('click', ()=>{
+          const ok = saveItem(meal);
+          status.textContent = ok ? 'Receita salva.' : 'Receita já estava salva.';
+          updateSavedPreview();
+        });
+      }
+      return div;
+    }
+
+    function pickTopN(arr, n=3){ if(!Array.isArray(arr)) return []; return arr.slice(0,n); }
+
+    async function findTop3ForWine(wineName){
+      results.innerHTML = '';
+      try{
+        status.textContent = 'Iniciando busca...';
+        if(wineName){
+          const byName = await searchByName(wineName);
+          if(byName && byName.length){
+            status.textContent = `Encontradas ${byName.length} receitas por nome. Exibindo top 3.`;
+            const top = pickTopN(byName, 3);
+            for(const m of top) results.appendChild(createMealCard(m, true));
+            return;
+          }
+        }
+
+        const cat = 'Seafood';
+        const byCat = await filterByCategory(cat);
+        if(byCat && byCat.length){
+          status.textContent = `Nenhuma receita por nome. Usando categoria "${cat}". Exibindo top 3.`;
+          const top = pickTopN(byCat, 3);
+          for(const item of top){
+            const full = await lookupById(item.idMeal);
+            results.appendChild(createMealCard(full || item, true));
+          }
+          return;
+        }
+
+        status.textContent = 'Nenhum prato encontrado; buscando aleatório...';
+        const r = await fetch(`${BASE}/random.php`);
+        const j = await r.json();
+        if(j.meals && j.meals.length){
+          status.textContent = 'Exibindo sugestão aleatória.';
+          results.appendChild(createMealCard(j.meals[0], true));
+          return;
+        }
+
+        status.textContent = 'Nenhum prato encontrado.';
+      } catch(err){
+        console.error(err);
+        status.textContent = 'Erro ao buscar: ' + (err.message || err);
+      }
+    }
+
+    // eventos harmonizador
+    btnSearch.addEventListener('click', ()=> {
+      const wine = wineSelect.value.trim();
+      findTop3ForWine(wine);
+    });
+
+    btnRandom.addEventListener('click', async ()=>{
+      results.innerHTML = '';
+      status.textContent = 'Buscando 3 receitas aleatórias...';
+      try{
+        for(let i=0;i<3;i++){
+          const r = await fetch(`${BASE}/random.php`);
+          const j = await r.json();
+          if(j.meals && j.meals[0]) results.appendChild(createMealCard(j.meals[0], true));
+        }
+        status.textContent = 'Pronto — 3 receitas aleatórias.';
+      } catch(e){
+        console.error(e);
+        status.textContent = 'Erro ao buscar aleatórias.';
+      }
+    });
+
+    btnShowSaved.addEventListener('click', ()=>{
+      const arr = readSaved();
+      results.innerHTML = '';
+      if(arr.length === 0){
+        status.textContent = 'Nenhuma receita salva.';
+        savedPreview.textContent = 'Nenhum item salvo.';
+        return;
+      }
+      status.textContent = `Mostrando ${arr.length} receitas salvas.`;
+      for(const m of arr) results.appendChild(createMealCard(m, false));
+      savedPreview.textContent = JSON.stringify(arr, null, 2);
+    });
+
+    btnExport.addEventListener('click', ()=>{
+      const arr = readSaved();
+      const dataStr = JSON.stringify(arr, null, 2);
+      const w = window.open('', '_blank');
+      w.document.write('<pre>' + escapeHtml(dataStr) + '</pre>');
+      w.document.title = 'Export JSON - Receitas Salvas';
+    });
+
+    btnClearSaved.addEventListener('click', ()=>{
+      if(!confirm('Deseja realmente limpar todas as receitas salvas?')) return;
+      clearSaved();
+      updateSavedPreview();
+      results.innerHTML = '';
+      status.textContent = 'Salvos limpos.';
+    });
+
+    // inicial harmonizador
+    (function initHarmonizador(){
+      wineSelect.selectedIndex = 0;
+      updateSavedPreview();
+      status.textContent = 'Pronto. Selecione um rótulo e clique em Buscar Top 3.';
+    })();
+
     // expor para depuração
     window.PRODUCTS = PRODUCTS;
+    window.normalizeFilename = normalizeFilename;
   </script>
 </body>
 </html>
