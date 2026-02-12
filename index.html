@@ -425,7 +425,7 @@
 
           <div class="lista" id="listaAssinatura">
             <div class="status">
-              Aqui surgirá uma sugestão de combo mensal (3 ou 4 rótulos), somando valores e formando uma assinatura “Wine Club” Uvva. [file:2][file:3]
+              Aqui surgirá uma sugestão de combo mensal (3 ou mais rótulos), somando valores e formando uma assinatura “Wine Club” Uvva. [file:2][file:3]
             </div>
           </div>
 
@@ -591,10 +591,12 @@
     document.getElementById('btnVinhoSugestoes').addEventListener('click', () => {
       const cod = selectVinho.value;
       const container = document.getElementById('listaWineBringing');
+
       if (!cod) {
         container.innerHTML = '<div class="status">Selecione um vinho primeiro.</div>';
         return;
       }
+
       const base = vinhosCatalogo.find(v => v.cod === cod);
       if (!base) {
         container.innerHTML = '<div class="status">Vinho não encontrado.</div>';
@@ -760,7 +762,6 @@
       const base = vinhosCatalogo.find(v => v.cod === codBase);
       if (!base) return;
 
-      // lógica simples: pega até 3 vinhos que combinam (Wine Bringing) + o base
       const combinam = vinhosCatalogo
         .filter(v =>
           v.cod !== base.cod &&
@@ -768,8 +769,7 @@
            (v.uvas || []).some(u => (base.uvas || []).includes(u)) ||
            v.estilo === base.estilo)
         )
-        .sort((a, b) => a.preco - b.preco)
-        .slice(0, 3);
+        .sort((a, b) => a.preco - b.preco);
 
       const combo = [base, ...combinam];
       let total = 0;
