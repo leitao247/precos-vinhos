@@ -175,7 +175,7 @@
     }
     .lista {
       margin-top: 10px;
-      max-height: 190px;
+      max-height: 160px; /* menor para reduzir o buraco vazio */
       overflow-y: auto;
       border-radius: 12px;
       padding: 6px 4px;
@@ -845,45 +845,4 @@
     });
 
     // ================== 4) ASSINATURA MENSAL ==================
-    document.getElementById('btnGerarAssinatura').addEventListener('click', () => {
-      const codBase = selectAssinaturaBase.value;
-      if (!codBase) {
-        alert('Escolha um vinho-base para montar a assinatura.');
-        return;
-      }
-
-      const base = vinhosCatalogo.find(v => v.cod === codBase);
-      if (!base) {
-        alert('Vinho-base não encontrado.');
-        return;
-      }
-
-      const combinam = sugerirVinhosWineBringing(base);
-      const combo = [base, ...combinam];
-
-      if (!combo.length) {
-        listaAssinatura.innerHTML = '<div class="status">Nenhum vinho para montar assinatura.</div>';
-        assinaturaCard.style.display = 'none';
-        return;
-      }
-
-      let total = 0;
-      listaAssinatura.innerHTML = '';
-      combo.forEach(v => {
-        total += v.preco;
-        listaAssinatura.appendChild(criarItemVinho(v));
-      });
-
-      assinaturaTotalValor.textContent = 'R$ ' + total.toFixed(2) + ' / mês';
-      assinaturaListaVinhos.innerHTML = '';
-      combo.forEach(v => {
-        const li = document.createElement('li');
-        li.textContent = v.cod + ' – ' + v.nome;
-        assinaturaListaVinhos.appendChild(li);
-      });
-
-      assinaturaCard.style.display = 'block';
-    });
-  </script>
-</body>
-</html>
+    docu
