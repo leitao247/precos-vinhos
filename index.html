@@ -2,45 +2,52 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Uvva – Wine Bringing Premium</title>
+  <title>Uvva – Wine Bringing</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: radial-gradient(circle at top, #130b28 0, #050016 45%, #020012 100%);
+      background: radial-gradient(circle at top, #160b33 0, #050016 45%, #020012 100%);
       color: #f9fafb;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
+
     .shell {
-      max-width: 1280px;
+      max-width: 1240px;
       margin: 0 auto;
-      padding: 26px 20px 40px;
+      padding: 24px 16px 36px;
     }
+
     header {
       display: flex;
       flex-direction: column;
       gap: 4px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
+
     .top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
+
     .brand {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #e5e7eb;
     }
+
     .brand span {
       color: #a855f7;
     }
+
     .pill {
       display: inline-flex;
       align-items: center;
@@ -48,116 +55,111 @@
       padding: 4px 10px;
       border-radius: 999px;
       font-size: 11px;
-      background: rgba(15,23,42,0.85);
+      background: rgba(15,23,42,0.9);
       color: #e5e7eb;
-      border: 1px solid rgba(168,85,247,0.55);
+      border: 1px solid rgba(168,85,247,0.6);
     }
-    .catalog-btn {
-      padding: 6px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(168,85,247,0.9);
-      background: rgba(15,23,42,0.95);
-      color: #f9fafb;
-      font-size: 12px;
-      font-weight: 600;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      box-shadow: 0 10px 24px rgba(15,23,42,0.75);
-    }
-    .catalog-btn:hover {
-      background: linear-gradient(135deg, #a855f7, #ec4899);
-      color: #111827;
-      border-color: transparent;
-      transform: translateY(-1px);
-    }
+
     .tagline {
       font-size: 13px;
       color: #e5e7eb;
-      opacity: 0.75;
-      margin-top: 6px;
+      opacity: 0.78;
+      margin-top: 4px;
     }
+
     .grid-main {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-      gap: 18px;
-      margin-bottom: 18px;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.05fr);
+      gap: 14px;
+      margin-bottom: 14px;
     }
+
     .grid-bottom {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-      gap: 18px;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.05fr);
+      gap: 14px;
     }
+
     @media (max-width: 960px) {
       .grid-main,
       .grid-bottom {
         grid-template-columns: minmax(0, 1fr);
       }
     }
+
     .card {
-      background: radial-gradient(circle at top, #120827 0, #050014 45%, #03000f 100%);
-      border-radius: 18px;
-      padding: 14px 16px 16px;
+      background: radial-gradient(circle at top, #100625 0, #050014 45%, #03000f 100%);
+      border-radius: 14px;
+      padding: 12px 14px 14px;
       box-shadow:
-        0 22px 45px rgba(0,0,0,0.85),
-        0 0 0 1px rgba(129,140,248,0.45);
+        0 16px 36px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(129,140,248,0.35);
       position: relative;
       overflow: hidden;
     }
+
     .card::before {
       content: "";
       position: absolute;
       inset: -40%;
       background:
-        radial-gradient(circle at top left, rgba(168,85,247,0.22) 0, transparent 56%),
-        radial-gradient(circle at bottom right, rgba(59,130,246,0.24) 0, transparent 60%);
+        radial-gradient(circle at top left, rgba(168,85,247,0.22) 0, transparent 58%),
+        radial-gradient(circle at bottom right, rgba(59,130,246,0.20) 0, transparent 60%);
       opacity: 0.9;
       pointer-events: none;
     }
+
     .card-inner {
       position: relative;
       z-index: 1;
     }
+
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       gap: 8px;
     }
+
     .card-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       color: #f9fafb;
     }
+
     .card-sub {
-      font-size: 12px;
+      font-size: 11px;
       color: #9ca3af;
     }
+
     label {
       font-size: 13px;
       color: #e5e7eb;
     }
+
     select {
       padding: 7px 9px;
-      margin: 4px 0 8px;
+      margin: 3px 0 7px;
       width: 100%;
       border-radius: 9px;
       border: 1px solid rgba(148,163,184,0.8);
-      background: rgba(15,23,42,0.96);
+      background: rgba(15,23,42,0.97);
       font-size: 13px;
       color: #f9fafb;
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
     }
+
     select:focus {
       border-color: #a855f7;
       box-shadow: 0 0 0 1px rgba(168,85,247,0.55);
       background: rgba(15,23,42,1);
     }
+
     button {
       padding: 7px 14px;
-      margin: 4px 6px 8px 0;
+      margin: 4px 4px 6px 0;
       border-radius: 999px;
       border: 1px solid transparent;
       font-size: 13px;
@@ -167,26 +169,31 @@
       gap: 6px;
       transition: background 0.15s, transform 0.05s, box-shadow 0.15s, border-color 0.15s;
     }
+
     button.primary {
       background: linear-gradient(135deg, #a855f7, #ec4899);
       color: #111827;
       font-weight: 600;
-      box-shadow: 0 16px 35px rgba(15,23,42,0.75);
+      box-shadow: 0 12px 28px rgba(15,23,42,0.8);
     }
+
     button.primary:hover {
       background: linear-gradient(135deg, #ec4899, #a855f7);
       transform: translateY(-1px);
-      box-shadow: 0 20px 40px rgba(15,23,42,0.95);
+      box-shadow: 0 18px 38px rgba(15,23,42,0.95);
     }
+
     button.outline {
       background: rgba(15,23,42,0.9);
       color: #e5e7eb;
-      border-color: rgba(148,163,184,0.7);
+      border-color: rgba(148,163,184,0.75);
     }
+
     button.outline:hover {
       border-color: #a855f7;
       color: #a855f7;
     }
+
     .status {
       font-size: 12px;
       color: #9ca3af;
@@ -194,33 +201,33 @@
     }
 
     .lista {
-      margin-top: 10px;
-      overflow-y: auto;
-      border-radius: 12px;
-      padding: 6px 4px;
-      background: radial-gradient(circle at top, rgba(15,23,42,0.9) 0, rgba(15,23,42,0.98) 40%, rgba(15,23,42,1) 100%);
+      margin-top: 6px;
+      border-radius: 10px;
+      padding: 5px 4px;
+      background: radial-gradient(circle at top, rgba(15,23,42,0.92) 0, rgba(15,23,42,0.99) 40%, rgba(15,23,42,1) 100%);
       border: 1px solid rgba(55,65,81,0.85);
-      min-height: 40px;
+      min-height: 42px;
+      max-height: 130px;
+      overflow-y: auto;
     }
-    #listaWineBringing { max-height: 140px; }
-    #listaVinhosReceita { max-height: 140px; }
-    #listaFiltro { max-height: 140px; }
-    #listaAssinatura { max-height: 140px; }
 
     .vinho-item {
       display: grid;
       grid-template-columns: auto 1fr;
-      gap: 10px;
-      padding: 7px 9px;
-      border-radius: 9px;
+      gap: 8px;
+      padding: 6px 7px;
+      border-radius: 8px;
       position: relative;
     }
+
     .vinho-item:nth-child(odd) {
-      background: rgba(15,23,42,0.95);
+      background: rgba(15,23,42,0.96);
     }
+
     .vinho-item:nth-child(even) {
-      background: rgba(17,24,39,0.95);
+      background: rgba(17,24,39,0.96);
     }
+
     .vinho-item::after {
       content: "";
       position: absolute;
@@ -229,13 +236,15 @@
       border: 1px solid transparent;
       pointer-events: none;
     }
+
     .vinho-item:hover::after {
       border-color: rgba(168,85,247,0.7);
     }
+
     .vinho-thumb {
-      width: 44px;
-      height: 68px;
-      border-radius: 7px;
+      width: 40px;
+      height: 62px;
+      border-radius: 6px;
       background: radial-gradient(circle at top, #f3f4f6, #9ca3af);
       display: flex;
       align-items: center;
@@ -247,89 +256,102 @@
       padding: 3px;
       white-space: pre-line;
     }
+
     .vinho-thumb img {
       max-width: 100%;
       max-height: 100%;
       object-fit: cover;
     }
+
     .vinho-info {
       font-size: 12px;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 1px;
       color: #e5e7eb;
-      font-weight: 400;
     }
+
     .vinho-nome {
       font-weight: 600;
       font-size: 13px;
     }
+
     .vinho-meta {
       color: #d1d5db;
     }
+
     .vinho-preco {
       color: #a855f7;
       font-weight: 600;
       font-size: 13px;
     }
+
     .pill-mini {
       display: inline-flex;
       align-items: center;
       padding: 1px 8px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.95);
-      color: #fef2f2;
+      background: rgba(15,23,42,0.98);
+      color: #fef2ff;
       font-size: 10px;
       border: 1px solid rgba(168,85,247,0.7);
       margin-top: 2px;
     }
+
     .prato-box {
       margin-top: 6px;
-      border-radius: 14px;
-      padding: 10px;
+      border-radius: 12px;
+      padding: 8px;
       background: radial-gradient(circle at top, rgba(248,250,252,0.05) 0, rgba(15,23,42,0.98) 35%, #020617 100%);
       border: 1px solid rgba(55,65,81,0.9);
       text-align: center;
-      min-height: 250px;
+      min-height: 210px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       gap: 6px;
     }
+
     .prato-box img {
       width: 100%;
       max-height: 130px;
-      border-radius: 12px;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.9);
+      border-radius: 10px;
+      box-shadow: 0 16px 32px rgba(0,0,0,0.9);
       object-fit: contain;
       background-color: #020012;
     }
+
     .nome-prato {
       font-weight: 600;
       font-size: 14px;
       color: #f9fafb;
     }
+
     .prato-meta {
       font-size: 11px;
       color: #d1d5db;
     }
+
     .assinatura-card {
-      margin-top: 10px;
-      padding: 12px 14px;
-      border-radius: 14px;
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
       background: radial-gradient(circle at top, rgba(17,24,39,0.95) 0, rgba(15,23,42,1) 60%);
-      border: 1px solid rgba(168,85,247,0.6);
+      border: 1px solid rgba(168,85,247,0.7);
     }
+
     .assinatura-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
+
     .assinatura-titulo {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
     }
+
     .assinatura-badge {
       font-size: 11px;
       padding: 2px 8px;
@@ -338,38 +360,44 @@
       border: 1px solid rgba(168,85,247,0.7);
       color: #ede9fe;
     }
+
     .assinatura-valores {
-      margin: 10px 0;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: radial-gradient(circle at top, rgba(30,64,175,0.45) 0, rgba(15,23,42,1) 60%);
-      border: 1px solid rgba(168,85,247,0.8);
+      margin: 8px 0;
+      padding: 8px 10px;
+      border-radius: 11px;
+      background: radial-gradient(circle at top, rgba(30,64,175,0.5) 0, rgba(15,23,42,1) 60%);
+      border: 1px solid rgba(168,85,247,0.85);
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      gap: 10px;
+      gap: 8px;
     }
+
     .assinatura-total-label {
       font-size: 11px;
       color: #e5e7eb;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
+
     .assinatura-total-valor {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 700;
       color: #fbbf24;
     }
+
     .assinatura-lista-titulo {
       font-size: 12px;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
+
     .assinatura-lista-vinhos {
       list-style: none;
       padding-left: 0;
       margin: 0;
       font-size: 12px;
     }
+
     .assinatura-lista-vinhos li {
       margin-bottom: 2px;
       color: #e5e7eb;
@@ -382,12 +410,6 @@
       <div class="top-row">
         <div class="brand"><span>Uvva</span> Wine Bringing</div>
         <div class="pill">Sommelier digital • catálogo próprio</div>
-        <a class="catalog-btn"
-           href="uvva-catalogo.pdf"
-           target="_blank"
-           rel="noopener noreferrer">
-          NOSSO CATÁLOGO
-        </a>
       </div>
       <div class="tagline">
         Harmonização visual entre rótulos e pratos, com base no seu portfólio; pronto para carrinho e assinatura mensal.
@@ -395,7 +417,7 @@
     </header>
 
     <div class="grid-main">
-      <!-- 1) ENTRAR COM VINHO → VINHOS -->
+      <!-- 1) VINHO → VINHOS -->
       <section class="card">
         <div class="card-inner">
           <div class="card-header">
@@ -411,7 +433,7 @@
 
           <div class="lista" id="listaWineBringing">
             <div class="status">
-              Escolha um vinho para encontrar outros rótulos Uvva com perfil sensorial semelhante (região, uvas, estilo).
+              Escolha um vinho para encontrar outros rótulos Uvva com perfil semelhante (região, uvas, estilo).
             </div>
           </div>
         </div>
@@ -438,7 +460,7 @@
           </button>
 
           <div class="status" id="statusReceitas">
-            As receitas vêm da TheMealDB apenas para ilustração; os vinhos sugeridos são do seu catálogo, ordenados por preço.
+            As receitas vêm da TheMealDB apenas para ilustração; os vinhos sugeridos são do seu catálogo.
           </div>
 
           <div class="prato-box" id="boxPrato">
@@ -447,7 +469,7 @@
 
           <div class="lista" id="listaVinhosReceita">
             <div class="status">
-              Após escolher um tipo de prato, sugerimos vinhos compatíveis (corpo, tanino, acidez) do menor preço para o maior.
+              Após escolher um tipo de prato, sugerimos vinhos compatíveis do menor preço para o maior.
             </div>
           </div>
         </div>
@@ -455,7 +477,7 @@
     </div>
 
     <div class="grid-bottom">
-      <!-- 3) FILTRO REGIÃO / UVA -->
+      <!-- 3) REGIÃO / UVA -->
       <section class="card">
         <div class="card-inner">
           <div class="card-header">
@@ -463,15 +485,15 @@
             <div class="card-sub">Explorador do portfólio Uvva</div>
           </div>
 
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <div style="flex:1; min-width:200px;">
-              <label for="selectRegiao">Região (somente nossas regiões):</label>
+              <label for="selectRegiao">Região:</label>
               <select id="selectRegiao">
                 <option value="">Todas as regiões</option>
               </select>
             </div>
             <div style="flex:1; min-width:200px;">
-              <label for="selectUva">Uva (somente nossas uvas):</label>
+              <label for="selectUva">Uva:</label>
               <select id="selectUva">
                 <option value="">Todas as uvas</option>
               </select>
@@ -483,12 +505,12 @@
           </button>
 
           <div class="lista" id="listaFiltro">
-            <div class="status">Use a combinação de região + uva para ver famílias de rótulos específicos.</div>
+            <div class="status">Use região + uva para ver famílias de rótulos específicos.</div>
           </div>
         </div>
       </section>
 
-      <!-- 4) ASSINATURA MENSAL -->
+      <!-- 4) ASSINATURA -->
       <section class="card">
         <div class="card-inner">
           <div class="card-header">
@@ -496,7 +518,7 @@
             <div class="card-sub">Seleção de vinhos recorrente</div>
           </div>
 
-          <label for="selectAssinaturaBase">Selecione um vinho-base:</label>
+          <label for="selectAssinaturaBase">Vinho-base da assinatura:</label>
           <select id="selectAssinaturaBase"></select>
 
           <button id="btnGerarAssinatura" class="primary">
@@ -505,7 +527,7 @@
 
           <div class="lista" id="listaAssinatura">
             <div class="status">
-              Aqui surgirá uma sugestão de combo mensal (3 ou mais rótulos), somando valores e formando uma assinatura “Wine Club” Uvva.
+              Aqui surgirá a lista de vinhos sugeridos para o seu “Wine Club” Uvva.
             </div>
           </div>
 
@@ -527,7 +549,7 @@
   </div>
 
   <script>
-    // ================== DADOS DO CATÁLOGO (EXEMPLO) ==================
+    // ---------- Catálogo (exemplo) ----------
     const vinhosCatalogo = [
       {
         cod: "300078",
@@ -603,7 +625,7 @@
       }
     ];
 
-    // ================== ELEMENTOS DE INTERFACE ==================
+    // ---------- Elementos ----------
     const selectVinho = document.getElementById('selectVinho');
     const selectRegiao = document.getElementById('selectRegiao');
     const selectUva = document.getElementById('selectUva');
@@ -620,21 +642,21 @@
     const assinaturaTotalValor = document.getElementById('assinaturaTotalValor');
     const assinaturaListaVinhos = document.getElementById('assinaturaListaVinhos');
 
-    // ================== INICIALIZAÇÃO DOS COMBOS ==================
+    // ---------- Combos ----------
     function initCombos() {
       selectVinho.innerHTML = '<option value="">Selecione um vinho...</option>';
       selectAssinaturaBase.innerHTML = '<option value="">Selecione um vinho...</option>';
 
       vinhosCatalogo.forEach(v => {
-        const opt1 = document.createElement('option');
-        opt1.value = v.cod;
-        opt1.textContent = v.nome;
-        selectVinho.appendChild(opt1);
+        const o1 = document.createElement('option');
+        o1.value = v.cod;
+        o1.textContent = v.nome;
+        selectVinho.appendChild(o1);
 
-        const opt2 = document.createElement('option');
-        opt2.value = v.cod;
-        opt2.textContent = v.nome;
-        selectAssinaturaBase.appendChild(opt2);
+        const o2 = document.createElement('option');
+        o2.value = v.cod;
+        o2.textContent = v.nome;
+        selectAssinaturaBase.appendChild(o2);
       });
 
       const regSet = new Set();
@@ -661,7 +683,7 @@
 
     initCombos();
 
-    // ================== COMPONENTE REUTILIZÁVEL: ITEM DE VINHO ==================
+    // ---------- Util: item de vinho ----------
     function criarItemVinho(v) {
       const item = document.createElement('div');
       item.className = 'vinho-item';
@@ -692,7 +714,7 @@
       return item;
     }
 
-    // ================== 1) WINE BRINGING: VINHO → VINHOS ==================
+    // ---------- Lógica compartilhada ----------
     function sugerirVinhosWineBringing(base) {
       return vinhosCatalogo
         .filter(v =>
@@ -706,6 +728,7 @@
         .sort((a, b) => a.preco - b.preco);
     }
 
+    // ---------- 1) Wine Bringing ----------
     document.getElementById('btnVinhoSugestoes').addEventListener('click', () => {
       const cod = selectVinho.value;
       if (!cod) {
@@ -737,7 +760,7 @@
       sugeridos.forEach(v => listaWineBringing.appendChild(criarItemVinho(v)));
     });
 
-    // ================== 2) RECEITA → VINHO (THEMEALDB) ==================
+    // ---------- 2) Receita → vinho ----------
     document.getElementById('btnBuscarReceitas').addEventListener('click', () => {
       const tipoPrato = selectTipoPrato.value;
       if (!tipoPrato) {
@@ -833,7 +856,7 @@
       candidatos.forEach(v => listaVinhosReceita.appendChild(criarItemVinho(v)));
     }
 
-    // ================== 3) FILTRO REGIÃO / UVA ==================
+    // ---------- 3) Filtro região / uva ----------
     document.getElementById('btnFiltrar').addEventListener('click', () => {
       const reg = selectRegiao.value;
       const uva = selectUva.value;
@@ -855,7 +878,7 @@
       lista.forEach(v => listaFiltro.appendChild(criarItemVinho(v)));
     });
 
-    // ================== 4) ASSINATURA MENSAL ==================
+    // ---------- 4) Assinatura ----------
     document.getElementById('btnGerarAssinatura').addEventListener('click', () => {
       const codBase = selectAssinaturaBase.value;
       if (!codBase) {
