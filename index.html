@@ -7,13 +7,13 @@
     * { box-sizing: border-box; }
 
     :root {
-      --bg-main: radial-gradient(circle at top, #160b33 0, #050016 45%, #020012 100%);
-      --card-bg: radial-gradient(circle at top, #100625 0, #050014 45%, #03000f 100%);
+      --bg-main: radial-gradient(circle at top, #111827 0, #020617 45%, #020617 100%);
+      --card-bg: #020617;
       --text-main: #f9fafb;
-      --card-border: rgba(129,140,248,0.35);
+      --card-border: #4b5563;
       --status-text: #9ca3af;
-      --meta-text: #d1d5db;
-      --pill-bg: rgba(15,23,42,0.9);
+      --meta-text: #e5e7eb;
+      --pill-bg: #020617;
     }
 
     body {
@@ -73,7 +73,7 @@
     .tagline {
       font-size: 13px;
       color: #e5e7eb;
-      opacity: 0.78;
+      opacity: 0.9;
       margin-top: 4px;
     }
 
@@ -113,8 +113,8 @@
       position: absolute;
       inset: -40%;
       background:
-        radial-gradient(circle at top left, rgba(168,85,247,0.22) 0, transparent 58%),
-        radial-gradient(circle at bottom right, rgba(59,130,246,0.20) 0, transparent 60%);
+        radial-gradient(circle at top left, rgba(168,85,247,0.18) 0, transparent 58%),
+        radial-gradient(circle at bottom right, rgba(59,130,246,0.18) 0, transparent 60%);
       opacity: 0.9;
       pointer-events: none;
     }
@@ -153,8 +153,8 @@
       margin: 3px 0 7px;
       width: 100%;
       border-radius: 9px;
-      border: 1px solid rgba(148,163,184,0.8);
-      background: rgba(15,23,42,0.97);
+      border: 1px solid rgba(148,163,184,0.9);
+      background: #020617;
       font-size: 13px;
       color: #f9fafb;
       outline: none;
@@ -163,8 +163,8 @@
 
     select:focus {
       border-color: #a855f7;
-      box-shadow: 0 0 0 1px rgba(168,85,247,0.55);
-      background: rgba(15,23,42,1);
+      box-shadow: 0 0 0 1px rgba(168,85,247,0.7);
+      background: #020617;
     }
 
     button {
@@ -177,26 +177,26 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: background 0.15s, transform 0.05s, box-shadow 0.15s, border-color 0.15s;
+      transition: background 0.15s, transform 0.05s, box-shadow 0.15s, border-color 0.15s, color 0.15s;
     }
 
     button.primary {
-      background: linear-gradient(135deg, #a855f7, #ec4899);
+      background: linear-gradient(135deg, #ec4899, #a855f7);
       color: #111827;
       font-weight: 600;
-      box-shadow: 0 12px 28px rgba(15,23,42,0.8);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.8);
     }
 
     button.primary:hover {
-      background: linear-gradient(135deg, #ec4899, #a855f7);
+      background: linear-gradient(135deg, #a855f7, #ec4899);
       transform: translateY(-1px);
-      box-shadow: 0 18px 38px rgba(15,23,42,0.95);
+      box-shadow: 0 18px 38px rgba(0,0,0,0.95);
     }
 
     button.outline {
-      background: rgba(15,23,42,0.9);
+      background: #020617;
       color: #e5e7eb;
-      border-color: rgba(148,163,184,0.75);
+      border-color: #9ca3af;
     }
 
     button.outline:hover {
@@ -214,8 +214,8 @@
       margin-top: 6px;
       border-radius: 10px;
       padding: 5px 4px;
-      background: radial-gradient(circle at top, rgba(15,23,42,0.92) 0, rgba(15,23,42,0.99) 40%, rgba(15,23,42,1) 100%);
-      border: 1px solid rgba(55,65,81,0.85);
+      background: #020617;
+      border: 1px solid #4b5563;
       min-height: 42px;
       max-height: 130px;
       overflow-y: auto;
@@ -225,17 +225,15 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      padding: 6px 7px;
+      padding: 8px 9px;
       border-radius: 8px;
       position: relative;
+      background: #020617;
+      border: 1px solid #4b5563;
     }
 
-    .vinho-item:nth-child(odd) {
-      background: rgba(15,23,42,0.96);
-    }
-
-    .vinho-item:nth-child(even) {
-      background: rgba(17,24,39,0.96);
+    .vinho-item + .vinho-item {
+      margin-top: 4px;
     }
 
     .vinho-item::after {
@@ -248,7 +246,7 @@
     }
 
     .vinho-item:hover::after {
-      border-color: rgba(168,85,247,0.7);
+      border-color: #a855f7;
     }
 
     .vinho-info {
@@ -256,7 +254,7 @@
       display: flex;
       flex-direction: column;
       gap: 1px;
-      color: #e5e7eb;
+      color: #f9fafb;
     }
 
     .vinho-nome {
@@ -269,8 +267,8 @@
     }
 
     .vinho-preco {
-      color: #a855f7;
-      font-weight: 600;
+      color: #fb923c;
+      font-weight: 700;
       font-size: 13px;
     }
 
@@ -279,7 +277,7 @@
       align-items: center;
       padding: 1px 8px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.98);
+      background: #020617;
       color: #fef2ff;
       font-size: 10px;
       border: 1px solid rgba(168,85,247,0.7);
@@ -290,8 +288,8 @@
       margin-top: 6px;
       border-radius: 12px;
       padding: 8px;
-      background: radial-gradient(circle at top, rgba(248,250,252,0.05) 0, rgba(15,23,42,0.98) 35%, #020617 100%);
-      border: 1px solid rgba(55,65,81,0.9);
+      background: radial-gradient(circle at top, rgba(148,163,184,0.35) 0, #020617 55%);
+      border: 1px solid #4b5563;
       text-align: center;
       min-height: 120px;
       display: flex;
@@ -308,15 +306,15 @@
 
     .prato-meta {
       font-size: 11px;
-      color: #d1d5db;
+      color: #e5e7eb;
     }
 
     .assinatura-card {
       margin-top: 8px;
       padding: 10px 12px;
       border-radius: 12px;
-      background: radial-gradient(circle at top, rgba(17,24,39,0.95) 0, rgba(15,23,42,1) 60%);
-      border: 1px solid rgba(168,85,247,0.7);
+      background: #020617;
+      border: 1px solid rgba(168,85,247,0.9);
     }
 
     .assinatura-header {
@@ -335,8 +333,8 @@
       font-size: 11px;
       padding: 2px 8px;
       border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(168,85,247,0.7);
+      background: #020617;
+      border: 1px solid rgba(168,85,247,0.9);
       color: #ede9fe;
     }
 
@@ -344,8 +342,8 @@
       margin: 8px 0;
       padding: 8px 10px;
       border-radius: 11px;
-      background: radial-gradient(circle at top, rgba(30,64,175,0.5) 0, rgba(15,23,42,1) 60%);
-      border: 1px solid rgba(168,85,247,0.85);
+      background: radial-gradient(circle at top, rgba(251,191,36,0.13) 0, #020617 65%);
+      border: 1px solid rgba(168,85,247,0.9);
       display: flex;
       justify-content: space-between;
       align-items: baseline;
@@ -382,27 +380,31 @@
     }
     #listaWineBringing .vinho-item {
       padding: 10px 10px;
-      margin-bottom: 4px;
     }
     #listaWineBringing .vinho-info .vinho-nome {
       font-size: 14px;
     }
 
-    /* Tema claro (modo dia) */
+    /* Tema claro (modo dia) – bem alto contraste */
     body.light {
-      --bg-main: radial-gradient(circle at top, #f3f4ff 0, #e5e7eb 45%, #d1d5db 100%);
+      --bg-main: #f9fafb;
       --card-bg: #ffffff;
       --text-main: #111827;
-      --card-border: rgba(148,163,184,0.6);
+      --card-border: #d1d5db;
       --status-text: #4b5563;
       --meta-text: #4b5563;
       --pill-bg: #e5e7eb;
     }
 
+    body.light {
+      background: var(--bg-main);
+      color: var(--text-main);
+    }
+
     body.light .card {
       background: var(--card-bg);
       box-shadow:
-        0 10px 24px rgba(15,23,42,0.12),
+        0 6px 18px rgba(15,23,42,0.15),
         0 0 0 1px var(--card-border);
     }
 
@@ -419,19 +421,58 @@
       color: #111827;
     }
 
-    body.light .vinho-item:nth-child(odd),
-    body.light .vinho-item:nth-child(even) {
-      background: #f9fafb;
+    body.light .lista {
+      background: #f3f4f6;
+      border-color: #e5e7eb;
+    }
+
+    body.light .vinho-item {
+      background: #ffffff;
+      border-color: #e5e7eb;
+    }
+
+    body.light .vinho-info {
+      color: #111827;
+    }
+
+    body.light .vinho-meta {
+      color: #4b5563;
+    }
+
+    body.light .vinho-preco {
+      color: #b91c1c;
     }
 
     body.light .assinatura-card {
-      background: #f9fafb;
-      border-color: rgba(168,85,247,0.6);
+      background: #ffffff;
+      border-color: rgba(168,85,247,0.7);
     }
 
     body.light .assinatura-badge {
       background: #eef2ff;
       color: #1f2937;
+    }
+
+    body.light .prato-box {
+      background: #ffffff;
+      border-color: #e5e7eb;
+    }
+
+    body.light select {
+      background: #ffffff;
+      color: #111827;
+      border-color: #cbd5f5;
+    }
+
+    body.light button.outline {
+      background: #ffffff;
+      color: #111827;
+      border-color: #9ca3af;
+    }
+
+    body.light button.outline:hover {
+      border-color: #4f46e5;
+      color: #4f46e5;
     }
   </style>
 </head>
@@ -584,7 +625,6 @@
   </div>
 
   <script>
-    /* Catálogo mínimo, fixo */
     const vinhosCatalogo = [
       {
         cod: "300078",
@@ -652,7 +692,6 @@
       }
     ];
 
-    /* Referências a elementos */
     const selectVinho = document.getElementById('selectVinho');
     const selectRegiao = document.getElementById('selectRegiao');
     const selectUva = document.getElementById('selectUva');
@@ -671,7 +710,6 @@
     const assinaturaCodigos = document.getElementById('assinaturaCodigos');
     const btnTema = document.getElementById('btnTema');
 
-    /* Inicializa combos */
     function initCombos() {
       selectVinho.innerHTML = '<option value="">Selecione um vinho...</option>';
       selectAssinaturaBase.innerHTML = '<option value="">Selecione um vinho...</option>';
@@ -712,7 +750,6 @@
 
     initCombos();
 
-    /* Monta item de vinho */
     function criarItemVinho(v) {
       const item = document.createElement('div');
       item.className = 'vinho-item';
@@ -730,7 +767,6 @@
       return item;
     }
 
-    /* Lógica Wine Bringing */
     function sugerirVinhosWineBringing(base) {
       return vinhosCatalogo
         .filter(v =>
@@ -774,7 +810,6 @@
       sugeridos.forEach(v => listaWineBringing.appendChild(criarItemVinho(v)));
     });
 
-    /* Receita → Vinhos */
     document.getElementById('btnBuscarReceitas').addEventListener('click', () => {
       const tipoPrato = selectTipoPrato.value;
       if (!tipoPrato) {
@@ -861,7 +896,6 @@
       candidatos.forEach(v => listaVinhosReceita.appendChild(criarItemVinho(v)));
     }
 
-    /* Filtro região / uva */
     document.getElementById('btnFiltrar').addEventListener('click', () => {
       const reg = selectRegiao.value;
       const uva = selectUva.value;
@@ -883,7 +917,6 @@
       lista.forEach(v => listaFiltro.appendChild(criarItemVinho(v)));
     });
 
-    /* Assinatura */
     document.getElementById('btnGerarAssinatura').addEventListener('click', () => {
       const codBase = selectAssinaturaBase.value;
       if (!codBase) {
@@ -923,7 +956,6 @@
       assinaturaCard.style.display = 'block';
     });
 
-    /* Tema Dia / Noite com localStorage */
     function aplicarTemaInicial() {
       const salvo = localStorage.getItem('uvva_tema');
       if (salvo === 'light') {
