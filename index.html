@@ -52,6 +52,25 @@
       color: #e5e7eb;
       border: 1px solid rgba(168,85,247,0.55);
     }
+    .catalog-btn {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(168,85,247,0.9);
+      background: rgba(15,23,42,0.95);
+      color: #f9fafb;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.75);
+    }
+    .catalog-btn:hover {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      color: #111827;
+      border-color: transparent;
+      transform: translateY(-1px);
+    }
     .tagline {
       font-size: 13px;
       color: #e5e7eb;
@@ -173,15 +192,23 @@
       color: #9ca3af;
       font-weight: 400;
     }
+
+    /* listas genéricas (base) */
     .lista {
       margin-top: 10px;
-      max-height: 160px; /* menor para reduzir o buraco vazio */
       overflow-y: auto;
       border-radius: 12px;
       padding: 6px 4px;
       background: radial-gradient(circle at top, rgba(15,23,42,0.9) 0, rgba(15,23,42,0.98) 40%, rgba(15,23,42,1) 100%);
       border: 1px solid rgba(55,65,81,0.85);
+      min-height: 40px; /* só para borda não colar no texto */
     }
+    /* alturas específicas por caso */
+    #listaWineBringing { max-height: 140px; }
+    #listaVinhosReceita { max-height: 140px; }
+    #listaFiltro { max-height: 140px; }
+    #listaAssinatura { max-height: 140px; }
+
     .vinho-item {
       display: grid;
       grid-template-columns: auto 1fr;
@@ -377,6 +404,12 @@
       <div class="top-row">
         <div class="brand"><span>Uvva</span> Wine Bringing</div>
         <div class="pill">Sommelier digital • catálogo próprio</div>
+        <a class="catalog-btn"
+           href="uvva-catalogo.pdf"
+           target="_blank"
+           rel="noopener noreferrer">
+          NOSSO CATÁLOGO
+        </a>
       </div>
       <div class="tagline">
         Harmonização visual entre rótulos e pratos, com base no seu portfólio; pronto para carrinho e assinatura mensal.
@@ -845,4 +878,45 @@
     });
 
     // ================== 4) ASSINATURA MENSAL ==================
-    docu
+    document.getElementById('btnGerarAssinatura').addEventListener('click', () => {
+      const codBase = selectAssinaturaBase.value;
+      if (!codBase) {
+        alert('Escolha um vinho-base para montar a assinatura.');
+        return;
+      }
+
+      const base = vinhosCatalogo.find(v => v.cod === codBase);
+      if (!base) {
+        alert('Vinho-base não encontrado.');
+        return;
+      }
+
+      const combinam = sugerirVinhosWineBringing(base);
+      const combo = [base, ...combinam];
+
+      if (!combo.length) {
+        listaAssinatura.innerHTML = '<div class="status">Nenhum vinho para montar assinatura.</div>';
+        assinaturaCard.style.display = 'none';
+        return;
+      }
+
+      let total = 0;
+      listaAssinatura.innerHTML = '';
+      combo.forEach(v => {
+        total += v.preco;
+        listaAssinatura.appendChild(criarItemVinho(v));
+      });
+
+      assinaturaTotalValor.textContent = 'R$ ' + total.toFixed(2) + ' / mês';
+      assinaturaListaVinhos.innerHTML = '';
+      combo.forEach(v => {
+        const li = document.createElement('li');
+        li.textContent = v.cod + ' – ' + v.nome;
+        assinaturaListaVinhos.appendChild(li);
+      });
+
+      assinaturaCard.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
