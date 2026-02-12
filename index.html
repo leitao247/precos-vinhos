@@ -10,7 +10,155 @@
       margin: 0;
       padding: 20px;
       background: #f5f5f5;
-      color: #333;
+      color: #333;const vinhosCatalogo = [
+  {
+    cod: "300078",
+    nome: "PORTA 6 TTO - ARAGONES, CASTELÃO, TOURIGA NACIONAL",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Aragonez", "Castelão", "Touriga Nacional"],
+    preco: 58.70,
+    imagem: "img/porta6_tinto.jpg",   // rótulo Porta 6 tinto
+    estilo: "tinto_medio"
+  },
+  {
+    cod: "300093",
+    nome: "PORTA 6 BCO - FERNÃO PIRES, ARINTO, SAUVIGNON BLANC",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Fernão Pires", "Arinto", "Sauvignon Blanc"],
+    preco: 58.70,
+    imagem: "img/porta6_branco.jpg",  // rótulo Porta 6 branco
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "39",
+    nome: "RESERVA DOS AMIGOS REGIONAL TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+    preco: 52.68,
+    imagem: "img/reserva_amigos_tinto.jpg", // rótulo Reserva dos Amigos 750ml
+    estilo: "tinto_medio"
+  },
+  {
+    cod: "83",
+    nome: "RESERVA DOS AMIGOS MAGNUM TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+    preco: 84.67,
+    imagem: "img/reserva_amigos_magnum.jpg", // rótulo Magnum
+    estilo: "tinto_estruturado"
+  },
+  {
+    cod: "3000160",
+    nome: "VINHO VERDE PORTA 6 DOC - LOUREIRO, TRAJADURA, ARINTO",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Loureiro", "Trajadura", "Arinto"],
+    preco: 58.70,
+    imagem: "img/porta6_verde.jpg",   // Porta 6 vinho verde
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "3000444",
+    nome: "PESCADA BRANCO, DOC VERDE - AZAL, TRAJADURA, LOUREIRO, ARINTO",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Azal", "Trajadura", "Loureiro", "Arinto"],
+    preco: 37.82,
+    imagem: "img/pescada_original.jpg", // Pescada original
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "445",
+    nome: "PESCADA - ARINTO E TRAJADURA",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Arinto", "Trajadura"],
+    preco: 75.64,
+    imagem: "img/pescada_arinto_trajadura.jpg",
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "446",
+    nome: "PESCADA - 100% ALVARINHO",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Alvarinho"],
+    preco: 135.84,
+    imagem: "img/pescada_alvarinho.jpg",
+    estilo: "branco_estruturado"
+  }
+];
+const vinhosCatalogo = [
+  {
+    cod: "300078",
+    nome: "PORTA 6 TTO - ARAGONES, CASTELÃO, TOURIGA NACIONAL",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Aragonez", "Castelão", "Touriga Nacional"],
+    preco: 58.70,
+    imagem: "img/porta6_tinto.jpg",   // rótulo Porta 6 tinto
+    estilo: "tinto_medio"
+  },
+  {
+    cod: "300093",
+    nome: "PORTA 6 BCO - FERNÃO PIRES, ARINTO, SAUVIGNON BLANC",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Fernão Pires", "Arinto", "Sauvignon Blanc"],
+    preco: 58.70,
+    imagem: "img/porta6_branco.jpg",  // rótulo Porta 6 branco
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "39",
+    nome: "RESERVA DOS AMIGOS REGIONAL TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+    preco: 52.68,
+    imagem: "img/reserva_amigos_tinto.jpg", // rótulo Reserva dos Amigos 750ml
+    estilo: "tinto_medio"
+  },
+  {
+    cod: "83",
+    nome: "RESERVA DOS AMIGOS MAGNUM TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+    preco: 84.67,
+    imagem: "img/reserva_amigos_magnum.jpg", // rótulo Magnum
+    estilo: "tinto_estruturado"
+  },
+  {
+    cod: "3000160",
+    nome: "VINHO VERDE PORTA 6 DOC - LOUREIRO, TRAJADURA, ARINTO",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Loureiro", "Trajadura", "Arinto"],
+    preco: 58.70,
+    imagem: "img/porta6_verde.jpg",   // Porta 6 vinho verde
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "3000444",
+    nome: "PESCADA BRANCO, DOC VERDE - AZAL, TRAJADURA, LOUREIRO, ARINTO",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Azal", "Trajadura", "Loureiro", "Arinto"],
+    preco: 37.82,
+    imagem: "img/pescada_original.jpg", // Pescada original
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "445",
+    nome: "PESCADA - ARINTO E TRAJADURA",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Arinto", "Trajadura"],
+    preco: 75.64,
+    imagem: "img/pescada_arinto_trajadura.jpg",
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "446",
+    nome: "PESCADA - 100% ALVARINHO",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Alvarinho"],
+    preco: 135.84,
+    imagem: "img/pescada_alvarinho.jpg",
+    estilo: "branco_estruturado"
+  }
+];
+
     }
     h1 { margin: 0 0 5px 0; }
     p.sub { margin: 0 0 10px 0; color: #555; font-size: 14px; }
@@ -169,79 +317,79 @@
   <script>
     // ========= DADOS EMBUTIDOS (exemplo) ========= [file:3]
     const vinhosCatalogo = [
-      {
-        cod: "300078",
-        nome: "PORTA 6 TTO - ARAGONES, CASTELÃO, TOURIGA NACIONAL",
-        regiao: "PORTUGAL - LISBOA",
-        uvas: ["Aragonez", "Castelão", "Touriga Nacional"],
-        preco: 58.70,
-        imagem: "",
-        estilo: "tinto_medio"
-      },
-      {
-        cod: "300093",
-        nome: "PORTA 6 BCO - FERNÃO PIRES, ARINTO, SAUVIGNON BLANC",
-        regiao: "PORTUGAL - LISBOA",
-        uvas: ["Fernão Pires", "Arinto", "Sauvignon Blanc"],
-        preco: 58.70,
-        imagem: "",
-        estilo: "branco_fresco"
-      },
-      {
-        cod: "39",
-        nome: "RESERVA DOS AMIGOS REGIONAL TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
-        regiao: "PORTUGAL - LISBOA",
-        uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
-        preco: 52.68,
-        imagem: "",
-        estilo: "tinto_medio"
-      },
-      {
-        cod: "3000160",
-        nome: "VINHO VERDE PORTA 6 DOC - LOUREIRO, TRAJADURA, ARINTO",
-        regiao: "PORTUGAL - VERDE",
-        uvas: ["Loureiro", "Trajadura", "Arinto"],
-        preco: 58.70,
-        imagem: "",
-        estilo: "branco_fresco"
-      },
-      {
-        cod: "3000444",
-        nome: "PESCADA BRANCO, DOC VERDE - AZAL, TRAJADURA, LOUREIRO, ARINTO",
-        regiao: "PORTUGAL - VERDE",
-        uvas: ["Azal", "Trajadura", "Loureiro", "Arinto"],
-        preco: 37.82,
-        imagem: "",
-        estilo: "branco_fresco"
-      },
-      {
-        cod: "445",
-        nome: "PESCADA - ARINTO E TRAJADURA",
-        regiao: "PORTUGAL - VERDE",
-        uvas: ["Arinto", "Trajadura"],
-        preco: 75.64,
-        imagem: "",
-        estilo: "branco_fresco"
-      },
-      {
-        cod: "446",
-        nome: "PESCADA - 100% ALVARINHO",
-        regiao: "PORTUGAL - VERDE",
-        uvas: ["Alvarinho"],
-        preco: 135.84,
-        imagem: "",
-        estilo: "branco_estruturado"
-      },
-      {
-        cod: "83",
-        nome: "RESERVA DOS AMIGOS MAGNUM TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
-        regiao: "PORTUGAL - LISBOA",
-        uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
-        preco: 84.67,
-        imagem: "",
-        estilo: "tinto_estruturado"
-      }
-    ];
+  {
+    cod: "300078",
+    nome: "PORTA 6 TTO - ARAGONES, CASTELÃO, TOURIGA NACIONAL",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Aragonez", "Castelão", "Touriga Nacional"],
+    preco: 58.70,
+    imagem: "img/porta6_tinto.jpg",   // rótulo Porta 6 tinto
+    estilo: "tinto_medio"
+  },
+  {
+    cod: "300093",
+    nome: "PORTA 6 BCO - FERNÃO PIRES, ARINTO, SAUVIGNON BLANC",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Fernão Pires", "Arinto", "Sauvignon Blanc"],
+    preco: 58.70,
+    imagem: "img/porta6_branco.jpg",  // rótulo Porta 6 branco
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "39",
+    nome: "RESERVA DOS AMIGOS REGIONAL TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+    preco: 52.68,
+    imagem: "img/reserva_amigos_tinto.jpg", // rótulo Reserva dos Amigos 750ml
+    estilo: "tinto_medio"
+  },
+  {
+    cod: "83",
+    nome: "RESERVA DOS AMIGOS MAGNUM TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+    regiao: "PORTUGAL - LISBOA",
+    uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+    preco: 84.67,
+    imagem: "img/reserva_amigos_magnum.jpg", // rótulo Magnum
+    estilo: "tinto_estruturado"
+  },
+  {
+    cod: "3000160",
+    nome: "VINHO VERDE PORTA 6 DOC - LOUREIRO, TRAJADURA, ARINTO",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Loureiro", "Trajadura", "Arinto"],
+    preco: 58.70,
+    imagem: "img/porta6_verde.jpg",   // Porta 6 vinho verde
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "3000444",
+    nome: "PESCADA BRANCO, DOC VERDE - AZAL, TRAJADURA, LOUREIRO, ARINTO",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Azal", "Trajadura", "Loureiro", "Arinto"],
+    preco: 37.82,
+    imagem: "img/pescada_original.jpg", // Pescada original
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "445",
+    nome: "PESCADA - ARINTO E TRAJADURA",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Arinto", "Trajadura"],
+    preco: 75.64,
+    imagem: "img/pescada_arinto_trajadura.jpg",
+    estilo: "branco_fresco"
+  },
+  {
+    cod: "446",
+    nome: "PESCADA - 100% ALVARINHO",
+    regiao: "PORTUGAL - VERDE",
+    uvas: ["Alvarinho"],
+    preco: 135.84,
+    imagem: "img/pescada_alvarinho.jpg",
+    estilo: "branco_estruturado"
+  }
+];
 
     // ========= INICIALIZAÇÃO DOS COMBOS =========
     const selectVinho = document.getElementById('selectVinho');
@@ -479,3 +627,4 @@
   </script>
 </body>
 </html>
+
