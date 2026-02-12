@@ -334,16 +334,26 @@
       color: #ede9fe;
     }
     .assinatura-valores {
-      margin-bottom: 6px;
+      margin: 10px 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, rgba(30,64,175,0.45) 0, rgba(15,23,42,1) 60%);
+      border: 1px solid rgba(168,85,247,0.8);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
     }
     .assinatura-total-label {
       font-size: 11px;
-      color: #d1d5db;
+      color: #e5e7eb;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
     .assinatura-total-valor {
-      font-size: 18px;
+      font-size: 22px;
       font-weight: 700;
-      color: #a855f7;
+      color: #fbbf24;
     }
     .assinatura-lista-titulo {
       font-size: 12px;
@@ -864,7 +874,7 @@
         listaAssinatura.appendChild(criarItemVinho(v));
       });
 
-      assinaturaTotalValor.textContent = 'R$ ' + total.toFixed(2);
+      assinaturaTotalValor.textContent = 'R$ ' + total.toFixed(2) + ' / mês';
       assinaturaListaVinhos.innerHTML = '';
       combo.forEach(v => {
         const li = document.createElement('li');
