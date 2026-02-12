@@ -7,9 +7,11 @@
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 45%, #02040a 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(circle at top, #130b28 0, #050016 45%, #020012 100%);
       color: #f9fafb;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     .shell {
       max-width: 1280px;
@@ -37,7 +39,7 @@
       color: #e5e7eb;
     }
     .brand span {
-      color: #f9735b;
+      color: #a855f7;
     }
     .pill {
       display: inline-flex;
@@ -48,7 +50,7 @@
       font-size: 11px;
       background: rgba(15,23,42,0.85);
       color: #e5e7eb;
-      border: 1px solid rgba(249,115,91,0.55);
+      border: 1px solid rgba(168,85,247,0.55);
     }
     .tagline {
       font-size: 13px;
@@ -74,12 +76,12 @@
       }
     }
     .card {
-      background: radial-gradient(circle at top, #0b1220 0, #020617 45%, #020617 100%);
+      background: radial-gradient(circle at top, #120827 0, #050014 45%, #03000f 100%);
       border-radius: 18px;
       padding: 14px 16px 16px;
       box-shadow:
         0 22px 45px rgba(0,0,0,0.85),
-        0 0 0 1px rgba(30,64,175,0.45);
+        0 0 0 1px rgba(129,140,248,0.45);
       position: relative;
       overflow: hidden;
     }
@@ -88,8 +90,8 @@
       position: absolute;
       inset: -40%;
       background:
-        radial-gradient(circle at top left, rgba(249,115,91,0.16) 0, transparent 56%),
-        radial-gradient(circle at bottom right, rgba(59,130,246,0.16) 0, transparent 60%);
+        radial-gradient(circle at top left, rgba(168,85,247,0.22) 0, transparent 56%),
+        radial-gradient(circle at bottom right, rgba(59,130,246,0.24) 0, transparent 60%);
       opacity: 0.9;
       pointer-events: none;
     }
@@ -130,8 +132,8 @@
       transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
     }
     select:focus {
-      border-color: #f9735b;
-      box-shadow: 0 0 0 1px rgba(249,115,91,0.55);
+      border-color: #a855f7;
+      box-shadow: 0 0 0 1px rgba(168,85,247,0.55);
       background: rgba(15,23,42,1);
     }
     button {
@@ -147,13 +149,13 @@
       transition: background 0.15s, transform 0.05s, box-shadow 0.15s, border-color 0.15s;
     }
     button.primary {
-      background: linear-gradient(135deg, #f9735b, #fb7185);
+      background: linear-gradient(135deg, #a855f7, #ec4899);
       color: #111827;
       font-weight: 600;
       box-shadow: 0 16px 35px rgba(15,23,42,0.75);
     }
     button.primary:hover {
-      background: linear-gradient(135deg, #fb7185, #f9735b);
+      background: linear-gradient(135deg, #ec4899, #a855f7);
       transform: translateY(-1px);
       box-shadow: 0 20px 40px rgba(15,23,42,0.95);
     }
@@ -163,12 +165,13 @@
       border-color: rgba(148,163,184,0.7);
     }
     button.outline:hover {
-      border-color: #f9735b;
-      color: #f9735b;
+      border-color: #a855f7;
+      color: #a855f7;
     }
     .status {
       font-size: 12px;
       color: #9ca3af;
+      font-weight: 400;
     }
     .lista {
       margin-top: 10px;
@@ -202,7 +205,7 @@
       pointer-events: none;
     }
     .vinho-item:hover::after {
-      border-color: rgba(249,115,91,0.7);
+      border-color: rgba(168,85,247,0.7);
     }
     .vinho-thumb {
       width: 44px;
@@ -230,6 +233,7 @@
       flex-direction: column;
       gap: 2px;
       color: #e5e7eb;
+      font-weight: 400;
     }
     .vinho-nome {
       font-weight: 600;
@@ -239,7 +243,7 @@
       color: #d1d5db;
     }
     .vinho-preco {
-      color: #f9735b;
+      color: #a855f7;
       font-weight: 600;
       font-size: 13px;
     }
@@ -251,7 +255,7 @@
       background: rgba(15,23,42,0.95);
       color: #fef2f2;
       font-size: 10px;
-      border: 1px solid rgba(249,115,91,0.7);
+      border: 1px solid rgba(168,85,247,0.7);
       margin-top: 2px;
     }
     .prato-box {
@@ -268,11 +272,12 @@
       gap: 6px;
     }
     .prato-box img {
-      max-width: 100%;
-      max-height: 170px;
+      width: 100%;
+      max-height: 130px;
       border-radius: 12px;
       box-shadow: 0 18px 40px rgba(0,0,0,0.9);
-      object-fit: cover;
+      object-fit: contain;
+      background-color: #020012;
     }
     .nome-prato {
       font-weight: 600;
@@ -291,7 +296,7 @@
     .assinatura-total {
       font-size: 16px;
       font-weight: 700;
-      color: #f9735b;
+      color: #a855f7;
       margin-top: 4px;
     }
     .badge-mes {
@@ -299,9 +304,60 @@
       padding: 2px 8px;
       border-radius: 999px;
       background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(249,115,91,0.6);
-      color: #fed7d7;
+      border: 1px solid rgba(168,85,247,0.6);
+      color: #ede9fe;
       margin-left: 4px;
+    }
+    .assinatura-card {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top, rgba(17,24,39,0.95) 0, rgba(15,23,42,1) 60%);
+      border: 1px solid rgba(168,85,247,0.6);
+    }
+    .assinatura-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .assinatura-titulo {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .assinatura-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(168,85,247,0.7);
+      color: #ede9fe;
+    }
+    .assinatura-valores {
+      margin-bottom: 6px;
+    }
+    .assinatura-total-label {
+      font-size: 11px;
+      color: #d1d5db;
+    }
+    .assinatura-total-valor {
+      font-size: 18px;
+      font-weight: 700;
+      color: #a855f7;
+    }
+    .assinatura-lista-titulo {
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .assinatura-lista-vinhos {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      font-size: 12px;
+    }
+    .assinatura-lista-vinhos li {
+      margin-bottom: 2px;
+      color: #e5e7eb;
     }
   </style>
 </head>
@@ -357,7 +413,7 @@
           </select>
 
           <button id="btnBuscarReceitas" class="primary">
-            Buscar receita e foto (API externa)
+            Buscar receita e foto
           </button>
 
           <div class="status" id="statusReceitas">
@@ -432,8 +488,18 @@
             </div>
           </div>
 
-          <div class="assinatura-resumo" id="assinaturaResumo"></div>
-          <div class="assinatura-total" id="assinaturaTotal"></div>
+          <div class="assinatura-card" id="assinaturaCard" style="display:none;">
+            <div class="assinatura-header">
+              <div class="assinatura-titulo">Wine Club Uvva</div>
+              <div class="assinatura-badge">Assinatura mensal</div>
+            </div>
+            <div class="assinatura-valores">
+              <div class="assinatura-total-label">Total por mês</div>
+              <div class="assinatura-total-valor" id="assinaturaTotalValor"></div>
+            </div>
+            <div class="assinatura-lista-titulo">Vinhos incluídos:</div>
+            <ul class="assinatura-lista-vinhos" id="assinaturaListaVinhos"></ul>
+          </div>
         </div>
       </section>
     </div>
@@ -441,7 +507,6 @@
 
   <script>
     // ================== DADOS DO CATÁLOGO (EXEMPLO) ==================
-    // Depois você só ajusta este array com dados vindos da planilha + PDF.
     const vinhosCatalogo = [
       {
         cod: "300078",
@@ -530,8 +595,9 @@
     const listaVinhosReceita = document.getElementById('listaVinhosReceita');
     const listaFiltro = document.getElementById('listaFiltro');
     const listaAssinatura = document.getElementById('listaAssinatura');
-    const assinaturaResumo = document.getElementById('assinaturaResumo');
-    const assinaturaTotal = document.getElementById('assinaturaTotal');
+    const assinaturaCard = document.getElementById('assinaturaCard');
+    const assinaturaTotalValor = document.getElementById('assinaturaTotalValor');
+    const assinaturaListaVinhos = document.getElementById('assinaturaListaVinhos');
 
     // ================== INICIALIZAÇÃO DOS COMBOS ==================
     function initCombos() {
@@ -787,8 +853,7 @@
 
       if (!combo.length) {
         listaAssinatura.innerHTML = '<div class="status">Nenhum vinho para montar assinatura.</div>';
-        assinaturaResumo.textContent = '';
-        assinaturaTotal.textContent = '';
+        assinaturaCard.style.display = 'none';
         return;
       }
 
@@ -799,13 +864,15 @@
         listaAssinatura.appendChild(criarItemVinho(v));
       });
 
-      assinaturaResumo.textContent =
-        'Assinatura sugerida com ' + combo.length + ' rótulos (1 garrafa de cada). ' +
-        'Pode virar um “Wine Club” mensal com estes códigos: ' + combo.map(v => v.cod).join(', ') + '.';
+      assinaturaTotalValor.textContent = 'R$ ' + total.toFixed(2);
+      assinaturaListaVinhos.innerHTML = '';
+      combo.forEach(v => {
+        const li = document.createElement('li');
+        li.textContent = v.cod + ' – ' + v.nome;
+        assinaturaListaVinhos.appendChild(li);
+      });
 
-      assinaturaTotal.innerHTML =
-        'Total estimado por mês: R$ ' + total.toFixed(2) +
-        '<span class="badge-mes">mensal</span>';
+      assinaturaCard.style.display = 'block';
     });
   </script>
 </body>
