@@ -111,7 +111,7 @@
       <h2>1) Entrar com VINHO → sugerir VINHOS</h2>
       <label for="selectVinho">Escolha um rótulo do nosso catálogo:</label><br>
       <select id="selectVinho">
-        <option value="">Carregando vinhos...</option>
+        <option value="">Selecione um vinho...</option>
       </select>
       <button id="btnVinhoSugestoes" class="principal">Ver sugestões (Wine Bringing)</button>
 
@@ -167,106 +167,123 @@
   </div>
 
   <script>
-    let vinhosCatalogo = [];
-    let regioes = [];
-    let uvasUnicas = [];
+    // ========= DADOS EMBUTIDOS (exemplo) ========= [file:3]
+    const vinhosCatalogo = [
+      {
+        cod: "300078",
+        nome: "PORTA 6 TTO - ARAGONES, CASTELÃO, TOURIGA NACIONAL",
+        regiao: "PORTUGAL - LISBOA",
+        uvas: ["Aragonez", "Castelão", "Touriga Nacional"],
+        preco: 58.70,
+        imagem: "",
+        estilo: "tinto_medio"
+      },
+      {
+        cod: "300093",
+        nome: "PORTA 6 BCO - FERNÃO PIRES, ARINTO, SAUVIGNON BLANC",
+        regiao: "PORTUGAL - LISBOA",
+        uvas: ["Fernão Pires", "Arinto", "Sauvignon Blanc"],
+        preco: 58.70,
+        imagem: "",
+        estilo: "branco_fresco"
+      },
+      {
+        cod: "39",
+        nome: "RESERVA DOS AMIGOS REGIONAL TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+        regiao: "PORTUGAL - LISBOA",
+        uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+        preco: 52.68,
+        imagem: "",
+        estilo: "tinto_medio"
+      },
+      {
+        cod: "3000160",
+        nome: "VINHO VERDE PORTA 6 DOC - LOUREIRO, TRAJADURA, ARINTO",
+        regiao: "PORTUGAL - VERDE",
+        uvas: ["Loureiro", "Trajadura", "Arinto"],
+        preco: 58.70,
+        imagem: "",
+        estilo: "branco_fresco"
+      },
+      {
+        cod: "3000444",
+        nome: "PESCADA BRANCO, DOC VERDE - AZAL, TRAJADURA, LOUREIRO, ARINTO",
+        regiao: "PORTUGAL - VERDE",
+        uvas: ["Azal", "Trajadura", "Loureiro", "Arinto"],
+        preco: 37.82,
+        imagem: "",
+        estilo: "branco_fresco"
+      },
+      {
+        cod: "445",
+        nome: "PESCADA - ARINTO E TRAJADURA",
+        regiao: "PORTUGAL - VERDE",
+        uvas: ["Arinto", "Trajadura"],
+        preco: 75.64,
+        imagem: "",
+        estilo: "branco_fresco"
+      },
+      {
+        cod: "446",
+        nome: "PESCADA - 100% ALVARINHO",
+        regiao: "PORTUGAL - VERDE",
+        uvas: ["Alvarinho"],
+        preco: 135.84,
+        imagem: "",
+        estilo: "branco_estruturado"
+      },
+      {
+        cod: "83",
+        nome: "RESERVA DOS AMIGOS MAGNUM TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+        regiao: "PORTUGAL - LISBOA",
+        uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+        preco: 84.67,
+        imagem: "",
+        estilo: "tinto_estruturado"
+      }
+    ];
 
-    // Carrega vinhos.json (precisa estar na mesma pasta) [file:3]
-    fetch('vinhos.json')
-      .then(res => res.json())
-      .then(data => {
-        vinhosCatalogo = data;
-        preencherSelectVinhos();
-        preencherFiltros();
-      })
-      .catch(err => {
-        console.error('Erro ao carregar vinhos.json', err);
-        alert('Erro ao carregar vinhos.json');
-      });
+    // ========= INICIALIZAÇÃO DOS COMBOS =========
+    const selectVinho = document.getElementById('selectVinho');
+    const selectRegiao = document.getElementById('selectRegiao');
+    const selectUva = document.getElementById('selectUva');
 
-    function preencherSelectVinhos() {
-      const select = document.getElementById('selectVinho');
-      select.innerHTML = '<option value=\"\">Selecione um vinho...</option>';
+    function initCombos() {
+      // vinhos
+      selectVinho.innerHTML = '<option value="">Selecione um vinho...</option>';
       vinhosCatalogo.forEach(v => {
         const opt = document.createElement('option');
         opt.value = v.cod;
         opt.textContent = v.nome;
-        select.appendChild(opt);
+        selectVinho.appendChild(opt);
       });
-    }
 
-    function preencherFiltros() {
+      // regiões
       const regSet = new Set();
       const uvaSet = new Set();
       vinhosCatalogo.forEach(v => {
         if (v.regiao) regSet.add(v.regiao);
         (v.uvas || []).forEach(u => uvaSet.add(u));
       });
-      regioes = Array.from(regSet).sort();
-      uvasUnicas = Array.from(uvaSet).sort();
+      const regioes = Array.from(regSet).sort();
+      const uvas = Array.from(uvaSet).sort();
 
-      const selRegiao = document.getElementById('selectRegiao');
       regioes.forEach(r => {
         const opt = document.createElement('option');
         opt.value = r;
         opt.textContent = r;
-        selRegiao.appendChild(opt);
+        selectRegiao.appendChild(opt);
       });
 
-      const selUva = document.getElementById('selectUva');
-      uvasUnicas.forEach(u => {
+      uvas.forEach(u => {
         const opt = document.createElement('option');
         opt.value = u;
         opt.textContent = u;
-        selUva.appendChild(opt);
+        selectUva.appendChild(opt);
       });
     }
 
-    // ========== WINE BRINGING: VINHO → VINHOS ==========
-    document.getElementById('btnVinhoSugestoes').addEventListener('click', () => {
-      const cod = document.getElementById('selectVinho').value;
-      const container = document.getElementById('listaWineBringing');
-      if (!cod) {
-        container.innerHTML = '<div class="status">Selecione um vinho primeiro.</div>';
-        return;
-      }
-      const base = vinhosCatalogo.find(v => v.cod === cod);
-      if (!base) {
-        container.innerHTML = '<div class="status">Vinho não encontrado.</div>';
-        return;
-      }
-
-      const sugeridos = vinhosCatalogo
-        .filter(v =>
-          v.cod !== base.cod &&
-          (v.regiao === base.regiao ||
-           (v.uvas || []).some(u => (base.uvas || []).includes(u)) ||
-           v.estilo === base.estilo)
-        )
-        .sort((a, b) => a.preco - b.preco); // menor → maior [file:2][file:3]
-
-      renderListaVinhosWineBringing(base, sugeridos, container);
-    });
-
-    function renderListaVinhosWineBringing(base, lista, container) {
-      container.innerHTML = '';
-      const topo = document.createElement('div');
-      topo.className = 'status';
-      topo.innerHTML =
-        'Vinho selecionado: <strong>' + base.nome + '</strong> (' + base.cod +
-        ')<br>Sugestões calculadas por região, uva e estilo (não aleatórias).';
-      container.appendChild(topo);
-
-      if (!lista.length) {
-        const div = document.createElement('div');
-        div.className = 'status';
-        div.textContent = 'Nenhum outro vinho compatível encontrado.';
-        container.appendChild(div);
-        return;
-      }
-
-      lista.forEach(v => container.appendChild(criarItemVinho(v)));
-    }
+    initCombos();
 
     function criarItemVinho(v) {
       const item = document.createElement('div');
@@ -301,7 +318,49 @@
       return item;
     }
 
-    // ========== RECEITA → VINHO ==========
+    // ========= 1) WINE BRINGING =========
+    document.getElementById('btnVinhoSugestoes').addEventListener('click', () => {
+      const cod = selectVinho.value;
+      const container = document.getElementById('listaWineBringing');
+      if (!cod) {
+        container.innerHTML = '<div class="status">Selecione um vinho primeiro.</div>';
+        return;
+      }
+      const base = vinhosCatalogo.find(v => v.cod === cod);
+      if (!base) {
+        container.innerHTML = '<div class="status">Vinho não encontrado.</div>';
+        return;
+      }
+
+      const sugeridos = vinhosCatalogo
+        .filter(v =>
+          v.cod !== base.cod &&
+          (v.regiao === base.regiao ||
+           (v.uvas || []).some(u => (base.uvas || []).includes(u)) ||
+           v.estilo === base.estilo)
+        )
+        .sort((a, b) => a.preco - b.preco); // menor → maior [file:2][file:3]
+
+      container.innerHTML = '';
+      const topo = document.createElement('div');
+      topo.className = 'status';
+      topo.innerHTML =
+        'Vinho selecionado: <strong>' + base.nome + '</strong> (' + base.cod +
+        ')<br>Sugestões calculadas por região, uva e estilo (não aleatórias).';
+      container.appendChild(topo);
+
+      if (!sugeridos.length) {
+        const div = document.createElement('div');
+        div.className = 'status';
+        div.textContent = 'Nenhum outro vinho compatível encontrado.';
+        container.appendChild(div);
+        return;
+      }
+
+      sugeridos.forEach(v => container.appendChild(criarItemVinho(v)));
+    });
+
+    // ========= 2) RECEITA → VINHO ========= [web:12]
     const btnBuscarReceitas = document.getElementById('btnBuscarReceitas');
     const selectTipoPrato = document.getElementById('selectTipoPrato');
     const boxPrato = document.getElementById('boxPrato');
@@ -395,10 +454,10 @@
       candidatos.forEach(v => listaVinhosReceita.appendChild(criarItemVinho(v)));
     }
 
-    // ========== FILTROS REGIÃO / UVA ==========
+    // ========= 3) FILTROS REGIÃO / UVA =========
     document.getElementById('btnFiltrar').addEventListener('click', () => {
-      const reg = document.getElementById('selectRegiao').value;
-      const uva = document.getElementById('selectUva').value;
+      const reg = selectRegiao.value;
+      const uva = selectUva.value;
       const container = document.getElementById('listaFiltro');
 
       let lista = vinhosCatalogo.filter(v => {
