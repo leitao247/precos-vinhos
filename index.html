@@ -388,7 +388,7 @@
 
     .assinatura-lista-titulo {
       font-size: 12px;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
 
     .assinatura-lista-vinhos {
@@ -401,6 +401,12 @@
     .assinatura-lista-vinhos li {
       margin-bottom: 2px;
       color: #e5e7eb;
+    }
+
+    .assinatura-codigos {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 4px;
     }
   </style>
 </head>
@@ -540,8 +546,9 @@
               <div class="assinatura-total-label">Total por mês</div>
               <div class="assinatura-total-valor" id="assinaturaTotalValor"></div>
             </div>
-            <div class="assinatura-lista-titulo">Vinhos incluídos:</div>
-            <ul class="assinatura-lista-vinhos" id="assinaturaListaVinhos"></ul>
+            <div class="assinatura-lista-titulo">Vinhos incluídos (mini-cards):</div>
+            <div class="lista" id="assinaturaMiniLista" style="max-height:110px;"></div>
+            <div class="assinatura-codigos" id="assinaturaCodigos"></div>
           </div>
         </div>
       </section>
@@ -641,6 +648,8 @@
     const assinaturaCard = document.getElementById('assinaturaCard');
     const assinaturaTotalValor = document.getElementById('assinaturaTotalValor');
     const assinaturaListaVinhos = document.getElementById('assinaturaListaVinhos');
+    const assinaturaMiniLista = document.getElementById('assinaturaMiniLista');
+    const assinaturaCodigos = document.getElementById('assinaturaCodigos');
 
     // ---------- Combos ----------
     function initCombos() {
@@ -714,7 +723,6 @@
       return item;
     }
 
-    // ---------- Lógica compartilhada ----------
     function sugerirVinhosWineBringing(base) {
       return vinhosCatalogo
         .filter(v =>
@@ -909,12 +917,14 @@
       });
 
       assinaturaTotalValor.textContent = 'R$ ' + total.toFixed(2) + ' / mês';
-      assinaturaListaVinhos.innerHTML = '';
+
+      assinaturaMiniLista.innerHTML = '';
       combo.forEach(v => {
-        const li = document.createElement('li');
-        li.textContent = v.cod + ' – ' + v.nome;
-        assinaturaListaVinhos.appendChild(li);
+        assinaturaMiniLista.appendChild(criarItemVinho(v));
       });
+
+      const codigos = combo.map(v => v.cod).join(', ');
+      assinaturaCodigos.textContent = 'Códigos dos rótulos: ' + codigos;
 
       assinaturaCard.style.display = 'block';
     });
