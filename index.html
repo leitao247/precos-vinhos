@@ -384,7 +384,7 @@
       font-size: 14px;
     }
 
-    /* TEMA CLARO (MODO DIA) – TODO TEXTO ESCURO */
+    /* TEMA CLARO (MODO DIA) */
     body.light {
       --bg-main: #f9fafb;
       --card-bg: #ffffff;
@@ -404,24 +404,6 @@
         0 0 0 1px var(--card-border);
     }
 
-    body.light .brand,
-    body.light .brand span {
-      color: #111827;
-    }
-
-    body.light .tagline {
-      color: #374151;
-      opacity: 1;
-    }
-
-    body.light label {
-      color: #111827;
-    }
-
-    body.light .status {
-      color: #374151;
-    }
-
     body.light .lista {
       background: #f3f4f6;
       border-color: #e5e7eb;
@@ -430,20 +412,6 @@
     body.light .vinho-item {
       background: #ffffff;
       border-color: #e5e7eb;
-    }
-
-    body.light .vinho-info,
-    body.light .vinho-nome,
-    body.light .vinho-meta,
-    body.light .assinatura-titulo,
-    body.light .assinatura-codigos,
-    body.light .prato-meta,
-    body.light .nome-prato {
-      color: #111827;
-    }
-
-    body.light .vinho-preco {
-      color: #b91c1c;
     }
 
     body.light .assinatura-card {
@@ -476,6 +444,26 @@
     body.light button.outline:hover {
       border-color: #4f46e5;
       color: #4f46e5;
+    }
+
+    /* tudo que é texto vira preto no modo dia */
+    body.light,
+    body.light .brand,
+    body.light .brand span,
+    body.light .tagline,
+    body.light .card-title,
+    body.light .card-sub,
+    body.light label,
+    body.light .status,
+    body.light .vinho-info,
+    body.light .vinho-nome,
+    body.light .vinho-meta,
+    body.light .vinho-preco,
+    body.light .assinatura-titulo,
+    body.light .assinatura-codigos,
+    body.light .nome-prato,
+    body.light .prato-meta {
+      color: #111827;
     }
   </style>
 </head>
