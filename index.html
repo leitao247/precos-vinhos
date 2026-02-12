@@ -376,7 +376,7 @@
       margin-top: 4px;
     }
 
-    /* Wine Bringing: só texto, 3 itens */
+    /* Wine Bringing: lista só texto, 3 itens */
     #listaWineBringing {
       max-height: none;
     }
@@ -584,6 +584,7 @@
   </div>
 
   <script>
+    /* Catálogo mínimo, fixo */
     const vinhosCatalogo = [
       {
         cod: "300078",
@@ -651,6 +652,7 @@
       }
     ];
 
+    /* Referências a elementos */
     const selectVinho = document.getElementById('selectVinho');
     const selectRegiao = document.getElementById('selectRegiao');
     const selectUva = document.getElementById('selectUva');
@@ -669,6 +671,7 @@
     const assinaturaCodigos = document.getElementById('assinaturaCodigos');
     const btnTema = document.getElementById('btnTema');
 
+    /* Inicializa combos */
     function initCombos() {
       selectVinho.innerHTML = '<option value="">Selecione um vinho...</option>';
       selectAssinaturaBase.innerHTML = '<option value="">Selecione um vinho...</option>';
@@ -709,6 +712,7 @@
 
     initCombos();
 
+    /* Monta item de vinho */
     function criarItemVinho(v) {
       const item = document.createElement('div');
       item.className = 'vinho-item';
@@ -726,6 +730,7 @@
       return item;
     }
 
+    /* Lógica Wine Bringing */
     function sugerirVinhosWineBringing(base) {
       return vinhosCatalogo
         .filter(v =>
@@ -769,6 +774,7 @@
       sugeridos.forEach(v => listaWineBringing.appendChild(criarItemVinho(v)));
     });
 
+    /* Receita → Vinhos */
     document.getElementById('btnBuscarReceitas').addEventListener('click', () => {
       const tipoPrato = selectTipoPrato.value;
       if (!tipoPrato) {
@@ -796,7 +802,7 @@
           const escolhido = lista[Math.floor(Math.random() * lista.length)];
           return fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + escolhido.idMeal);
         })
-        .then(r => r ? r.json() : null)
+        .then(r => (r ? r.json() : null))
         .then(det => {
           if (!det) return;
           const meal = (det.meals || [])[0];
@@ -855,6 +861,7 @@
       candidatos.forEach(v => listaVinhosReceita.appendChild(criarItemVinho(v)));
     }
 
+    /* Filtro região / uva */
     document.getElementById('btnFiltrar').addEventListener('click', () => {
       const reg = selectRegiao.value;
       const uva = selectUva.value;
@@ -876,6 +883,7 @@
       lista.forEach(v => listaFiltro.appendChild(criarItemVinho(v)));
     });
 
+    /* Assinatura */
     document.getElementById('btnGerarAssinatura').addEventListener('click', () => {
       const codBase = selectAssinaturaBase.value;
       if (!codBase) {
@@ -889,7 +897,7 @@
         return;
       }
 
-      const combinam = sugerirVinhosWineBringing(base).slice(0, 2); // base + 2 = 3
+      const combinam = sugerirVinhosWineBringing(base).slice(0, 2);
       const combo = [base, ...combinam];
 
       if (!combo.length) {
@@ -915,22 +923,29 @@
       assinaturaCard.style.display = 'block';
     });
 
-    /* Tema Dia / Noite */
+    /* Tema Dia / Noite com localStorage */
     function aplicarTemaInicial() {
       const salvo = localStorage.getItem('uvva_tema');
       if (salvo === 'light') {
         document.body.classList.add('light');
         btnTema.textContent = 'Modo noite';
       } else {
+        document.body.classList.remove('light');
         btnTema.textContent = 'Modo dia';
       }
     }
 
     btnTema.addEventListener('click', () => {
-      document.body.classList.toggle('light');
-      const claro = document.body.classList.contains('light');
-      btnTema.textContent = claro ? 'Modo noite' : 'Modo dia';
-      localStorage.setItem('uvva_tema', claro ? 'light' : 'dark');
+      const claro = !document.body.classList.contains('light');
+      if (claro) {
+        document.body.classList.add('light');
+        localStorage.setItem('uvva_tema', 'light');
+        btnTema.textContent = 'Modo noite';
+      } else {
+        document.body.classList.remove('light');
+        localStorage.setItem('uvva_tema', 'dark');
+        btnTema.textContent = 'Modo dia';
+      }
     });
 
     aplicarTemaInicial();
