@@ -181,4 +181,759 @@
     }
 
     button.primary {
-      background: linear-gradient(135deg, #a855f7, #ec48
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      color: #111827;
+      font-weight: 600;
+      box-shadow: 0 12px 28px rgba(15,23,42,0.8);
+    }
+
+    button.primary:hover {
+      background: linear-gradient(135deg, #ec4899, #a855f7);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 38px rgba(15,23,42,0.95);
+    }
+
+    button.outline {
+      background: rgba(15,23,42,0.9);
+      color: #e5e7eb;
+      border-color: rgba(148,163,184,0.75);
+    }
+
+    button.outline:hover {
+      border-color: #a855f7;
+      color: #a855f7;
+    }
+
+    .status {
+      font-size: 12px;
+      color: var(--status-text);
+      font-weight: 400;
+    }
+
+    .lista {
+      margin-top: 6px;
+      border-radius: 10px;
+      padding: 5px 4px;
+      background: radial-gradient(circle at top, rgba(15,23,42,0.92) 0, rgba(15,23,42,0.99) 40%, rgba(15,23,42,1) 100%);
+      border: 1px solid rgba(55,65,81,0.85);
+      min-height: 42px;
+      max-height: 130px;
+      overflow-y: auto;
+    }
+
+    .vinho-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 6px 7px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .vinho-item:nth-child(odd) {
+      background: rgba(15,23,42,0.96);
+    }
+
+    .vinho-item:nth-child(even) {
+      background: rgba(17,24,39,0.96);
+    }
+
+    .vinho-item::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid transparent;
+      pointer-events: none;
+    }
+
+    .vinho-item:hover::after {
+      border-color: rgba(168,85,247,0.7);
+    }
+
+    .vinho-info {
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      color: #e5e7eb;
+    }
+
+    .vinho-nome {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .vinho-meta {
+      color: var(--meta-text);
+    }
+
+    .vinho-preco {
+      color: #a855f7;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .pill-mini {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.98);
+      color: #fef2ff;
+      font-size: 10px;
+      border: 1px solid rgba(168,85,247,0.7);
+      margin-top: 2px;
+    }
+
+    .prato-box {
+      margin-top: 6px;
+      border-radius: 12px;
+      padding: 8px;
+      background: radial-gradient(circle at top, rgba(248,250,252,0.05) 0, rgba(15,23,42,0.98) 35%, #020617 100%);
+      border: 1px solid rgba(55,65,81,0.9);
+      text-align: center;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .nome-prato {
+      font-weight: 600;
+      font-size: 14px;
+      color: #f9fafb;
+    }
+
+    .prato-meta {
+      font-size: 11px;
+      color: #d1d5db;
+    }
+
+    .assinatura-card {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, rgba(17,24,39,0.95) 0, rgba(15,23,42,1) 60%);
+      border: 1px solid rgba(168,85,247,0.7);
+    }
+
+    .assinatura-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .assinatura-titulo {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .assinatura-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(168,85,247,0.7);
+      color: #ede9fe;
+    }
+
+    .assinatura-valores {
+      margin: 8px 0;
+      padding: 8px 10px;
+      border-radius: 11px;
+      background: radial-gradient(circle at top, rgba(30,64,175,0.5) 0, rgba(15,23,42,1) 60%);
+      border: 1px solid rgba(168,85,247,0.85);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .assinatura-total-label {
+      font-size: 11px;
+      color: #e5e7eb;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .assinatura-total-valor {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fbbf24;
+    }
+
+    .assinatura-lista-titulo {
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .assinatura-codigos {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
+    /* Wine Bringing: só texto, 3 itens */
+    #listaWineBringing {
+      max-height: none;
+    }
+    #listaWineBringing .vinho-item {
+      padding: 10px 10px;
+      margin-bottom: 4px;
+    }
+    #listaWineBringing .vinho-info .vinho-nome {
+      font-size: 14px;
+    }
+
+    /* Tema claro (modo dia) */
+    body.light {
+      --bg-main: radial-gradient(circle at top, #f3f4ff 0, #e5e7eb 45%, #d1d5db 100%);
+      --card-bg: #ffffff;
+      --text-main: #111827;
+      --card-border: rgba(148,163,184,0.6);
+      --status-text: #4b5563;
+      --meta-text: #4b5563;
+      --pill-bg: #e5e7eb;
+    }
+
+    body.light .card {
+      background: var(--card-bg);
+      box-shadow:
+        0 10px 24px rgba(15,23,42,0.12),
+        0 0 0 1px var(--card-border);
+    }
+
+    body.light .brand {
+      color: #111827;
+    }
+
+    body.light .tagline {
+      color: #374151;
+      opacity: 1;
+    }
+
+    body.light label {
+      color: #111827;
+    }
+
+    body.light .vinho-item:nth-child(odd),
+    body.light .vinho-item:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    body.light .assinatura-card {
+      background: #f9fafb;
+      border-color: rgba(168,85,247,0.6);
+    }
+
+    body.light .assinatura-badge {
+      background: #eef2ff;
+      color: #1f2937;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="top-row">
+        <div class="brand"><span>Uvva</span> Wine Bringing</div>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <div class="pill">Sommelier digital • catálogo próprio</div>
+          <button id="btnTema" class="outline">Modo dia</button>
+        </div>
+      </div>
+      <div class="tagline">
+        Harmonização visual entre rótulos e pratos, com base no seu portfólio; pronto para carrinho e assinatura mensal.
+      </div>
+    </header>
+
+    <div class="grid-main">
+      <!-- 1) VINHO → VINHOS -->
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-title">1. Entrar com vinho → sugerir vinhos</div>
+            <div class="card-sub">Wine Bringing (vinho que combina com vinho)</div>
+          </div>
+
+          <label for="selectVinho">Rótulo do catálogo:</label>
+          <select id="selectVinho"></select>
+          <button id="btnVinhoSugestoes" class="primary">
+            Ver sugestões Wine Bringing
+          </button>
+
+          <div class="lista" id="listaWineBringing">
+            <div class="status">
+              Escolha um vinho para encontrar outros rótulos Uvva com perfil semelhante (região, uvas, estilo).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2) RECEITA → VINHO -->
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-title">2. Entrar com receita → sugerir vinhos</div>
+            <div class="card-sub">TheMealDB + lógica de harmonização</div>
+          </div>
+
+          <label for="selectTipoPrato">Tipo de prato:</label>
+          <select id="selectTipoPrato">
+            <option value="">Selecione...</option>
+            <option value="carne">Carne</option>
+            <option value="peixe">Peixe</option>
+            <option value="vegano">Vegano</option>
+          </select>
+
+          <button id="btnBuscarReceitas" class="primary">
+            Buscar receita e resumo
+          </button>
+
+          <div class="status" id="statusReceitas">
+            As receitas vêm da TheMealDB apenas para ilustração; os vinhos sugeridos são do seu catálogo.
+          </div>
+
+          <div class="prato-box" id="boxPrato">
+            <div class="status">Nenhum prato carregado ainda.</div>
+          </div>
+
+          <div class="lista" id="listaVinhosReceita">
+            <div class="status">
+              Após escolher um tipo de prato, sugerimos vinhos compatíveis do menor preço para o maior.
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="grid-bottom">
+      <!-- 3) REGIÃO / UVA -->
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-title">3. Navegar por região / uva</div>
+            <div class="card-sub">Explorador do portfólio Uvva</div>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:200px;">
+              <label for="selectRegiao">Região:</label>
+              <select id="selectRegiao">
+                <option value="">Todas as regiões</option>
+              </select>
+            </div>
+            <div style="flex:1; min-width:200px;">
+              <label for="selectUva">Uva:</label>
+              <select id="selectUva">
+                <option value="">Todas as uvas</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="btnFiltrar" class="outline">
+            Filtrar vinhos
+          </button>
+
+          <div class="lista" id="listaFiltro">
+            <div class="status">Use região + uva para ver famílias de rótulos específicos.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4) ASSINATURA -->
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-title">4. Assinatura mensal sugerida</div>
+            <div class="card-sub">Seleção de vinhos recorrente</div>
+          </div>
+
+          <label for="selectAssinaturaBase">Vinho-base da assinatura:</label>
+          <select id="selectAssinaturaBase"></select>
+
+          <button id="btnGerarAssinatura" class="primary">
+            Gerar combo de assinatura
+          </button>
+
+          <div class="lista" id="listaAssinatura">
+            <div class="status">
+              Clique em “Gerar combo de assinatura” para ver 3 rótulos sugeridos no card abaixo.
+            </div>
+          </div>
+
+          <div class="assinatura-card" id="assinaturaCard" style="display:none;">
+            <div class="assinatura-header">
+              <div class="assinatura-titulo">Wine Club Uvva</div>
+              <div class="assinatura-badge">Assinatura mensal</div>
+            </div>
+            <div class="assinatura-valores">
+              <div class="assinatura-total-label">Total por mês</div>
+              <div class="assinatura-total-valor" id="assinaturaTotalValor"></div>
+            </div>
+            <div class="assinatura-lista-titulo">Vinhos incluídos (3 rótulos):</div>
+            <div class="lista" id="assinaturaMiniLista" style="max-height:110px;"></div>
+            <div class="assinatura-codigos" id="assinaturaCodigos"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const vinhosCatalogo = [
+      {
+        cod: "300078",
+        nome: "PORTA 6 TTO - ARAGONES, CASTELÃO, TOURIGA NACIONAL",
+        regiao: "PORTUGAL - LISBOA",
+        uvas: ["Aragonez", "Castelão", "Touriga Nacional"],
+        preco: 58.70,
+        estilo: "tinto_medio"
+      },
+      {
+        cod: "300093",
+        nome: "PORTA 6 BCO - FERNÃO PIRES, ARINTO, SAUVIGNON BLANC",
+        regiao: "PORTUGAL - LISBOA",
+        uvas: ["Fernão Pires", "Arinto", "Sauvignon Blanc"],
+        preco: 58.70,
+        estilo: "branco_fresco"
+      },
+      {
+        cod: "39",
+        nome: "RESERVA DOS AMIGOS REGIONAL TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+        regiao: "PORTUGAL - LISBOA",
+        uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+        preco: 52.68,
+        estilo: "tinto_medio"
+      },
+      {
+        cod: "83",
+        nome: "RESERVA DOS AMIGOS MAGNUM TTO - ARAGONES, CASTELÃO, TINTA MIUDA",
+        regiao: "PORTUGAL - LISBOA",
+        uvas: ["Aragonez", "Castelão", "Tinta Miuda"],
+        preco: 84.67,
+        estilo: "tinto_estruturado"
+      },
+      {
+        cod: "3000160",
+        nome: "VINHO VERDE PORTA 6 DOC - LOUREIRO, TRAJADURA, ARINTO",
+        regiao: "PORTUGAL - VERDE",
+        uvas: ["Loureiro", "Trajadura", "Arinto"],
+        preco: 58.70,
+        estilo: "branco_fresco"
+      },
+      {
+        cod: "3000444",
+        nome: "PESCADA BRANCO, DOC VERDE - AZAL, TRAJADURA, LOUREIRO, ARINTO",
+        regiao: "PORTUGAL - VERDE",
+        uvas: ["Azal", "Trajadura", "Loureiro", "Arinto"],
+        preco: 37.82,
+        estilo: "branco_fresco"
+      },
+      {
+        cod: "445",
+        nome: "PESCADA - ARINTO E TRAJADURA",
+        regiao: "PORTUGAL - VERDE",
+        uvas: ["Arinto", "Trajadura"],
+        preco: 75.64,
+        estilo: "branco_fresco"
+      },
+      {
+        cod: "446",
+        nome: "PESCADA - 100% ALVARINHO",
+        regiao: "PORTUGAL - VERDE",
+        uvas: ["Alvarinho"],
+        preco: 135.84,
+        estilo: "branco_estruturado"
+      }
+    ];
+
+    const selectVinho = document.getElementById('selectVinho');
+    const selectRegiao = document.getElementById('selectRegiao');
+    const selectUva = document.getElementById('selectUva');
+    const selectTipoPrato = document.getElementById('selectTipoPrato');
+    const selectAssinaturaBase = document.getElementById('selectAssinaturaBase');
+
+    const listaWineBringing = document.getElementById('listaWineBringing');
+    const statusReceitas = document.getElementById('statusReceitas');
+    const boxPrato = document.getElementById('boxPrato');
+    const listaVinhosReceita = document.getElementById('listaVinhosReceita');
+    const listaFiltro = document.getElementById('listaFiltro');
+    const listaAssinatura = document.getElementById('listaAssinatura');
+    const assinaturaCard = document.getElementById('assinaturaCard');
+    const assinaturaTotalValor = document.getElementById('assinaturaTotalValor');
+    const assinaturaMiniLista = document.getElementById('assinaturaMiniLista');
+    const assinaturaCodigos = document.getElementById('assinaturaCodigos');
+    const btnTema = document.getElementById('btnTema');
+
+    function initCombos() {
+      selectVinho.innerHTML = '<option value="">Selecione um vinho...</option>';
+      selectAssinaturaBase.innerHTML = '<option value="">Selecione um vinho...</option>';
+
+      vinhosCatalogo.forEach(v => {
+        const o1 = document.createElement('option');
+        o1.value = v.cod;
+        o1.textContent = v.nome;
+        selectVinho.appendChild(o1);
+
+        const o2 = document.createElement('option');
+        o2.value = v.cod;
+        o2.textContent = v.nome;
+        selectAssinaturaBase.appendChild(o2);
+      });
+
+      const regSet = new Set();
+      const uvaSet = new Set();
+      vinhosCatalogo.forEach(v => {
+        if (v.regiao) regSet.add(v.regiao);
+        (v.uvas || []).forEach(u => uvaSet.add(u));
+      });
+
+      Array.from(regSet).sort().forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r;
+        opt.textContent = r;
+        selectRegiao.appendChild(opt);
+      });
+
+      Array.from(uvaSet).sort().forEach(u => {
+        const opt = document.createElement('option');
+        opt.value = u;
+        opt.textContent = u;
+        selectUva.appendChild(opt);
+      });
+    }
+
+    initCombos();
+
+    function criarItemVinho(v) {
+      const item = document.createElement('div');
+      item.className = 'vinho-item';
+
+      const info = document.createElement('div');
+      info.className = 'vinho-info';
+      info.innerHTML = `
+        <div class="vinho-nome">${v.nome}</div>
+        <div class="vinho-meta">${v.regiao}</div>
+        <div class="vinho-meta">Uvas: ${(v.uvas || []).join(', ')}</div>
+        <div class="vinho-preco">R$ ${v.preco.toFixed(2)}</div>
+      `;
+
+      item.appendChild(info);
+      return item;
+    }
+
+    function sugerirVinhosWineBringing(base) {
+      return vinhosCatalogo
+        .filter(v =>
+          v.cod !== base.cod &&
+          (v.regiao === base.regiao ||
+           (v.uvas || []).some(u => (base.uvas || []).includes(u)) ||
+           v.estilo === base.estilo)
+        )
+        .sort((a, b) => a.preco - b.preco);
+    }
+
+    document.getElementById('btnVinhoSugestoes').addEventListener('click', () => {
+      const cod = selectVinho.value;
+      if (!cod) {
+        listaWineBringing.innerHTML = '<div class="status">Selecione um vinho primeiro.</div>';
+        return;
+      }
+
+      const base = vinhosCatalogo.find(v => v.cod === cod);
+      if (!base) {
+        listaWineBringing.innerHTML = '<div class="status">Vinho não encontrado.</div>';
+        return;
+      }
+
+      let sugeridos = sugerirVinhosWineBringing(base);
+      sugeridos = sugeridos.slice(0, 3);
+
+      listaWineBringing.innerHTML = '';
+      const topo = document.createElement('div');
+      topo.className = 'status';
+      topo.innerHTML =
+        'Vinho selecionado: <strong>' + base.nome + '</strong> (' + base.cod +
+        ')<br><span class="pill-mini">Sugestões calculadas por região, uva e estilo – não aleatórias.</span>';
+      listaWineBringing.appendChild(topo);
+
+      if (!sugeridos.length) {
+        listaWineBringing.innerHTML += '<div class="status">Nenhum outro vinho compatível encontrado.</div>';
+        return;
+      }
+
+      sugeridos.forEach(v => listaWineBringing.appendChild(criarItemVinho(v)));
+    });
+
+    document.getElementById('btnBuscarReceitas').addEventListener('click', () => {
+      const tipoPrato = selectTipoPrato.value;
+      if (!tipoPrato) {
+        alert('Escolha carne, peixe ou vegano.');
+        return;
+      }
+
+      let categoriaApi = 'Beef';
+      if (tipoPrato === 'peixe') categoriaApi = 'Seafood';
+      if (tipoPrato === 'vegano') categoriaApi = 'Vegetarian';
+
+      statusReceitas.textContent = 'Buscando prato ' + categoriaApi + '...';
+      boxPrato.innerHTML = '<div class="status">Carregando prato...</div>';
+      listaVinhosReceita.innerHTML = '<div class="status">Analisando harmonização com nossos vinhos...</div>';
+
+      fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=' + encodeURIComponent(categoriaApi))
+        .then(r => r.json())
+        .then(dados => {
+          const lista = dados.meals || [];
+          if (!lista.length) {
+            boxPrato.innerHTML = '<div class="status">Nenhum prato encontrado.</div>';
+            statusReceitas.textContent = 'Nenhum prato encontrado para esta categoria.';
+            return null;
+          }
+          const escolhido = lista[Math.floor(Math.random() * lista.length)];
+          return fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + escolhido.idMeal);
+        })
+        .then(r => r ? r.json() : null)
+        .then(det => {
+          if (!det) return;
+          const meal = (det.meals || [])[0];
+          mostrarPrato(meal);
+          sugerirVinhosParaTipoPrato(tipoPrato);
+          statusReceitas.textContent = 'Prato carregado e harmonização sugerida.';
+        })
+        .catch(() => {
+          boxPrato.innerHTML = '<div class="status">Erro ao buscar receita externa.</div>';
+          listaVinhosReceita.innerHTML = '<div class="status">Não foi possível sugerir vinhos para a receita.</div>';
+          statusReceitas.textContent = 'Erro ao consultar TheMealDB.';
+        });
+    });
+
+    function mostrarPrato(meal) {
+      boxPrato.innerHTML = '';
+      if (!meal) {
+        boxPrato.innerHTML = '<div class="status">Nenhum prato encontrado.</div>';
+        return;
+      }
+
+      const nome = document.createElement('div');
+      nome.className = 'nome-prato';
+      nome.textContent = meal.strMeal;
+
+      const leg = document.createElement('div');
+      leg.className = 'prato-meta';
+      leg.textContent = (meal.strArea || '') + (meal.strCategory ? ' · ' + meal.strCategory : '');
+
+      boxPrato.appendChild(nome);
+      boxPrato.appendChild(leg);
+    }
+
+    function sugerirVinhosParaTipoPrato(tipoPrato) {
+      let estilosPreferidos = [];
+      if (tipoPrato === 'carne') estilosPreferidos = ['tinto_estruturado', 'tinto_medio'];
+      else if (tipoPrato === 'peixe') estilosPreferidos = ['branco_fresco', 'branco_estruturado'];
+      else if (tipoPrato === 'vegano') estilosPreferidos = ['branco_fresco', 'tinto_medio'];
+
+      const candidatos = vinhosCatalogo
+        .filter(v => estilosPreferidos.includes(v.estilo))
+        .sort((a, b) => a.preco - b.preco);
+
+      listaVinhosReceita.innerHTML = '';
+
+      if (!candidatos.length) {
+        listaVinhosReceita.innerHTML = '<div class="status">Nenhum vinho compatível cadastrado.</div>';
+        return;
+      }
+
+      const topo = document.createElement('div');
+      topo.className = 'status';
+      topo.textContent = 'Vinhos sugeridos para este tipo de prato (ordenados do menor preço para o maior).';
+      listaVinhosReceita.appendChild(topo);
+
+      candidatos.forEach(v => listaVinhosReceita.appendChild(criarItemVinho(v)));
+    }
+
+    document.getElementById('btnFiltrar').addEventListener('click', () => {
+      const reg = selectRegiao.value;
+      const uva = selectUva.value;
+
+      const lista = vinhosCatalogo
+        .filter(v => {
+          const okReg = reg ? v.regiao === reg : true;
+          const okUva = uva ? (v.uvas || []).includes(uva) : true;
+          return okReg && okUva;
+        })
+        .sort((a, b) => a.preco - b.preco);
+
+      listaFiltro.innerHTML = '';
+      if (!lista.length) {
+        listaFiltro.innerHTML = '<div class="status">Nenhum vinho encontrado com esses filtros.</div>';
+        return;
+      }
+
+      lista.forEach(v => listaFiltro.appendChild(criarItemVinho(v)));
+    });
+
+    document.getElementById('btnGerarAssinatura').addEventListener('click', () => {
+      const codBase = selectAssinaturaBase.value;
+      if (!codBase) {
+        alert('Escolha um vinho-base para montar a assinatura.');
+        return;
+      }
+
+      const base = vinhosCatalogo.find(v => v.cod === codBase);
+      if (!base) {
+        alert('Vinho-base não encontrado.');
+        return;
+      }
+
+      const combinam = sugerirVinhosWineBringing(base).slice(0, 2); // base + 2 = 3
+      const combo = [base, ...combinam];
+
+      if (!combo.length) {
+        listaAssinatura.innerHTML = '<div class="status">Nenhum vinho para montar assinatura.</div>';
+        assinaturaCard.style.display = 'none';
+        return;
+      }
+
+      let total = 0;
+      listaAssinatura.innerHTML = '<div class="status">Combo gerado com 3 rótulos para a assinatura mensal.</div>';
+      combo.forEach(v => { total += v.preco; });
+
+      assinaturaTotalValor.textContent = 'R$ ' + total.toFixed(2) + ' / mês';
+
+      assinaturaMiniLista.innerHTML = '';
+      combo.forEach(v => assinaturaMiniLista.appendChild(criarItemVinho(v)));
+
+      const codigos = combo
+        .map(v => v.cod.toString().padStart(6, '0'))
+        .join(', ');
+      assinaturaCodigos.textContent = 'Códigos dos rótulos: ' + codigos;
+
+      assinaturaCard.style.display = 'block';
+    });
+
+    /* Tema Dia / Noite */
+    function aplicarTemaInicial() {
+      const salvo = localStorage.getItem('uvva_tema');
+      if (salvo === 'light') {
+        document.body.classList.add('light');
+        btnTema.textContent = 'Modo noite';
+      } else {
+        btnTema.textContent = 'Modo dia';
+      }
+    }
+
+    btnTema.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      const claro = document.body.classList.contains('light');
+      btnTema.textContent = claro ? 'Modo noite' : 'Modo dia';
+      localStorage.setItem('uvva_tema', claro ? 'light' : 'dark');
+    });
+
+    aplicarTemaInicial();
+  </script>
+</body>
+</html>
